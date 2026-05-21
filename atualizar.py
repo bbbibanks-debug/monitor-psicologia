@@ -85,36 +85,39 @@ for x in range(len(links)):
                             vistos.add(url_completa)
                             links_raspados_por_fonte[x].append((url_completa, txt, traduzir_texto(txt)))
 
-        # === RASPAGEM DA SBP ATUALIZADA E REFINADA (ÍNDICE 5) ===
+        # === RASPAGEM DA SBP CORRIGIDA (ÍNDICE 5) ===
         elif x == 5:
-            for h3_tag in p_obj.find_all("h3"):
-                z = h3_tag.find("a", href=True) if h3_tag.name != "a" else h3_tag
-                if not z and h3_tag.parent.name == "a":
-                    z = h3_tag.parent
-                if not z:
-                    z = h3_tag.find_previous("a", href=True) or h3_tag.find_next("a", href=True)
+            # Captura todos os links válidos que estão contidos na seção principal de conteúdo
+            for z in p_obj.find_all("a", href=True):
+                url_completa = urljoin(url_raiz, z.get("href"))
                 
-                if z and z.get("href"):
-                    url_completa = urljoin(url_raiz, z.get("href"))
+                # Filtra links internos repetivos e foca na estrutura das postagens das notícias
+                if "sbponline.org.br/noticias/" in url_completa or "/noticia/" in url_completa:
                     if url_permitida(url_completa) and url_completa not in vistos:
-                        txt = h3_tag.text.strip()
-                        if len(txt) > 15 and not any(menu in txt.lower() for menu in ["institucional", "links úteis", "contato"]):
+                        txt = z.text.strip()
+                        # Se o link direto tiver texto curto, busca o título associado no elemento pai (Ex: títulos de imagens)
+                        if len(txt) < 10 and z.parent:
+                            txt = z.parent.text.strip()
+                        
+                        if len(txt) > 15 and not any(menu in txt.lower() for menu in ["institucional", "links úteis", "contato", "leia mais"]):
                             vistos.add(url_completa)
                             links_raspados_por_fonte[x].append((url_completa, txt, txt))
 
-        # === RASPAGEM DO PORTAL PSYCH CENTRAL REFINADA (ÍNDICE 10) ===
+        # === RASPAGEM DO PORTAL PSYCH CENTRAL CORRIGIDA (ÍNDICE 10) ===
         elif x == 10:
-            for h_tag in p_obj.find_all(["h2", "h3"]):
-                z = h_tag.find("a", href=True) if h_tag.name != "a" else h_tag
-                if not z and h_tag.parent.name == "a":
-                    z = h_tag.parent
-                if z and z.get("href"):
-                    url_completa = urljoin(url_raiz, z.get("href"))
-                    if url_permitida(url_completa) and url_completa not in vistos:
-                        txt = h_tag.text.strip()
-                        if len(txt) > 18 and not any(menu in txt.lower() for menu in ["privacy", "terms", "about", "contact", "advertise"]):
-                            vistos.add(url_completa)
-                            links_raspados_por_fonte[x].append((url_completa, txt, traduzir_texto(txt)))
+            # Varre de forma ampla todas as tags de link com foco em caminhos de artigos reais
+            for z in p_obj.find_all("a", href=True):
+                url_completa = urljoin(url_raiz, z.get("href"))
+                
+                # Filtra caminhos institucionais comuns para capturar notícias reais da home
+                if url_permitida(url_completa) and url_completa not in vistos:
+                    txt = z.text.strip()
+                    if not txt and z.parent:
+                        txt = z.parent.text.strip()
+                        
+                    if len(txt) > 18 and not any(menu in txt.lower() for menu in ["privacy", "terms", "about", "contact", "advertise", "newsletter", "healthline"]):
+                        vistos.add(url_completa)
+                        links_raspados_por_fonte[x].append((url_completa, txt, traduzir_texto(txt)))
                             
         # === RASPAGEM AMPLIADA GERAL (PARA OS DEMAIS PORTAIS) ===
         else:
@@ -184,10 +187,10 @@ with open(namefile, "w", encoding="utf-8") as file:
         file.write(f'  <button class="btn-fonte{classe_ativa}" onclick="mostrarConteudo({idx}, this)">{nome}</button>\n')
     file.write('</div>\n\n')
 
-    # === CORREÇÃO CRUCIAL DA LINHA 195: Lendo explicitamente o índice [0] ===
+    # Caixa dinâmica inicial carregando o primeiro item
     file.write('<div class="caixa-dinamica" id="conteudoResultados">\n')
-    if 0 in links_raspados_por_fonte and len(links_raspados_por_fonte[0]) > 0:
-        for url_lnk, txt_lnk, trad_lnk in links_raspados_por_fonte[0]:
+    if 0 in links_raspados_por_fonte and len(links_raspados_por_fonte) > 0:
+        for url_lnk, txt_lnk, trad_lnk in links_raspados_por_fonte:
             file.write('  <div class="item-artigo">\n')
             file.write(f'    <a href="{url_lnk}" target="_blank">{txt_lnk if txt_lnk else url_lnk}</a>\n')
             if trad_lnk and trad_lnk != txt_lnk:
