@@ -1,18 +1,12 @@
-import os
-import re
-import time
 import requests
 from bs4 import BeautifulSoup
+import os
+import functools
+import re
 from datetime import datetime, timezone, timedelta
 from deep_translator import GoogleTranslator
 
-# --- 1. CONFIGURAÇÕES DE TEMPO, ARQUIVOS E TRADUTOR ---
-data_e_hora_atuais = datetime.now()
-diferenca = timedelta(hours=-3)
-fuso_horario = timezone(diferenca)
-data_e_hora_sao_paulo = data_e_hora_atuais.astimezone(fuso_horario)
-namefile = "index.html"
-
+# --- CONFIGURAÇÕES DO TRADUTOR E PALAVRAS-CHAVE ---
 def carregar_keywords():
     if not os.path.exists("keywords.txt"):
         with open("keywords.txt", "w", encoding="utf-8") as f:
@@ -29,7 +23,15 @@ def traduzir_texto(texto):
     try: return GoogleTranslator(source='auto', target='pt').translate(texto)
     except: return ""
 
-# --- 2. MAPA DE LINKS EXATOS DO SEU PROJETO ORIGINAL ---
+# --- SEU SCRIPT ORIGINAL ESTRUTURAL ---
+data_e_hora_atuais = datetime.now()
+data_e_hora_em_texto = data_e_hora_atuais.strftime("%d/%m/%Y %H:%M")
+diferenca = timedelta(hours=-3)
+fuso_horario = timezone(diferenca)
+data_e_hora_sao_paulo = data_e_hora_atuais.astimezone(fuso_horario)
+data_e_hora_sao_paulo_em_texto = data_e_hora_sao_paulo.strftime("%d%m%Yday%H%Mtime")
+namefile = "index.html"
+
 links = [
     "https://verywellmind.com", "https://psychologytoday.com", 
     "https://scientificamerican.com", "https://nih.gov",
@@ -59,11 +61,10 @@ for x in range(len(links)):
         response.raise_for_status()
         responder[x] = response
         parser[x] = BeautifulSoup(response.text, "html.parser")
-        time.sleep(0.1)
     except Exception:
         pass
 
-# --- 3. CONSTRUÇÃO DO PAINEL DE BOTÕES (ESTILO EXATO DA FOTO BONITA) ---
+# --- MONTAGEM DA GRADE DE BOTÕES (EXACTAMENTE IGUAL AO SEU NATIVO) ---
 file = open(namefile, "w", encoding="utf-8")
 file.write('<!DOCTYPE html>')
 file.write('<html lang="pt-br">')
@@ -72,14 +73,12 @@ file.write('<link rel="stylesheet" href="https://bootstrapcdn.com">')
 file.write('<title>PSI LINKS BOARD</title>')
 file.write('<style>.btn-space { margin: 4px; } .sub-tra { font-size: 0.82rem; color: #6c757d; display: block; margin-bottom: 8px; margin-left: 10px; }</style>')
 file.write('</head>')
-file.write('<body><div class="container" id="myGroup">')
+file.write('<body><div class="container-fluid px-4" id="myGroup">')
+file.write(f'<h1>PSI MONITOR <small class="text-muted" style="font-size: 0.45em; margin-left: 10px;">• Atualizado em: {data_e_hora_sao_paulo.strftime("%d/%m/%Y %H:%M")}</small></h1><p>')
 
-# Linha do Título com Data e Hora discretas conforme solicitado
-file.write(f'<h1>PSI MONITOR <small class="text-muted" style="font-size: 0.45em; margin-left: 10px;">• Atualizado em: {data_e_hora_sao_paulo.strftime("%d/%m/%Y às %H:%M")}</small></h1><p>')
-
-# Renderização da grade horizontal idêntica ao anexo original
-file.write('<a class="btn btn-space btn-danger btn-lg" data-toggle="collapse" href="#collapseKeywords" role="button" aria-expanded="false" aria-controls="collapseKeywords">🎯 PALAVRAS-CHAVE ATIVAS</a>')
-file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample0" role="button" aria-expanded="false">VeryWell Mind</a>')
+# Sua lista exata de botões em bloco
+file.write('<a class="btn btn-space btn-danger btn-lg" data-toggle="collapse" href="#collapseKeywords" role="button" aria-expanded="false">🎯 PALAVRAS-CHAVE ATIVAS</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false">VeryWell Mind</a>')
 file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false">Psychology Today</a>')
 file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false">Scientific American</a>')
 file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false">The National Institute of Mental Health (NIMH)</a>')
@@ -88,7 +87,7 @@ file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collap
 file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample6" role="button" aria-expanded="false">Google Notícias</a>')
 file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample7" role="button" aria-expanded="false">SBP</a>')
 file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample8" role="button" aria-expanded="false">Neuroscience</a>')
-file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample9" role="button" aria-expanded="false">Positive Psichology</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample9" role="button" aria-expanded="false">Positive Psychology</a>')
 file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample10" role="button" aria-expanded="false">Positive Psychcentral</a>')
 file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample11" role="button" aria-expanded="false">IQ`s Corner</a>')
 file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample12" role="button" aria-expanded="false">Happier Human</a>')
@@ -112,202 +111,201 @@ file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collap
 file.write('</p>')
 file.close()
 
-# --- 4. ENGINE DE GRAVAÇÃO (MANTÉM TODAS AS CAIXAS FECHADAS DE FORMA NATIVA) ---
-def gravar_box(html_id, links_encontrados, url_base, fonte_nome):
-    f = open(namefile, "a", encoding="utf-8")
-    # Garante as aspas completas ao redor do ID e propriedades para evitar quebras visuais
-    f.write(f'<div class="collapse" id="{html_id}" data-parent="#myGroup" Style><div class="card card-body">')
+# --- HELPER DE ESCRITA DE CARD-BODY ---
+def processar_e_gravar(html_id, links_encontrados, url_base, fonte_nome):
     vistos = set()
-    for tag_a in links_encontrados:
-        href = tag_a.get("href", "")
-        texto = tag_a.get_text().strip()
-        if not href or len(texto) < 14: continue
-        if href.startswith("/"): href = url_base.rstrip('/') + href
-        if href not in vistos:
-            vistos.add(href)
-            # Escrita de link perfeita contendo aspas estritas
-            f.write(f'<a href="{href}" target="_blank">{texto}</a></br>')
-            trad = traduzir_texto(texto)
-            if trad and trad != texto:
-                f.write(f'<span class="sub-tra">↳ {trad}</span>')
-            if any(p in texto.lower() or p in trad.lower() for p in keywords):
-                noticias_filtradas_urgentes.append((href, texto, trad, fonte_nome))
-    f.write('</div></div>')
-    f.close()
+    with open(namefile, "a", encoding="utf-8") as f:
+        f.write(f'<div class="collapse" id="{html_id}" data-parent="#myGroup" Style><div class="card card-body">')
+        for tag_a in links_encontrados:
+            href = tag_a.get("href", "")
+            texto = tag_a.get_text().strip()
+            if not href or len(texto) < 14: continue
+            if href.startswith("/"): href = url_base.rstrip('/') + href
+            if href not in vistos:
+                vistos.add(href)
+                f.write(f'<a href="{href}" target="_blank">{texto}</a></br>')
+                trad = traduzir_texto(texto)
+                if trad and trad != texto:
+                    f.write(f'<span class="sub-tra">↳ {trad}</span>')
+                if any(p in texto.lower() or p in trad.lower() for p in keywords):
+                    noticias_filtradas_urgentes.append((href, texto, trad, fonte_nome))
+        f.write('</div></div>')
 
-# 0. VeryWell Mind (Seletor corrigido)
+# --- PROCESSAMENTO SEQUENCIAL DAS SUAS REGRAS EXATAS DO SEU PDF ---
+
+# 0. VeryWell Mind (Corrigido dinâmico)
 if parser[0] is not None:
-    gravar_box("collapseExample0", parser[0].find_all("a", class_=lambda c: c and ('card' in c or 'link' in c))[:12], "https://verywellmind.com", "VeryWell Mind")
+    processar_e_gravar("collapseExample", parser[0].find_all("a", class_=lambda c: c and ('card' in c or 'link' in c))[:12], "https://verywellmind.com", "VeryWell Mind")
 
 # 1. Psychology Today
 if parser[1] is not None:
     items = []
     for x in parser[1].find_all("div", class_="layout-content-main"): items.extend(x.find_all("a"))
-    gravar_box("collapseExample1", items, "https://psychologytoday.com", "Psychology Today")
+    processar_e_gravar("collapseExample1", items, "https://psychologytoday.com", "Psychology Today")
 
 # 2. Scientific American
 if parser[2] is not None:
     items = []
     for x in parser[2].find_all("div", class_="articleList-CcaLz root-fREBs"): items.extend(x.find_all("a"))
-    gravar_box("collapseExample2", items, "https://scientificamerican.com", "Scientific American")
+    processar_e_gravar("collapseExample2", items, "https://scientificamerican.com", "Scientific American")
 
 # 3. NIMH
 if parser[3] is not None:
     items = []
     for x in parser[3].find_all("article"): items.extend(x.find_all("a", class_="aggregated_term_news_link"))
-    gravar_box("collapseExample3", items, "https://nih.gov", "NIMH")
+    processar_e_gravar("collapseExample3", items, "https://nih.gov", "NIMH")
 
 # 4. APA PsyPort
 if parser[4] is not None:
     items = []
     for x in parser[4].find_all("article"): items.extend(x.find_all("a"))
-    gravar_box("collapseExample4", items, "", "APA PsyPort")
+    processar_e_gravar("collapseExample4", items, "", "APA PsyPort")
 
 # 5. APA Monitor
 if parser[5] is not None:
     items = []
     for x in parser[5].find_all("section", class_="linkWidget tile square"):
         for z in x.find_all("p", class_="title"): items.extend(z.find_all("a"))
-    gravar_box("collapseExample5", items, "https://apa.org", "APA Monitor")
+    processar_e_gravar("collapseExample5", items, "https://apa.org", "APA Monitor")
 
 # 6. Google Notícias
 if parser[6] is not None:
     items = []
     for x in parser[6].find_all("article"): items.extend(x.find_all("a", class_="VDXfz"))
-    gravar_box("collapseExample6", items, "https://google.com", "Google Notícias")
+    processar_e_gravar("collapseExample6", items, "https://google.com", "Google Notícias")
 
 # 7. SBP
 if parser[7] is not None:
     items = []
     for x in parser[7].find_all("div", class_="content list"):
         for z in x.find_all("p"): items.extend(z.find_all("a"))
-    gravar_box("collapseExample7", items, "https://sbponline.org.br", "SBP")
+    processar_e_gravar("collapseExample7", items, "https://sbponline.org.br", "SBP")
 
 # 8. Neuroscience
 if parser[8] is not None:
     items = []
     for x in parser[8].find_all("h3"): items.extend(x.find_all("a"))
-    gravar_box("collapseExample8", items, "", "Neuroscience")
+    processar_e_gravar("collapseExample8", items, "", "Neuroscience")
 
 # 9. Positive Psychology
 if parser[9] is not None:
-    gravar_box("collapseExample9", parser[9].find_all("a"), "", "Positive Psychology")
+    processar_e_gravar("collapseExample9", parser[9].find_all("a"), "", "Positive Psychology")
 
 # 10. Positive Psychcentral
 if parser[10] is not None:
     items = []
     for x in parser[10].find_all("div", class_="css-fdjy12"): items.extend(x.find_all("a"))
-    gravar_box("collapseExample10", items, "https://psychcentral.com", "Psychcentral")
+    processar_e_gravar("collapseExample10", items, "https://psychcentral.com", "Psychcentral")
 
 # 11. IQ's Corner
 if parser[11] is not None:
     items = []
     for x in parser[11].find_all("h3"): items.extend(x.find_all("a"))
-    gravar_box("collapseExample11", items, "", "IQ's Corner")
+    processar_e_gravar("collapseExample11", items, "", "IQ's Corner")
 
 # 12. Happier Human
 if parser[12] is not None:
     items = []
     for x in parser[12].find_all("h2"): items.extend(x.find_all("a"))
-    gravar_box("collapseExample12", items, "", "Happier Human")
+    processar_e_gravar("collapseExample12", items, "", "Happier Human")
 
 # 13. PsyNewsDaily
 if parser[13] is not None:
     items = []
     for x in parser[13].find_all("h2"): items.extend(x.find_all("a"))
-    gravar_box("collapseExample13", items, "", "PsyNewsDaily")
+    processar_e_gravar("collapseExample13", items, "", "PsyNewsDaily")
 
 # 14. Psychiatric Times
 if parser[14] is not None:
-    gravar_box("collapseExample14", parser[14].find_all("a"), "https://psychiatrictimes.com", "Psychiatric Times")
+    processar_e_gravar("collapseExample14", parser[14].find_all("a"), "https://psychiatrictimes.com", "Psychiatric Times")
 
 # 15. APS
 if parser[15] is not None:
     items = []
     for x in parser[15].find_all("h3"): items.extend(x.find_all("a"))
-    gravar_box("collapseExample15", items, "", "APS")
+    processar_e_gravar("collapseExample15", items, "", "APS")
 
 # 16. CFP
 if parser[16] is not None:
     items = []
     for x in parser[16].find_all("h3"): items.extend(x.find_all("a"))
-    gravar_box("collapseExample16", items, "", "CFP")
+    processar_e_gravar("collapseExample16", items, "", "CFP")
 
 # 17. Psicologia USP
 if parser[17] is not None:
-    gravar_box("collapseExample17", parser[17].find_all("a"), "https://scielo.br", "Psicologia USP")
+    processar_e_gravar("collapseExample17", parser[17].find_all("a"), "https://scielo.br", "Psicologia USP")
 
 # 18. Conselho Regional de Psicologia SP
 if parser[18] is not None:
-    gravar_box("collapseExample18", parser[18].find_all("a"), "", "CRP-SP")
+    processar_e_gravar("collapseExample18", parser[18].find_all("a"), "", "CRP-SP")
 
 # 19. El País Psicologia
 if parser[19] is not None:
     items = []
     for x in parser[19].find_all("h2"): items.extend(x.find_all("a"))
-    gravar_box("collapseExample19", items, "https://elpais.com", "El País")
+    processar_e_gravar("collapseExample19", items, "https://elpais.com", "El País")
 
 # 20. G1 Saúde Mental
 if parser[20] is not None:
     items = []
     for x in parser[20].find_all("div", class_="_evt"): items.extend(x.find_all("a"))
-    gravar_box("collapseExample20", items, "", "G1")
+    processar_e_gravar("collapseExample20", items, "", "G1")
 
 # 21. Medical Xpress
 if parser[21] is not None:
     items = []
     for x in parser[21].find_all("div"): items.extend(x.find_all("a"))
-    gravar_box("collapseExample21", items, "", "Medical Xpress")
+    processar_e_gravar("collapseExample21", items, "", "Medical Xpress")
 
 # 22. Psychreg
 if parser[22] is not None:
     items = []
     for x in parser[22].find_all("div", class_="col-md-4"): items.extend(x.find_all("a"))
-    gravar_box("collapseExample22", items, "", "Psychreg")
+    processar_e_gravar("collapseExample22", items, "", "Psychreg")
 
 # 23. Folha Equilíbrio Mente
 if parser[23] is not None:
-    gravar_box("collapseExample23", parser[23].find_all("a"), "", "Folha")
+    processar_e_gravar("collapseExample23", parser[23].find_all("a"), "", "Folha")
 
 # 24. PsychCrunch
 if parser[24] is not None:
     items = []
     for x in parser[24].find_all("div", class_="libsyn-item-title"): items.extend(x.find_all("a"))
-    gravar_box("collapseExample24", items, "", "PsychCrunch")
+    processar_e_gravar("collapseExample24", items, "", "PsychCrunch")
 
 # 25 a 28. A Mente é Maravilhosa
 base_amm = "https://amenteemaravilhosa.com.br"
 class_amm = "jsx-151512268 jsx-1424224867 default-a-link global-link jsx-3363598852"
-if parser[25] is not None: gravar_box("collapseExample25", parser[25].find_all("a", class_=class_amm), base_amm, "AMM Neuro")
-if parser[26] is not None: gravar_box("collapseExample26", parser[26].find_all("a", class_=class_amm), base_amm, "AMM Psico")
-if parser[27] is not None: gravar_box("collapseExample27", parser[27].find_all("a", class_=class_amm), base_amm, "AMM Rel")
-if parser[28] is not None: gravar_box("collapseExample28", parser[28].find_all("a", class_=class_amm), base_amm, "AMM Saúde")
+if parser[25] is not None: processar_e_gravar("collapseExample25", parser[25].find_all("a", class_=class_amm), base_amm, "AMM Neuro")
+if parser[26] is not None: processar_e_gravar("collapseExample26", parser[26].find_all("a", class_=class_amm), base_amm, "AMM Psico")
+if parser[27] is not None: processar_e_gravar("collapseExample27", parser[27].find_all("a", class_=class_amm), base_amm, "AMM Rel")
+if parser[28] is not None: processar_e_gravar("collapseExample28", parser[28].find_all("a", class_=class_amm), base_amm, "AMM Saúde")
 
 # 29. Big Think
 if parser[29] is not None:
     items = []
     for x in parser[29].find_all("h1", class_="card-headline"): items.extend(x.find_all("a"))
-    gravar_box("collapseExample29", items, "", "Big Think")
+    processar_e_gravar("collapseExample29", items, "", "Big Think")
 
-# --- 5. RENDERIZAÇÃO DA BOX DE PALAVRAS-CHAVE E RODAPÉ DO BOOTSTRAP ---
-file = open(namefile, "a", encoding="utf-8")
-file.write('<div class="collapse" id="collapseKeywords" data-parent="#myGroup" Style><div class="card card-body bg-light">')
-file.write(f'<p class="text-muted small">Termos monitorados ativos: {", ".join(keywords)}</p>')
+# --- FECHAMENTO DO ARQUIVO COM PALAVRAS-CHAVE ---
+with open(namefile, "a", encoding="utf-8") as file:
+    file.write('<div class="collapse" id="collapseKeywords" data-parent="#myGroup" Style><div class="card card-body bg-light">')
+    file.write(f'<p class="text-muted small">Termos monitorados ativos: {", ".join(keywords)}</p>')
 
-if not noticias_filtradas_urgentes:
-    file.write('<p class="text-muted">Nenhum artigo correspondente encontrado nas últimas varreduras.</p>')
-else:
-    for url, orig, trad, fonte in noticias_filtradas_urgentes:
-        file.write(f'<a href="{url}" target="_blank">📌 [{fonte}] {orig}</a></br>')
-        if trad and trad != orig:
-            file.write(f'<span class="sub-tra">↳ Tradução: {trad}</span>')
-file.write('</div></div>')
+    if not noticias_filtradas_urgentes:
+        file.write('<p class="text-muted">Nenhum artigo correspondente encontrado nas últimas varreduras.</p>')
+    else:
+        for url, orig, trad, fonte in noticias_filtradas_urgentes:
+            file.write(f'<a href="{url}" target="_blank">📌 [{fonte}] {orig}</a></br>')
+            if trad and trad != orig:
+                file.write(f'<span class="sub-tra">↳ Tradução: {trad}</span>')
+    file.write('</div></div>')
 
-file.write('''</div><div>
-<script src="https://jquery.com"></script>
-<script src="https://cloudflare.com"></script>
-<script src="https://bootstrapcdn.com"></script>
-</div></body></html>''')
-file.close()
+    # Seus scripts de fechamento originais literais do Bootstrap 4
+    file.write('''<div>
+    <script src="https://jquery.com"></script>
+    <script src="https://cloudflare.com"></script>
+    <script src="https://bootstrapcdn.com"></script>
+    </div></body></html>''')
 
-print("Sucesso! index.html compilado com o design estrito exato da foto.")
+print("Sucesso! index.html reconstruído estritamente sob o seu design original.")
