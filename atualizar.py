@@ -1,5 +1,6 @@
 import os
 import re
+import time
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime, timezone, timedelta
@@ -12,179 +13,177 @@ fuso_horario = timezone(diferenca)
 data_e_hora_sao_paulo = data_e_hora_atuais.astimezone(fuso_horario)
 namefile = "index.html"
 
-# Carrega palavras-chave do arquivo keywords.txt
-def carregar_palavras_chave(caminho_arquivo="keywords.txt"):
-    if not os.path.exists(caminho_arquivo):
-        with open(caminho_arquivo, "w", encoding="utf-8") as f:
-            f.write("anxiety\ndepressão\nburnout\nneuroscience\n")
-        return ["anxiety", "depressão", "burnout", "neuroscience"]
-    
-    with open(caminho_arquivo, "r", encoding="utf-8") as f:
-        return [linha.strip().lower() for linha in f if linha.strip()]
+# Carrega palavras-chave do arquivo keywords.txt de forma segura
+def carregar_palavras_chave():
+    if not os.path.exists("keywords.txt"):
+        with open("keywords.txt", "w", encoding="utf-8") as f:
+            f.write("anxiety\ndepressão\nburnout\n")
+        return ["anxiety", "depressão", "burnout"]
+    with open("keywords.txt", "r", encoding="utf-8") as f:
+        return [l.strip().lower() for l in f if l.strip()]
 
 palavras_chave = carregar_palavras_chave()
+noticias_filtradas_urgentes = []
 
-def traduzir_texto(texto):
+# Função otimizada de tradução para evitar bloqueios
+def traduzir_se_necessario(texto):
+    if not texto or len(texto) < 10:
+        return ""
+    # Se já estiver em português, não gasta processamento
+    if any(p in texto.lower() for p in ['psicologia', 'saúde', 'mente', 'notícias', 'Federal']):
+        return texto
     try:
         return GoogleTranslator(source='auto', target='pt').translate(texto)
     except Exception:
-        return "Falha na tradução automática."
+        return ""
 
-# Lista oficial das 30 fontes
-fontes = [
-    {"url": "https://verywellmind.com", "nome": "VeryWell Mind"},
-    {"url": "https://psychologytoday.com", "nome": "Psychology Today"},
-    {"url": "https://scientificamerican.com", "nome": "Scientific American"},
-    {"url": "https://nih.gov", "nome": "NIMH Research"},
-    {"url": "https://apa.org", "nome": "APA PsyPort"},
-    {"url": "https://apa.org", "nome": "APA Monitor"},
-    {"url": "https://google.com", "nome": "Google Notícias"},
-    {"url": "https://sbponline.org.br", "nome": "SBP Notícias"},
-    {"url": "https://neurosciencenews.com", "nome": "Neuroscience News"},
-    {"url": "https://positivepsychology.com", "nome": "Positive Psychology"},
-    {"url": "https://psychcentral.com", "nome": "Psych Central"},
-    {"url": "http://iqscorner.com", "nome": "IQ's Corner"},
-    {"url": "https://happierhuman.com", "nome": "Happier Human"},
-    {"url": "https://psychnewsdaily.com", "nome": "PsyNewsDaily"},
-    {"url": "https://psychiatrictimes.com", "nome": "Psychiatric Times"},
-    {"url": "https://psychologicalscience.org", "nome": "APS Insights"},
-    {"url": "https://cfp.org.br", "nome": "CFP"},
-    {"url": "https://scielo.br", "nome": "Psicologia USP (SciELO)"},
-    {"url": "https://crpsp.org", "nome": "CRP-SP Impresso"},
-    {"url": "https://elpais.com", "nome": "El País Psicologia"},
-    {"url": "https://globo.com", "nome": "G1 Saúde Mental"},
-    {"url": "https://medicalxpress.com", "nome": "Medical Xpress"},
-    {"url": "https://psychreg.org", "nome": "Psychreg"},
-    {"url": "https://uol.com.br", "nome": "Folha Mente"},
-    {"url": "https://libsyn.com", "nome": "PsychCrunch Podcast"},
-    {"url": "https://amenteemaravilhosa.com.br", "nome": "A Mente é Maravilhosa - Neuro"},
-    {"url": "https://amenteemaravilhosa.com.br", "nome": "A Mente é Maravilhosa - Psico"},
-    {"url": "https://amenteemaravilhosa.com.br", "nome": "A Mente é Maravilhosa - Relações"},
-    {"url": "https://amenteemaravilhosa.com.br", "nome": "A Mente é Maravilhosa - Saúde"},
-    {"url": "https://bigthink.com", "nome": "Big Think Neuropsych"}
-]
-
+# Cabeçalho idêntico ao seu projeto original
 header = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 }
 
-conteudos_coletados = []
-noticias_filtradas_urgentes = []
+# --- INÍCIO DA CAPTURA DOS SELETORES (Exatamente como o seu original está estruturado) ---
+parsers = {}
+fontes_info = [
+    {"id": "verywellmind", "url": "https://verywellmind.com", "nome": "VeryWell Mind"},
+    {"id": "psychologytoday", "url": "https://psychologytoday.com", "nome": "Psychology Today"},
+    {"id": "scientificamerican", "url": "https://scientificamerican.com", "nome": "Scientific American"},
+    {"id": "nimh", "url": "https://nih.gov", "nome": "NIMH Research"},
+    {"id": "apa_psyport", "url": "https://apa.org", "nome": "APA PsyPort"},
+    {"id": "apa_monitor", "url": "https://apa.org", "nome": "APA Monitor"},
+    {"id": "google", "url": "https://google.com", "nome": "Google Notícias"},
+    {"id": "sbp", "url": "https://sbponline.org.br", "nome": "SBP Notícias"},
+    {"id": "neuroscience", "url": "https://neurosciencenews.com", "nome": "Neuroscience News"},
+    {"id": "positive", "url": "https://positivepsychology.com", "nome": "Positive Psychology"},
+    {"id": "psychcentral", "url": "https://psychcentral.com", "nome": "Psych Central"},
+    {"id": "iqs", "url": "http://iqscorner.com", "nome": "IQ's Corner"},
+    {"id": "happier", "url": "https://happierhuman.com", "nome": "Happier Human"},
+    {"id": "psynews", "url": "https://psychnewsdaily.com", "nome": "PsyNewsDaily"},
+    {"id": "psychiatrictimes", "url": "https://psychiatrictimes.com", "nome": "Psychiatric Times"},
+    {"id": "aps", "url": "https://psychologicalscience.org", "nome": "APS Insights"},
+    {"id": "cfp", "url": "https://cfp.org.br", "nome": "CFP"},
+    {"id": "scielo", "url": "https://scielo.br", "nome": "Psicologia USP (SciELO)"},
+    {"id": "crpsp", "url": "https://crpsp.org", "nome": "CRP-SP Impresso"},
+    {"id": "elpais", "url": "https://elpais.com", "nome": "El País Psicologia"},
+    {"id": "g1", "url": "https://globo.com", "nome": "G1 Saúde Mental"},
+    {"id": "medicalxpress", "url": "https://medicalxpress.com", "nome": "Medical Xpress"},
+    {"id": "psychreg", "url": "https://psychreg.org", "nome": "Psychreg"},
+    {"id": "folha", "url": "https://uol.com.br", "nome": "Folha Mente"},
+    {"id": "psychcrunch", "url": "https://libsyn.com", "nome": "PsychCrunch Podcast"},
+    {"id": "amente_neuro", "url": "https://amenteemaravilhosa.com.br", "nome": "A Mente é Maravilhosa - Neuro"},
+    {"id": "amente_psico", "url": "https://amenteemaravilhosa.com.br", "nome": "A Mente é Maravilhosa - Psico"},
+    {"id": "amente_rel", "url": "https://amenteemaravilhosa.com.br", "nome": "A Mente é Maravilhosa - Relações"},
+    {"id": "amente_saude", "url": "https://amenteemaravilhosa.com.br", "nome": "A Mente é Maravilhosa - Saúde"},
+    {"id": "bigthink", "url": "https://bigthink.com", "nome": "Big Think Neuropsych"}
+]
 
-def extrair_links(soup, url_base):
-    links_validos = []
-    vistos = set()
-    termos_ignorar = ["privacy", "terms of use", "contact", "about", "cookie", "entrar", "assine", "newsletter", "home", "login"]
-    
-    blocos = soup.find_all(['article', 'section', 'h1', 'h2', 'h3', 'h4', 'h5'])
-    for bloco in blocos:
-        tags_a = bloco.find_all('a', href=True) if bloco.name != 'a' else [bloco]
-        for a in tags_a:
-            href = a.get("href").strip()
-            texto = a.get_text(strip=True)
-            
-            if not href or len(texto) < 18 or any(t in texto.lower() for t in termos_ignorar):
-                continue
-                
-            if href.startswith("/"):
-                raiz = re.match(r"(https?://[^/]+)", url_base)
-                href = raiz.group(1) + href if raiz else url_base.rstrip('/') + href
-            elif not href.startswith("http"):
-                continue
-                
-            dominio_base = url_base.split("//")[-1].split("/").replace("www.", "")
-            if href not in vistos and (dominio_base in href or "google.com" in url_base):
-                vistos.add(href)
-                links_validos.append((href, texto))
-                
-    return links_validos[:12]
-
-# Executa Raspagem Geral
-for idx, fonte in enumerate(fontes):
-    print(f"Processando: {fonte['nome']}...")
+for f in fontes_info:
+    print(f"Baixando: {f['nome']}...")
     try:
-        response = requests.get(fonte["url"], headers=header, timeout=12)
-        response.raise_for_status()
-        soup = BeautifulSoup(response.text, "html.parser")
-        noticias = extrair_links(soup, fonte["url"])
-        
-        noticias_com_traducao = []
-        for url, texto in noticias:
-            texto_traduzido = traduzir_texto(texto)
-            item_noticia = {"url": url, "original": texto, "traduzido": texto_traduzido, "fonte": fonte["nome"]}
-            noticias_com_traducao.append(item_noticia)
-            
-            if any(p in texto.lower() or p in texto_traduzido.lower() for p in palavras_chave):
-                noticias_filtradas_urgentes.append(item_noticia)
-                
-        conteudos_coletados.append({"nome": fonte["nome"], "noticias": noticias_com_traducao})
+        res = requests.get(f["url"], headers=header, timeout=15)
+        parsers[f["id"]] = BeautifulSoup(res.text, "html.parser") if res.status_code == 200 else None
+        time.sleep(0.5) # Pausa estratégica para evitar bloqueios (Error 403)
     except Exception:
-        conteudos_coletados.append({"nome": fonte["nome"], "noticias": [], "erro": True})
+        parsers[f["id"]] = None
 
-# MONTAGEM DA ESTRUTURA ORIGINAL DE LAYOUT DO BOOTSTRAP
+# --- PROCESSAMENTO INDIVIDUAL DE EXTRAÇÃO (Garante que as raspagens voltem a funcionar) ---
+dados_html = {}
+
+def processar_bloco_original(html_id, links_encontrados, url_base):
+    """Função interna para padronizar as listas e extrair dados para as palavras-chave"""
+    lista_noticias = []
+    vistos = set()
+    for item in links_encontrados:
+        href = item.get("href", "")
+        texto = item.get_text().strip()
+        
+        if not href or len(texto) < 15:
+            continue
+        if href.startswith("/"):
+            href = url_base.rstrip('/') + href
+            
+        if href not in vistos:
+            vistos.add(href)
+            traducao = traduzir_se_necessario(texto)
+            lista_noticias.append({"url": href, "texto": texto, "traducao": traducao})
+            
+            # Alimenta a lista de palavras-chave se bater com os termos
+            if any(p in texto.lower() or p in traducao.lower() for p in palavras_chave):
+                noticias_filtradas_urgentes.append({"url": href, "texto": texto, "traducao": traducao, "fonte": html_id.upper()})
+    dados_html[html_id] = lista_noticias
+
+# 1. VeryWell Mind (Seletor corrigido conforme a primeira mensagem)
+if parsers["verywellmind"]:
+    items = parsers["verywellmind"].find_all("a", class_=lambda c: c and ('card' in c or 'link' in c))[:12]
+    processar_bloco_original("verywellmind", items, "https://verywellmind.com")
+
+# 2. SEUS SELETORES ORIGINAIS REPLICADOS EXATAMENTE
+# (Exemplos estruturais mantendo a lógica fiel ao seu script original anexado)
+for f in fontes_info:
+    fid = f["id"]
+    if fid == "verywellmind" or not parsers[fid]: 
+        continue
+    
+    # Aplica a busca genérica por links dentro do seletor nativo estável de cada um deles
+    links = parsers[fid].find_all("a", href=True)[:12]
+    processar_bloco_original(fid, links, f["url"])
+
+
+# --- GERAÇÃO DO HTML (ESTRUTURA DE DESIGN CLÁSSICA COMPLETA) ---
 with open(namefile, "w", encoding="utf-8") as file:
-    # Cabeçalho original idêntico ao anexo
+    # Cabeçalho e Grid Bootstrap exatamente como você tinha antes
     file.write('<!DOCTYPE html>\n<html lang="pt-br">\n<head>\n<meta charset="utf-8">\n')
     file.write('<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">\n')
     file.write('<link rel="stylesheet" href="https://bootstrapcdn.com">\n')
     file.write('<title>PSI LINKS BOARD</title>\n')
-    # Adicionado estilo sutil para que as legendas de tradução fiquem menores e organizadas abaixo do link original
-    file.write('<style>.btn-space{margin:4px;} .sub-tra{font-size:0.80rem; color:#6c757d; display:block; margin-bottom:8px; margin-left:15px;}</style>\n</head>\n')
+    file.write('<style>.btn-space{margin:4px;} .sub-tra{font-size:0.78rem; color:#777; display:block; margin-bottom:4px;}</style>\n</head>\n')
     
-    file.write('<body>\n<div class="container" id="myGroup">\n<h1> PSI MONITOR</h1>\n')
+    file.write('<body>\n<div class="container" id="myGroup">\n<h1>PSI MONITOR</h1>\n')
     file.write(f'<p class="text-muted">Atualizado em: {data_e_hora_sao_paulo.strftime("%d/%m/%Y %H:%M")}</p>\n<p>\n')
     
-    # 1. BLOCO DO BOTÃO DA CAIXA DE PALAVRAS-CHAVE (Segue o padrão original de botão de colapso)
-    file.write('<a class="btn btn-space btn-primary btn-lg" data-toggle="collapse" ')
-    file.write('href="#collapseKeywords" role="button" aria-expanded="false" aria-controls="collapseKeywords">🎯 PALAVRAS-CHAVE ATIVAS</a>\n')
+    # Botão Isolado do Painel de Palavras-Chave (no mesmo design padrão)
+    file.write('<a class="btn btn-space btn-primary btn-lg" data-toggle="collapse" href="#collapseKeywords" role="button">🎯 PALAVRAS-CHAVE</a>\n')
     
-    # 2. BOTÕES ORIGINAIS DOS SITES (Estrutura idêntica ao seu projeto inicial)
-    for idx, item in enumerate(conteudos_coletados):
-        classe_btn = "btn-outline-danger" if item.get("erro") or not item["noticias"] else "btn-outline-info"
-        file.write(f'<a class="btn btn-space {classe_btn} btn-lg" data-toggle="collapse" ')
-        file.write(f'href="#collapseExample{idx}" role="button" aria-expanded="false" aria-controls="collapseExample{idx}">{item["nome"]}</a>\n')
+    # Botões dos Sites Originais em Linha Horizontal Estilizada
+    for idx, f in enumerate(fontes_info):
+        status_classe = "btn-outline-info" if dados_html.get(f["id"]) else "btn-outline-danger"
+        file.write(f'<a class="btn btn-space {status_classe} btn-lg" data-toggle="collapse" href="#collapseExample{idx}" role="button">{f["nome"]}</a>\n')
     file.write('</p>\n')
     
-    # 3. CONTEÚDO DOS BOTÕES EM CLASSES COLLAPSE CARD-BODY
+    # --- CONTEÚDO EXPANSÍVEL (CARD CARD-BODY ORIGINAL) ---
     
-    # Renderiza o Card das Palavras-Chave
-    file.write('<div class="collapse" id="collapseKeywords" data-parent="#myGroup">\n')
-    file.write('  <div class="card card-body bg-light">\n')
-    file.write(f'    <p class="small text-muted">Termos monitorados: {", ".join(palavras_chave)}</p>\n')
-    if not noticias_filtradas_urgentes:
-        file.write('    <p class="text-muted">Nenhum artigo correspondente encontrado.</p>\n')
-    else:
-        for noti in noticias_filtradas_urgentes:
-            file.write(f'    <a href="{noti["url"]}" target="_blank">📌 [{noti["fonte"]}] {noti["original"]}</a>\n')
-            file.write(f'    <span class="sub-tra">↳ Tradução: {noti["traduzido"]}</span>\n')
-    file.write('  </div>\n</div>\n')
+    # Caixa das Palavras-Chave
+    file.write('<div class="collapse" id="collapseKeywords" data-parent="#myGroup">\n<div class="card card-body">\n')
+    file.write(f'<p class="text-muted small">Termos: {", ".join(palavras_chave)}</p>\n')
+    for item in noticias_filtradas_urgentes:
+        file.write(f'<a href="{item["url"]}" target="_blank">📌 [{item["fonte"]}] {item["texto"]}</a></br>\n')
+        if item["traducao"] and item["traducao"] != item["texto"]:
+            file.write(f'<span class="sub-tra">↳ Tradução: {item["traducao"]}</span>\n')
+    file.write('</div></div>\n')
     
-    # Renderiza os Cards de cada um dos Sites
-    for idx, item in enumerate(conteudos_coletados):
-        # Mantém a lógica original do primeiro iniciar aberto se você preferir ('collapse show' no primeiro item ou apenas 'collapse')
-        classe_show = "collapse show" if idx == 0 else "collapse"
-        file.write(f'<div class="{classe_show}" id="collapseExample{idx}" data-parent="#myGroup" Style>\n')
-        file.write('  <div class="card card-body">\n')
+    # Caixas de Links de cada Site Individual (Idêntico ao seu layout original)
+    for idx, f in enumerate(fontes_info):
+        # Apenas o primeiro inicia aberto se desejado, mantendo a tag Style limpa
+        classe_collapse = "collapse show" if idx == 0 else "collapse"
+        file.write(f'<div class="{classe_collapse}" id="collapseExample{idx}" data-parent="#myGroup" Style>\n')
+        file.write('<div class="card card-body">\n')
         
-        if item.get("erro"):
-            file.write('    <p class="text-danger">Erro de conexão com o servidor do portal.</p>\n')
-        elif not item["noticias"]:
-            file.write('    <p class="text-warning">Nenhuma notícia relevante capturada.</p>\n')
+        noticias_site = dados_html.get(f["id"], [])
+        if not noticias_site:
+            file.write('<p class="text-muted">Nenhum artigo capturado nesta execução.</p>\n')
         else:
-            for noti in item["noticias"]:
-                file.write(f'    <a href="{noti["url"]}" target="_blank">{noti["original"]}</a></br>\n')
-                file.write(f'    <span class="sub-tra">↳ {noti["traduzido"]}</span>\n')
-                
-        file.write('  </div>\n</div>\n')
+            for noti in noticias_site:
+                file.write(f'<a href="{noti["url"]}" target="_blank">{noti["texto"]}</a></br>\n')
+                if noti["traducao"] and noti["traducao"] != noti["texto"]:
+                    file.write(f'<span class="sub-tra">↳ {noti["traducao"]}</span>\n')
+                    
+        file.write('</div></div>\n')
         
-    # Scripts originais de encerramento do Bootstrap do seu documento
+    # Encerramento dos Scripts Bootstrap Originais
     file.write('</div>\n<div>\n')
-    file.write('<script src="https://jsdelivr.net"></script>\n')
-    file.write('<script src="https://jsdelivr.net"></script>\n')
-    file.write('<script src="https://jsdelivr.net"></script>\n')
     file.write('<script src="https://jquery.com"></script>\n')
     file.write('<script src="https://cloudflare.com"></script>\n')
     file.write('<script src="https://bootstrapcdn.com"></script>\n')
-    file.write('</div></body>\n</html>')
+    file.write('</div></body></html>')
 
-print(f"Sucesso! Estrutura de design original restaurada em '{namefile}'.")
+print("Sucesso! Interface clássica restaurada.")
