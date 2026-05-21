@@ -5,8 +5,9 @@ from bs4 import BeautifulSoup
 import requests
 from datetime import datetime, timezone, timedelta
 from deep_translator import GoogleTranslator
+from urllib.parse import urljoin, urlparse
 
-# 2) Configuração do Horário e Data da última captura (Horário de Brasília)
+# 2) Horário e Data da última captura (Horário de Brasília)
 diferenca = timedelta(hours=-3)
 fuso_horario = timezone(diferenca)
 data_e_hora_sao_paulo = datetime.now(fuso_horario)
@@ -15,7 +16,7 @@ data_e_hora_em_texto = data_e_hora_sao_paulo.strftime("%d/%m/%Y às %H:%M")
 # Nome padrão do arquivo de saída
 namefile = "index.html"
 
-# 3) Carregamento da lista de exclusão a partir do arquivo independente externo
+# 3) Carregamento da lista de exclusão independente
 urls_bloqueadas = []
 if os.path.exists("blacklist.txt"):
     with open("blacklist.txt", "r", encoding="utf-8") as f:
@@ -56,7 +57,7 @@ links = [
 ]
 
 header = {
-    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.75 Safari/537.36",
+    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     "X-Requested-With": "XMLHttpRequest"
 }
 
@@ -66,7 +67,7 @@ tradutor = GoogleTranslator(source='auto', target='pt')
 def traduzir_texto(texto):
     if not texto or len(texto.strip()) < 3:
         return ""
-    if texto.strip().startswith("http") or any(p in texto.lower() for p in ["psicologia", "saúde", "mente", "notícias", "conselho", "noticias"]):
+    if texto.strip().startswith("http") or any(p in texto.lower() for p in ["psicologia", "saúde", "mente", "notícias", "conselho", "noticias", "crp"]):
         return texto
     try:
         return tradutor.translate(texto)
@@ -74,185 +75,44 @@ def traduzir_texto(texto):
         return texto
 
 def url_permitida(url):
-    """Verifica se a URL contém algum dos termos bloqueados do arquivo independente"""
     if not url:
         return False
     return not any(termo in url.lower() for termo in urls_bloqueadas)
 
-# Inicialização das listas de conteúdo raspado
-responder = [None] * len(links)
-parser = [None] * len(links)
+# Inicialização das listas de dados
 links_raspados_por_fonte = {i: [] for i in range(len(links))}
 
 for x in range(len(links)):
     try:
-        response = requests.get(links[x], headers=header, timeout=15)
+        url_raiz = links[x]
+        response = requests.get(url_raiz, headers=header, timeout=20)
         response.raise_for_status()
-        responder[x] = response
-        parser[x] = BeautifulSoup(response.text, "html.parser")
+        p_obj = BeautifulSoup(response.text, "html.parser")
         
-        p_obj = parser[x]
-        if not p_obj:
-            continue
+        vistos = set() # Evita duplicados na mesma fonte
+        
+        # 1) ALGORITMO DE RASPAGEM AMPLIADA (SITE RAIZ COMPLETO)
+        # Varre todas as tags de link ('a') presentes em toda a página inicial
+        for z in p_obj.find_all("a", href=True):
+            href = z.get("href")
+            url_completa = urljoin(url_raiz, href) # Resolve links relativos automaticamente
             
-        if x == 0:
-            for s in p_obj.find_all("section"):
-                for z in s.find_all("a", href=True):
-                    url = z.get("href")
-                    if url_permitida(url):
-                        txt = z.text.strip()
-                        links_raspados_por_fonte[x].append((url, txt, traduzir_texto(txt)))
-        elif x == 1:
-            for div in p_obj.find_all("div", class_="layout-content-main"):
-                for z in div.find_all("a", href=True):
-                    url_completa = z.get("href")
-                    if url_completa.startswith("/"):
-                        url_completa = "https://psychologytoday.com" + url_completa
-                    if url_permitida(url_completa):
-                        txt = z.text.strip()
-                        links_raspados_por_fonte[x].append((url_completa, txt, traduzir_texto(txt)))
-        elif x == 2:
-            for div in p_obj.find_all("div", class_=re.compile("articleList")):
-                for z in div.find_all("a", href=True):
-                    url = "https://scientificamerican.com" + z.get("href")
-                    if url_permitida(url):
-                        txt = z.text.strip()
-                        links_raspados_por_fonte[x].append((url, txt, traduzir_texto(txt)))
-        elif x == 3:
-            for art in p_obj.find_all("article"):
-                for z in art.find_all("a", class_="aggregated_term_news_link", href=True):
-                    url = "https://nih.gov" + z.get("href")
-                    if url_permitida(url):
-                        txt = z.text.strip()
-                        links_raspados_por_fonte[x].append((url, txt, traduzir_texto(txt)))
-        elif x == 4:
-            for art in p_obj.find_all("article"):
-                for z in art.find_all("a", href=True):
-                    url = z.get("href")
-                    if url_permitida(url):
-                        txt = z.text.strip()
-                        links_raspados_por_fonte[x].append((url, txt, traduzir_texto(txt)))
-        elif x == 5:
-            for s in p_obj.find_all("section", class_="linkWidget tile square"):
-                for p_tag in s.find_all("p", class_="title"):
-                    for n in p_tag.find_all("a", href=True):
-                        url = "https://apa.org" + str(n.get("href"))
-                        if url_permitida(url):
-                            txt = p_tag.text.strip()
-                            links_raspados_por_fonte[x].append((url, txt, traduzir_texto(txt)))
-        elif x == 6:
-            for art in p_obj.find_all("article"):
-                for z in art.find_all("a", class_="VDXfz", href=True):
-                    url = "https://google.com" + str(z.get("href"))
-                    if url_permitida(url):
-                        txt = art.text.strip()
-                        links_raspados_por_fonte[x].append((url, txt, traduzir_texto(txt)))
-        elif x == 7:
-            for div in p_obj.find_all("div", class_="content list"):
-                for p_tag in div.find_all("p"):
-                    for n in p_tag.find_all("a", href=True):
-                        url = "https://sbponline.org.br" + str(n.get("href"))
-                        if url_permitida(url):
-                            txt = n.text.strip()
-                            links_raspados_por_fonte[x].append((url, txt, txt))
-        elif x == 8:
-            for h3 in p_obj.find_all("h3"):
-                for z in h3.find_all("a", href=True):
-                    url = str(z.get("href"))
-                    if url_permitida(url):
-                        txt = h3.text.strip()
-                        links_raspados_por_fonte[x].append((url, txt, traduzir_texto(txt)))
-        elif x == 9:
-            for a_tag in p_obj.find_all("a", href=True):
-                for h3 in a_tag.find_all("h3"):
-                    url = str(a_tag.get("href"))
-                    if url_permitida(url):
-                        txt = h3.text.strip()
-                        links_raspados_por_fonte[x].append((url, txt, traduzir_texto(txt)))
-        elif x == 10:
-            for div in p_obj.find_all("div", class_="css-fdjy12"):
-                for z in div.find_all("a", href=True):
-                    url = "https://psychcentral.com" + str(z.get("href"))
-                    if url_permitida(url):
-                        txt = z.text.strip()
-                        links_raspados_por_fonte[x].append((url, txt, traduzir_texto(txt)))
-        elif x in [11, 12, 13, 15, 16, 18]:  # Correção definitiva dos índices agrupados
-            for tag_header in p_obj.find_all(["h2", "h3"]):
-                for z in tag_header.find_all("a", href=True):
-                    url = str(z.get("href"))
-                    if url_permitida(url):
-                        txt = z.text.strip()
-                        links_raspados_por_fonte[x].append((url, txt, traduzir_texto(txt)))
-        elif x == 14:
-            for a_tag in p_obj.find_all("a", href=True):
-                for h2 in a_tag.find_all("h2"):
-                    url = "https://psychiatrictimes.com" + str(a_tag.get("href"))
-                    if url_permitida(url):
-                        txt = h2.text.strip()
-                        links_raspados_por_fonte[x].append((url, txt, traduzir_texto(txt)))
-        elif x == 17:
-            for a_tag in p_obj.find_all("a", href=True):
-                for h3 in a_tag.find_all("h3"):
-                    url = "https://scielo.br" + str(a_tag.get("href"))
-                    if url_permitida(url):
-                        txt = h3.text.strip()
-                        links_raspados_por_fonte[x].append((url, txt, txt))
-        elif x == 19:
-            for h2 in p_obj.find_all("h2"):
-                for z in h2.find_all("a", href=True):
-                    url = "https://elpais.com" + str(z.get("href"))
-                    if url_permitida(url):
-                        txt = z.text.strip()
-                        links_raspados_por_fonte[x].append((url, txt, txt))
-        elif x == 20:
-            for div in p_obj.find_all("div", class_="_evt"):
-                for z in div.find_all("a", href=True):
-                    url = str(z.get("href"))
-                    if url_permitida(url):
-                        txt = z.text.strip()
-                        links_raspados_por_fonte[x].append((url, txt, txt))
-        elif x == 21:
-            for div in p_obj.find_all("div"):
-                for z in div.find_all("a", href=True):
-                    url = str(z.get("href"))
-                    if url_permitida(url):
-                        txt = z.text.strip()
-                        links_raspados_por_fonte[x].append((url, txt, traduzir_texto(txt)))
-        elif x == 22:
-            for div in p_obj.find_all("div", class_="col-md-4"):
-                for z in div.find_all("a", href=True):
-                    url = str(z.get("href"))
-                    if url_permitida(url):
-                        txt = z.text.strip()
-                        links_raspados_por_fonte[x].append((url, txt, traduzir_texto(txt)))
-        elif x == 23:
-            for a_tag in p_obj.find_all("a", href=True):
-                for h2 in a_tag.find_all("h2"):
-                    url = str(a_tag.get("href"))
-                    if url_permitida(url):
-                        txt = h2.text.strip()
-                        links_raspados_por_fonte[x].append((url, txt, txt))
-        elif x == 24:
-            for div in p_obj.find_all("div", class_="libsyn-item-title"):
-                for z in div.find_all("a", href=True):
-                    url = str(z.get("href"))
-                    if url_permitida(url):
-                        txt = z.text.strip()
-                        links_raspados_por_fonte[x].append((url, txt, traduzir_texto(txt)))
-        elif x in [25, 26, 27, 28]:  # Correção definitiva dos índices agrupados
-            for a_tag in p_obj.find_all("a", class_=re.compile("default-a-link"), href=True):
-                url = "https://amenteemaravilhosa.com.br" + str(a_tag.get("href"))
-                if url_permitida(url):
-                    txt = a_tag.text.strip()
-                    links_raspados_por_fonte[x].append((url, txt, txt))
-        elif x == 29:
-            for h1 in p_obj.find_all("h1", class_="card-headline"):
-                for z in h1.find_all("a", href=True):
-                    url = str(z.get("href"))
-                    if url_permitida(url):
-                        txt = z.text.strip()
-                        links_raspados_por_fonte[x].append((url, txt, traduzir_texto(txt)))
-
+            if not url_permitida(url_completa) or url_completa in vistos:
+                continue
+                
+            # Captura o texto visível ou o título interno do link
+            txt = z.text.strip()
+            if not txt and z.get("title"):
+                txt = z.get("title").strip()
+                
+            # Limpeza de ruídos comuns da página inicial (menus, botões vazios, termos repetidos)
+            if len(txt) < 15 or any(menu in txt.lower() for menu in ["home", "about us", "contact", "privacy policy", "terms of use", "subscribe", "login", "sign in", "facebook", "twitter", "instagram", "linkedin", "cookies"]):
+                continue
+                
+            # Armazena e traduz o artigo válido encontrado
+            vistos.add(url_completa)
+            links_raspados_por_fonte[x].append((url_completa, txt, traduzir_texto(txt)))
+            
     except Exception as e:
         print(f"Erro ao raspar {links[x]}: {e}")
 
@@ -262,7 +122,7 @@ with open(namefile, "w", encoding="utf-8") as file:
     file.write('<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n')
     file.write('<title>PSI LINKS BOARD</title>\n')
     
-    # === DESIGN RIGOROSAMENTE PRESERVADO ===
+    # === DESIGN MANTIDO RIGOROSAMENTE INALTERADO ===
     file.write('<style>\n')
     file.write('  body { font-family: system-ui, -apple-system, sans-serif; margin: 0; padding: 24px; color: #333; background-color: #ffffff; }\n')
     file.write('  h1 { font-size: 28px; font-weight: bold; margin-bottom: 2px; color: #111; }\n')
@@ -279,7 +139,6 @@ with open(namefile, "w", encoding="utf-8") as file:
     file.write('  .vazio { color: #777777; font-style: italic; }\n')
     file.write('</style>\n</head>\n<body>\n')
 
-    # Título Principal e Inclusão da Data e Hora de forma sutil
     file.write('<h1>PSI MONITOR</h1>\n')
     file.write(f'<div class="data-captura">Última atualização: {data_e_hora_em_texto}</div>\n')
     
@@ -298,7 +157,7 @@ with open(namefile, "w", encoding="utf-8") as file:
         file.write(f'  <button class="btn-fonte{classe_ativa}" onclick="mostrarConteudo({idx}, this)">{nome}</button>\n')
     file.write('</div>\n\n')
 
-    # Inicialização da caixa com os dados iniciais
+    # Inicialização da caixa dinâmica com os dados da primeira fonte (VeryWell Mind)
     file.write('<div class="caixa-dinamica" id="conteudoResultados">\n')
     if 0 in links_raspados_por_fonte and len(links_raspados_por_fonte[0]) > 0:
         for url_lnk, txt_lnk, trad_lnk in links_raspados_por_fonte[0]:
