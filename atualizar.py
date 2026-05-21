@@ -169,10 +169,10 @@ with open(namefile, "w", encoding="utf-8") as file:
         file.write(f'  <button class="btn-fonte{classe_ativa}" onclick="mostrarConteudo({idx}, this)">{nome}</button>\n')
     file.write('</div>\n\n')
 
-    # Caixa dinâmica inicial carregando o primeiro item
+    # CORREÇÃO CRUCIAL DA LINHA 175: Lendo explicitamente o índice 0 do dicionário
     file.write('<div class="caixa-dinamica" id="conteudoResultados">\n')
-    if 0 in links_raspados_por_fonte and len(links_raspados_por_fonte) > 0:
-        for url_lnk, txt_lnk, trad_lnk in links_raspados_por_fonte:
+    if 0 in links_raspados_por_fonte and len(links_raspados_por_fonte[0]) > 0:
+        for url_lnk, txt_lnk, trad_lnk in links_raspados_por_fonte[0]:
             file.write('  <div class="item-artigo">\n')
             file.write(f'    <a href="{url_lnk}" target="_blank">{txt_lnk if txt_lnk else url_lnk}</a>\n')
             if trad_lnk and trad_lnk != txt_lnk:
@@ -199,7 +199,7 @@ with open(namefile, "w", encoding="utf-8") as file:
     file.write('    document.querySelectorAll(".btn-fonte").forEach(btn => btn.classList.remove("ativo"));\n')
     file.write('    elementoAlvo.classList.add("ativo");\n\n')
     file.write('    const container = document.getElementById("conteudoResultados");\n')
-    file.write('    container.innerHTML = "";\n\n')  # Correção da linha 204 corrigida perfeitamente
+    file.write('    container.innerHTML = "";\n\n')
     file.write('    const artigos = bancoDeDados[id];\n')
     file.write('    if (artigos && artigos.length > 0) {\n')
     file.write('      artigos.forEach(art => {\n')
