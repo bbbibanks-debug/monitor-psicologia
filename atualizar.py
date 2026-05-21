@@ -13,7 +13,6 @@ fuso_horario = timezone(diferenca)
 data_e_hora_sao_paulo = datetime.now(fuso_horario)
 data_e_hora_em_texto = data_e_hora_sao_paulo.strftime("%d/%m/%Y às %H:%M")
 
-# Nome padrão do arquivo de saída
 namefile = "index.html"
 
 # 3) Carregamento da lista de exclusão independente externa
@@ -22,7 +21,7 @@ if os.path.exists("blacklist.txt"):
     with open("blacklist.txt", "r", encoding="utf-8") as f:
         urls_bloqueadas = [linha.strip().lower() for linha in f if linha.strip()]
 
-# Mapping - APENAS OS 10 SETORES SOLICITADOS
+# Mapping - OS 10 SETORES ANTERIORES + O NOVO GOOGLE NEWS COMO 11º ITEM
 links = [
     "https://verywellmind.com",
     "https://psychologytoday.com",
@@ -33,7 +32,8 @@ links = [
     "https://neurosciencenews.com",
     "https://positivepsychology.com",
     "https://medicalxpress.com",
-    "https://amenteemaravilhosa.com.br"
+    "https://amenteemaravilhosa.com.br",
+    "https://news.google.com/topics/CAAqJQgKIh9DQkFTRVFvSUwyMHZNRFZ4Wm1nU0JYQjBMVUpTS0FBUAE?hl=pt-BR&gl=BR&ceid=BR%3Apt-419"
 ]
 
 header = {
@@ -47,7 +47,7 @@ tradutor = GoogleTranslator(source='auto', target='pt')
 def traduzir_texto(texto):
     if not texto or len(texto.strip()) < 3:
         return ""
-    if texto.strip().startswith("http") or any(p in texto.lower() for p in ["psicologia", "saúde", "mente", "notícias", "noticias", "sbp"]):
+    if texto.strip().startswith("http") or any(p in texto.lower() for p in ["psicologia", "saúde", "mente", "notícias", "noticias", "sbp", "crp"]):
         return texto
     try:
         return tradutor.translate(texto)
@@ -59,7 +59,7 @@ def url_permitida(url):
         return False
     return not any(termo in url.lower() for termo in urls_bloqueadas)
 
-# Inicialização das listas de dados para as 10 fontes
+# Inicialização das listas de dados para as 11 fontes
 links_raspados_por_fonte = {i: [] for i in range(len(links))}
 
 for x in range(len(links)):
@@ -71,7 +71,7 @@ for x in range(len(links)):
         
         vistos = set()
         
-        # === RASPAGEM REFINADA: SCIENTIFIC AMERICAN (ÍNDICE 2) ===
+        # === RASPAGEM DA SCIENTIFIC AMERICAN REFINADA (ÍNDICE 2) ===
         if x == 2:
             for h_tag in p_obj.find_all(["h2", "h3"]):
                 z = h_tag.find("a", href=True) if h_tag.name != "a" else h_tag
@@ -84,8 +84,25 @@ for x in range(len(links)):
                         if len(txt) > 15:
                             vistos.add(url_completa)
                             links_raspados_por_fonte[x].append((url_completa, txt, traduzir_texto(txt)))
+
+        # === RASPAGEM DO NOVO FEED DO GOOGLE NEWS REFINADO (ÍNDICE 10) ===
+        elif x == 10:
+            for art in p_obj.find_all("article"):
+                z = art.find("a", href=True)
+                if z and z.get("href"):
+                    url_completa = urljoin("https://news.google.com", z.get("href"))
+                    if url_permitida(url_completa) and url_completa not in vistos:
+                        txt = ""
+                        for elem in art.find_all(["h3", "h4", "a"]):
+                            if elem.text.strip():
+                                txt = elem.text.strip()
+                                break
+                        if len(txt) > 12:
+                            vistos.add(url_completa)
+                            # O feed já entrega resultados nativos em português
+                            links_raspados_por_fonte[x].append((url_completa, txt, txt))
                             
-        # === RASPAGEM AMPLIADA GERAL (PARA OS DEMAIS 9 SITES RAIZ) ===
+        # === RASPAGEM AMPLIADA GERAL (PARA OS DEMAIS PORTAIS) ===
         else:
             for z in p_obj.find_all("a", href=True):
                 url_completa = urljoin(url_raiz, z.get("href"))
@@ -98,7 +115,7 @@ for x in range(len(links)):
                     continue
                 vistos.add(url_completa)
                 
-                # Se o site já for nativo em PT (SBP ou A Mente é Maravilhosa), pula a tradução para economizar tempo
+                # Se for nativo em PT (SBP ou A Mente é Maravilhosa), evita processar tradução
                 if x == 5 or x == 9:
                     links_raspados_por_fonte[x].append((url_completa, txt, txt))
                 else:
@@ -133,7 +150,7 @@ with open(namefile, "w", encoding="utf-8") as file:
     file.write('<h1>PSI MONITOR</h1>\n')
     file.write(f'<div class="data-captura">Última atualização: {data_e_hora_em_texto}</div>\n')
     
-    # Nomes dos 10 botões selecionados
+    # Nomes dos 11 botões em grade com o "Google News" incluso no final
     file.write('<div class="grid-botoes">\n')
     nomes_fontes = [
         "VeryWell Mind", 
@@ -145,7 +162,8 @@ with open(namefile, "w", encoding="utf-8") as file:
         "Neuroscience", 
         "Positive Psychology", 
         "Medical Xpress", 
-        "A Mente é Maravilhosa-Neurociência"
+        "A Mente é Maravilhosa-Neurociência",
+        "Google News"
     ]
     
     for idx, nome in enumerate(nomes_fontes):
@@ -153,7 +171,7 @@ with open(namefile, "w", encoding="utf-8") as file:
         file.write(f'  <button class="btn-fonte{classe_ativa}" onclick="mostrarConteudo({idx}, this)">{nome}</button>\n')
     file.write('</div>\n\n')
 
-    # CORREÇÃO CRUCIAL DA LINHA 159: Lendo explicitamente o índice [0] do dicionário
+    # Caixa dinâmica inicial carregando o primeiro item
     file.write('<div class="caixa-dinamica" id="conteudoResultados">\n')
     if 0 in links_raspados_por_fonte and len(links_raspados_por_fonte[0]) > 0:
         for url_lnk, txt_lnk, trad_lnk in links_raspados_por_fonte[0]:
@@ -166,7 +184,7 @@ with open(namefile, "w", encoding="utf-8") as file:
         file.write('  <span class="vazio">Nenhum artigo encontrado para esta fonte no momento.</span>\n')
     file.write("</div>\n\n")
 
-    # Injeção estável do Banco de Dados JSON limitado a 10 itens
+    # Injeção estável do Banco de Dados JSON para alimentar o clique dos 11 itens
     file.write('<script>\n')
     file.write('  const bancoDeDados = {\n')
     for idx in range(len(links)):
@@ -183,7 +201,7 @@ with open(namefile, "w", encoding="utf-8") as file:
     file.write('    document.querySelectorAll(".btn-fonte").forEach(btn => btn.classList.remove("ativo"));\n')
     file.write('    elementoAlvo.classList.add("ativo");\n\n')
     file.write('    const container = document.getElementById("conteudoResultados");\n')
-    file.write('    container.innerHTML = "";\n\n')
+    container.innerHTML = "";\n\n')
     file.write('    const artigos = bancoDeDados[id];\n')
     file.write('    if (artigos && artigos.length > 0) {\n')
     file.write('      artigos.forEach(art => {\n')
