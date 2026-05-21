@@ -1,15 +1,12 @@
-import os
-import re
-import time
 import requests
 from bs4 import BeautifulSoup
+import os
+import functools
+import re
 from datetime import datetime, timezone, timedelta
 from deep_translator import GoogleTranslator
 
-# --- CONFIGURAÇÕES DE TEMPO E ARQUIVOS ---
-data_e_hora_sao_paulo = datetime.now(timezone(timedelta(hours=-3)))
-namefile = "index.html"
-
+# --- CONFIGURAÇÕES DO TRADUTOR E KEYWORDS ---
 def carregar_keywords():
     if not os.path.exists("keywords.txt"):
         with open("keywords.txt", "w", encoding="utf-8") as f:
@@ -20,182 +17,728 @@ def carregar_keywords():
 
 keywords = carregar_keywords()
 noticias_filtradas_urgentes = []
-dados_painel = []
 
-def traduzir(texto):
+def traduzir_texto(texto):
     if not texto or len(texto) < 12: return ""
     try: return GoogleTranslator(source='auto', target='pt').translate(texto)
     except: return ""
 
-# --- MAPEAMENTO DA ARQUITETURA DE RASPAGEM ORIGINAL ---
-fontes_config = [
-    {"nome": "VeryWell Mind", "base": "https://verywellmind.com", "find": ["a", {"class": lambda c: c and ('card' in c or 'link' in c)}], "sub_find": None},
-    {"nome": "Psychology Today", "base": "https://psychologytoday.com", "find": ["div", {"class": "layout-content-main"}], "sub_find": "a"},
-    {"nome": "Scientific American", "base": "https://scientificamerican.com", "find": ["div", {"class": "articleList-CcaLz root-fREBs"}], "sub_find": "a"},
-    {"nome": "The National Institute of Mental Health (NIMH)", "base": "https://nih.gov", "find": ["article"], "sub_find": "a", "sub_class": "aggregated_term_news_link"},
-    {"nome": "APA PsyPort", "base": "", "find": ["article"], "sub_find": "a"},
-    {"nome": "APA Monitor", "base": "https://apa.org", "find": ["section", {"class": "linkWidget tile square"}], "sub_find": "p", "sub_class": "title"},
-    {"nome": "Google Notícias", "base": "https://google.com", "find": ["article"], "sub_find": "a", "sub_class": "VDXfz"},
-    {"nome": "SBP", "base": "https://sbponline.org.br", "find": ["div", {"class": "content list"}], "sub_find": "a"},
-    {"nome": "Neuroscience", "base": "", "find": ["h3"], "sub_find": "a"},
-    {"nome": "Positive Psychology", "base": "", "find": ["a"], "sub_find": "h3", "invert": True},
-    {"nome": "Positive Psychcentral", "base": "https://psychcentral.com", "find": ["div", {"class": "css-fdjy12"}], "sub_find": "a"},
-    {"nome": "IQ`s Corner", "base": "", "find": ["h3"], "sub_find": "a"},
-    {"nome": "Happier Human", "base": "", "find": ["h2"], "sub_find": "a"},
-    {"nome": "PsyNewsDaily", "base": "", "find": ["h2"], "sub_find": "a"},
-    {"nome": "Psychiatric Times", "base": "https://psychiatrictimes.com", "find": ["a"], "sub_find": "h2", "invert": True},
-    {"nome": "APS", "base": "", "find": ["h3"], "sub_find": "a"},
-    {"nome": "CFP", "base": "", "find": ["h3"], "sub_find": "a"},
-    {"nome": "Psicologia USP", "base": "https://scielo.br", "find": ["a"], "sub_find": "h3", "invert": True},
-    {"nome": "Conselho Regional de Psicologia SP", "base": "", "find": ["a"], "sub_find": "h3", "invert": True},
-    {"nome": "El País Psicologia", "base": "https://elpais.com", "find": ["h2"], "sub_find": "a"},
-    {"nome": "G1 Saúde Mental", "base": "", "find": ["div", {"class": "_evt"}], "sub_find": "a"},
-    {"nome": "Medical Xpress", "base": "", "find": ["div"], "sub_find": "a"},
-    {"nome": "Psychreg", "base": "", "find": ["div", {"class": "col-md-4"}], "sub_find": "a"},
-    {"nome": "Folha Equilíbrio Mente", "base": "", "find": ["a"], "sub_find": "h2", "invert": True},
-    {"nome": "PsychCrunch", "base": "", "find": ["div", {"class": "libsyn-item-title"}], "sub_find": "a"},
-    {"nome": "A Mente é Maravilhosa-Neurociência", "base": "https://amenteemaravilhosa.com.br", "find": ["a", {"class": "global-link"}], "sub_find": None},
-    {"nome": "A Mente é Maravilhosa-Psicologia", "base": "https://amenteemaravilhosa.com.br", "find": ["a", {"class": "global-link"}], "sub_find": None},
-    {"nome": "A Mente é Maravilhosa-Relações", "base": "https://amenteemaravilhosa.com.br", "find": ["a", {"class": "global-link"}], "sub_find": None},
-    {"nome": "A Mente é Maravilhosa-Saúde", "base": "https://amenteemaravilhosa.com.br", "find": ["a", {"class": "global-link"}], "sub_find": None},
-    {"nome": "Big Think", "base": "", "find": ["h1", {"class": "card-headline"}], "sub_find": "a"}
-]
+# --- INÍCIO DO SEU SCRIPT ORIGINAL ---
+data_e_hora_atuais = datetime.now()
+data_e_hora_em_texto = data_e_hora_atuais.strftime("%d/%m/%Y %H:%M")
+diferenca = timedelta(hours=-3)
+fuso_horario = timezone(diferenca)
+data_e_hora_sao_paulo = data_e_hora_atuais.astimezone(fuso_horario)
+data_e_hora_sao_paulo_em_texto = data_e_hora_sao_paulo.strftime("%d%m%Yday%H%Mtime")
+namefile = "index.html"
 
-links_originais = [
-    "https://verywellmind.com/", "https://psychologytoday.com", 
-    "https://scientificamerican.com/mind-and-brain/", "https://nih.gov/news/research-highlights",
-    "https://apa.org/news/psycport", "https://apa.org/monitor", 
-    "https://google.com/search?q=psicologia&hl=pt-BR&gl=BR&ceid=BR%3Apt-419", "https://sbponline.org.br/noticias", 
-    "https://neurosciencenews.com", "https://positivepsychology.com", "https://psychcentral.com",
-    "http://iqscorner.com", "https://happierhuman.com", "https://psychnewsdaily.com", 
-    "https://psychiatrictimes.com/", "https://psychologicalscience.org", "https://cfp.org.br", 
-    "https://scielo.br/j/pusp/", "https://crpsp.org", "https://elpais.com/noticias/psicologia/", 
-    "https://globo.com", "https://medicalxpress.com", "https://psychreg.org", 
-    "https://uol.com.br", "https://libsyn.com", "https://amenteemaravilhosa.com.br", 
-    "https://amenteemaravilhosa.com.br", "https://amenteemaravilhosa.com.br", "https://amenteemaravilhosa.com.br", 
+# Mapping original exato
+links = ["https://verywellmind.com", "https://psychologytoday.com", 
+"https://scientificamerican.com", "https://nih.gov",
+"https://apa.org", "https://apa.org", 
+"https://google.com", 
+"https://sbponline.org.br", "https://neurosciencenews.com", "https://positivepsychology.com", 
+"https://psychcentral.com", "http://iqscorner.com", "https://happierhuman.com", 
+"https://psychnewsdaily.com", "https://psychiatrictimes.com", "https://psychologicalscience.org", 
+"https://cfp.org.br", "https://scielo.br", "https://crpsp.org",
+"https://elpais.com", "https://globo.com", "https://medicalxpress.com",
+"https://psychreg.org", "https://uol.com.br", "https://libsyn.com", 
+"https://amenteemaravilhosa.com.br", "https://amenteemaravilhosa.com.br", 
+"https://amenteemaravilhosa.com.br", "https://amenteemaravilhosa.com.br", "https://bigthink.com"]
+import requests
+from bs4 import BeautifulSoup
+import os
+import functools
+import re
+from datetime import datetime, timezone, timedelta
+from deep_translator import GoogleTranslator
+
+# --- RECURSOS EXCLUSIVOS SOLICITADOS ---
+def carregar_keywords():
+    if not os.path.exists("keywords.txt"):
+        with open("keywords.txt", "w", encoding="utf-8") as f:
+            f.write("anxiety\ndepressão\nburnout\n")
+        return ["anxiety", "depressão", "burnout"]
+    with open("keywords.txt", "r", encoding="utf-8") as f:
+        return [l.strip().lower() for l in f if l.strip()]
+
+keywords = carregar_keywords()
+noticias_filtradas_urgentes = []
+
+def traduzir_texto(texto):
+    if not texto or len(texto) < 12: return ""
+    try: return GoogleTranslator(source='auto', target='pt').translate(texto)
+    except: return ""
+
+# --- INÍCIO DO SEU SCRIPT ORIGINAL ---
+data_e_hora_atuais = datetime.now()
+data_e_hora_em_texto = data_e_hora_atuais.strftime("%d/%m/%Y %H:%M")
+diferenca = timedelta(hours=-3)
+fuso_horario = timezone(diferenca)
+data_e_hora_sao_paulo = data_e_hora_atuais.astimezone(fuso_horario)
+data_e_hora_sao_paulo_em_texto = data_e_hora_sao_paulo.strftime("%d%m%Yday%H%Mtime")
+namefile = "index.html"
+
+# Mapping original exato do seu PDF
+links = [
+    "https://verywellmind.com", "https://psychologytoday.com", 
+    "https://scientificamerican.com", "https://nih.gov",
+    "https://apa.org", "https://apa.org", 
+    "https://google.com",
+    "https://sbponline.org.br", "https://neurosciencenews.com", "https://positivepsychology.com", "https://psychcentral.com",
+    "http://iqscorner.com", "https://happierhuman.com", "https://psychnewsdaily.com", "https://psychiatrictimes.com",
+    "https://psychologicalscience.org", "https://cfp.org.br", "https://scielo.br", "https://crpsp.org",
+    "https://elpais.com", "https://globo.com", "https://medicalxpress.com",
+    "https://psychreg.org", "https://uol.com.br", "https://libsyn.com",
+    "https://amenteemaravilhosa.com.br", "https://amenteemaravilhosa.com.br", "https://amenteemaravilhosa.com.br", "https://amenteemaravilhosa.com.br",
     "https://bigthink.com"
 ]
 
-header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+header = {
+    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.75 Safari/537.36",
+    "X-Requested-With": "XMLHttpRequest"
+}
 
-for idx, config in enumerate(fontes_config):
-    url_alvo = links_originais[idx]
-    links_site = []
-    vistos = set()
-    
+responder = [None] * len(links)
+parser = [None] * len(links)
+
+for x in range(len(links)):
     try:
-        res = requests.get(url_alvo, headers=header, timeout=12)
-        if res.status_code == 200:
-            soup = BeautifulSoup(res.text, "html.parser")
-            find_args = config["find"]
-            elementos = soup.find_all(find_args, find_args) if len(find_args) == 2 and isinstance(find_args, dict) else soup.find_all(find_args)
-                
-            for elem in elementos:
-                if config.get("invert"):
-                    tags_a = [elem] if elem.name == "a" else []
-                    texto_nodo = elem.find(config["sub_find"])
-                    texto = texto_nodo.get_text().strip() if texto_nodo else elem.get_text().strip()
-                else:
-                    tags_a = elem.find_all(config["sub_find"], class_=config["sub_class"]) if "sub_class" in config else elem.find_all(config["sub_find"]) if config["sub_find"] else [elem] if elem.name == "a" else []
-                    texto = None
-                
-                for a in tags_a:
-                    href = a.get("href", "")
-                    if not texto: texto = a.get_text().strip()
-                    if not href or len(texto) < 14: continue
-                    
-                    if href.startswith("/"):
-                        href = config["base"].rstrip('/') + href if config["base"] else url_alvo.rstrip('/') + href
-                    elif not href.startswith("http") and idx == 1:
-                        href = url_alvo + href
-                    
-                    if href not in vistos:
-                        vistos.add(href)
-                        traducao = traduzir(texto)
-                        item = {"url": href, "texto": texto, "traducao": traducao}
-                        links_site.append(item)
-                        if any(p in texto.lower() or p in traducao.lower() for p in keywords):
-                            noticias_filtradas_urgentes.append({**item, "fonte": config["nome"]})
-        time.sleep(0.1)
-    except Exception:
-        pass
-    dados_painel.append({"nome": config["nome"], "noticias": links_site[:12]})
+        response = requests.get(links[x], headers=header, timeout=15)
+        response.raise_for_status()
+        responder[x] = response
+        parser[x] = BeautifulSoup(response.text, "html.parser")
+    except Exception as e:
+        print(f"Erro no link {links[x]}: {e}")
 
-# --- RENDERIZAÇÃO ESTREITA E COMPACTA NO SEU DESIGN NATIVO ORIGINAL CORRIGIDO ---
-with open(namefile, "w", encoding="utf-8") as file:
-    file.write('<!DOCTYPE html><html lang="pt-br"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">')
-    file.write('<link rel="stylesheet" href="https://bootstrapcdn.com">')
-    file.write('<title>PSI LINKS BOARD</title>')
-    file.write('''<style>
-        body { background-color: #f8fafc; color: #1e293b; padding-top: 20px; padding-bottom: 60px; }
-        .btn-space { margin: 4px; border-radius: 4px; font-weight: 600; padding: 10px 18px; text-decoration: none !important; }
-        .card-body { background-color: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 24px; margin-top: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .box-title-inner { font-size: 1.25rem; font-weight: 700; color: #0b516f; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #e2e8f0; display: flex; justify-content: space-between; }
-        .sub-tra { font-size: 0.83rem; color: #64748b; display: block; margin-bottom: 12px; margin-left: 12px; font-style: italic; }
-        .link-topo-inner { font-size: 0.8rem; color: #64748b; cursor: pointer; text-transform: uppercase; font-weight: 700; }
-        .link-topo-inner:hover { color: #0b516f; }
-        #btnVoltarTopo { position: fixed; bottom: 25px; right: 25px; display: none; z-index: 99; border: none; background-color: #0b516f; color: white; padding: 12px 20px; border-radius: 30px; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.15); cursor: pointer; }
-    </style></head>''')
-    
-    file.write('<body><button onclick="irParaOTopo()" id="btnVoltarTopo">▲ Voltar ao Topo</button>')
-    file.write('<div class="container-fluid px-4" id="myGroup">')
-    
-    # Cabeçalho original harmônico com cor estável
-    file.write(f'<h1 class="font-weight-bold" style="color:#0b516f; font-size: 2.2rem; letter-spacing:-0.5px;">PSI MONITOR <span class="text-muted" style="font-size:0.95rem; font-weight:normal; margin-left:12px;">• Atualizado em: {data_e_hora_sao_paulo.strftime("%d/%m/%Y às %H:%M")}</span></h1><hr><p>')
-    
-    # RESTAURAÇÃO COMPLETA DOS BOXES FIXOS DO BOOTSTRAP (Classes btn nativas que geram o box)
-    file.write('<a class="btn btn-space btn-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseKeywords" role="button" aria-expanded="false" aria-controls="collapseKeywords">🎯 PALAVRAS-CHAVE ATIVAS</a>')
-    for i, site in enumerate(dados_painel):
-        classe_btn = "btn-outline-danger" if not site["noticias"] else "btn-outline-info"
-        file.write(f'<a class="btn btn-space {classe_btn} btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex{i}" role="button" aria-expanded="false">{site["nome"]}</a>')
-    file.write('</p>')
+# Criação da HTML com o nome do Arquivo
+file = open(namefile, "w", encoding="utf-8")
+file.write('<!DOCTYPE html>')
+file.write('<html lang="pt-br">')
+file.write('<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">')
+file.write('<link rel="stylesheet" href="https://bootstrapcdn.com">')
+file.write('<title>PSI LINKS BOARD</title>')
+file.write('<style>.sub-tra { font-size: 0.82rem; color: #6c757d; display: block; margin-bottom: 8px; margin-left: 10px; } #btnVoltarTopo { position: fixed; bottom: 20px; right: 20px; display: none; z-index: 99; border: none; background-color: #17a2b8; color: white; padding: 10px 16px; border-radius: 4px; font-weight: bold; cursor: pointer; }</style>')
+file.write('</head>')
 
-    # --- SETOR DE CAIXAS TOTALMENTE FECHADAS POR PADRÃO (Sem a classe 'show') ---
-    
-    # Caixa Palavras-Chave (Totalmente Fechada)
-    file.write('<div class="collapse" id="collapseKeywords" data-parent="#myGroup"><div class="card card-body">')
-    file.write(f'<div class="box-title-inner"><span>🎯 Palavras-Chave ({", ".join(keywords)})</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Subir</span></div>')
-    if not noticias_filtradas_urgentes:
-        file.write('<p class="text-muted">Nenhum artigo correspondente encontrado.</p>')
-    else:
-        for n in noticias_filtradas_urgentes:
-            file.write(f'<a href="{n["url"]}" target="_blank" class="font-weight-bold" style="color:#0b516f;">📌 [{n["fonte"]}] {n["texto"]}</a></br>\n')
-            if n["traducao"] and n["traducao"] != n["texto"]:
-                file.write(f'<span class="sub-tra">↳ Tradução: {n["traducao"]}</span>\n')
-    file.write('</div></div>\n')
+# Criação do Body, Container e Botões em Grade Estrita Horizontal Nativa do Bootstrap
+file.write('<body><button onclick="irParaOTopo()" id="btnVoltarTopo">▲ Topo</button><div class="container" id="myGroup">')
+file.write(f'<h1> PSI MONITOR <span class="text-muted" style="font-size:1rem; font-weight:normal; margin-left:12px;">| Varredura: {data_e_hora_sao_paulo.strftime("%d/%m/%Y às %H:%M")}</span></h1><p>')
 
-    # As 30 Janelas dos Portais (Todas "collapse" puras, nascem 100% FECHADAS)
-    for i, site in enumerate(dados_painel):
-        file.write(f'<div class="collapse" id="collapseIndex{i}" data-parent="#myGroup" Style><div class="card card-body">\n')
-        file.write(f'<div class="box-title-inner"><span>🌐 {site["nome"]}</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div>')
-        
-        if not site["noticias"]:
-            file.write('<p class="text-muted">Nenhum artigo relevante capturado nesta rodada.</p>\n')
-        else:
-            for n in site["noticias"]:
-                file.write(f'<a href="{n["url"]}" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 {n["texto"]}</a></br>\n')
-                if n["traducao"] and n["traducao"] != n["texto"]:
-                    file.write(f'<span class="sub-tra">↳ {n["traducao"]}</span>\n')
-                    
-        file.write('</div></div>\n')
+file.write('<a class="btn btn-space btn-danger btn-lg" data-toggle="collapse" href="#collapseKeywords" role="button" aria-expanded="false" aria-controls="collapseExample">🎯 PALAVRAS-CHAVE ATIVAS</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">VeryWell Mind</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample">Psychology Today</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample">Scientific American</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false" aria-controls="collapseExample">The National Institute of Mental Health (NIMH)</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample4" role="button" aria-expanded="false" aria-controls="collapseExample">APA PsyPort</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample5" role="button" aria-expanded="false" aria-controls="collapseExample">APA Monitor</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample6" role="button" aria-expanded="false" aria-controls="collapseExample">Google Notícias</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample7" role="button" aria-expanded="false" aria-controls="collapseExample">SBP</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample8" role="button" aria-expanded="false" aria-controls="collapseExample">Neuroscience</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample9" role="button" aria-expanded="false" aria-controls="collapseExample">Positive Psychology</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample10" role="button" aria-expanded="false" aria-controls="collapseExample">Positive Psychcentral</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample11" role="button" aria-expanded="false" aria-controls="collapseExample">IQ`s Corner</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample12" role="button" aria-expanded="false" aria-controls="collapseExample">Happier Human</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample13" role="button" aria-expanded="false" aria-controls="collapseExample">PsyNewsDaily</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample14" role="button" aria-expanded="false" aria-controls="collapseExample">Psychiatric Times</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample15" role="button" aria-expanded="false" aria-controls="collapseExample">APS</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample16" role="button" aria-expanded="false" aria-controls="collapseExample">CFP</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample17" role="button" aria-expanded="false" aria-controls="collapseExample">Psicologia USP</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample18" role="button" aria-expanded="false" aria-controls="collapseExample">Conselho Regional de Psicologia SP</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample19" role="button" aria-expanded="false" aria-controls="collapseExample">El País Psicologia</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample20" role="button" aria-expanded="false" aria-controls="collapseExample">G1 Saúde Mental</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample21" role="button" aria-expanded="false" aria-controls="collapseExample">Medical Xpress</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample22" role="button" aria-expanded="false" aria-controls="collapseExample">Psychreg</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample23" role="button" aria-expanded="false" aria-controls="collapseExample">Folha Equilíbrio Mente</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample24" role="button" aria-expanded="false" aria-controls="collapseExample">PsychCrunch</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample25" role="button" aria-expanded="false" aria-controls="collapseExample">A Mente é Maravilhosa-Neurociência</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample26" role="button" aria-expanded="false" aria-controls="collapseExample">A Mente é Maravilhosa-Psicologia</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample27" role="button" aria-expanded="false" aria-controls="collapseExample">A Mente é Maravilhosa-Relações</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample28" role="button" aria-expanded="false" aria-controls="collapseExample">A Mente é Maravilhosa-Saúde</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample29" role="button" aria-expanded="false" aria-controls="collapseExample">Big Think</a>')
+file.write('</p>')
+file.close()
 
-    file.write('''</div><div>
-    <script src="https://jquery.com"></script>
-    <script src="https://cloudflare.com"></script>
-    <script src="https://bootstrapcdn.com"></script>
-    <script>
-        window.onscroll = function() {
-            var btn = document.getElementById("btnVoltarTopo");
-            if (document.body.scrollTop > 180 || document.documentElement.scrollTop > 180) {
-                btn.style.display = "block";
-            } else {
-                btn.style.display = "none";
-            }
-        };
-        function irParaOTopo() {
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        }
-    </script>
-    </div></body></html>''')
+# --- BLOCOS SEPARADOS EXATOS GRAVANDO EM ANEXO (MECÂNICA ORIGINAL) ---
 
-print("Sucesso! O design dos boxes fixos e fechados foi 100% corrigido.")
+# 0. Caixa Reservada de Palavras-Chave (Inicia 100% Fechada e Oculta)
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseKeywords" data-parent="#myGroup">')
+file.write('<div class="card card-body bg-light">')
+# Esta lista será alimentada dinamicamente pelas coletas que baterem com o keywords.txt
+file.write('</div></div>')
+file.close()
+
+# 0. VeryWell Mind (Corrigido para seletores funcionais dinâmicos, nascendo fechado)
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[0] is not None:
+    for x in parser[0].find_all("a", class_=lambda c: c and ('card' in c or 'link' in c)):
+        href = x.get("href")
+        if href and href.startswith("/"): href = "https://verywellmind.com" + href
+        texto = x.get_text().strip()
+        if href and len(texto) > 15:
+            file.write(f'<a href="{href}" target="_blank">{texto}</a></br>')
+            trad = traduzir_texto(texto)
+            if trad and trad != texto: file.write(f'<span class="sub-tra">↳ {trad}</span>')
+            if any(p in texto.lower() or p in trad.lower() for p in keywords):
+                noticias_filtradas_urgentes.append((href, texto, trad, "VeryWell Mind"))
+file.write("</div></div>")
+file.close()
+
+# 1. Psychology Today
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample1" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[1] is not None:
+    for x in parser[1].find_all("div", class_="layout-content-main"):
+        for z in x.find_all("a"):
+            href = links[1] + str(z.get("href"))
+            texto = z.text.strip()
+            if len(texto) > 14:
+                file.write(f'<a href="{href}" target="_blank">{texto}</a></br>')
+                trad = traduzir_texto(texto)
+                if trad and trad != texto: file.write(f'<span class="sub-tra">↳ {trad}</span>')
+                if any(p in texto.lower() or p in trad.lower() for p in keywords):
+                    noticias_filtradas_urgentes.append((href, texto, trad, "Psychology Today"))
+file.write("</div></div>")
+file.close()
+
+# 2. Scientific American
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample2" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[2] is not None:
+    for x in parser[2].find_all("div", "articleList-CcaLz root-fREBs"):
+        for z in x.find_all("a"):
+            href = "https://scientificamerican.com" + str(z.get("href"))
+            texto = z.text.strip()
+            if len(texto) > 14:
+                file.write(f'<a href="{href}" target="_blank">{texto}</a></br>')
+                trad = traduzir_texto(texto)
+                if trad and trad != texto: file.write(f'<span class="sub-tra">↳ {trad}</span>')
+                if any(p in texto.lower() or p in trad.lower() for p in keywords):
+                    noticias_filtradas_urgentes.append((href, texto, trad, "Scientific American"))
+file.write("</div></div>")
+file.close()
+
+# 3. NIMH
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample3" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[3] is not None:
+    for x in parser[3].find_all("article"):
+        for z in x.find_all("a", class_="aggregated_term_news_link"):
+            href = "https://nih.gov" + str(z.get("href"))
+            texto = z.text.strip()
+            if len(texto) > 14:
+                file.write(f'<a href="{href}" target="_blank">{texto}</a></br>')
+                trad = traduzir_texto(texto)
+                if trad and trad != texto: file.write(f'<span class="sub-tra">↳ {trad}</span>')
+                if any(p in texto.lower() or p in trad.lower() for p in keywords):
+                    noticias_filtradas_urgentes.append((href, texto, trad, "NIMH"))
+file.write("</div></div>")
+file.close()
+
+# 4. APA PsyPort
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample4" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[4] is not None:
+    for x in parser[4].find_all("article"):
+        for z in x.find_all("a"):
+            href = str(z.get("href"))
+            texto = z.text.strip()
+            if len(texto) > 14:
+                file.write(f'<a href="{href}" target="_blank">{texto}</a></br>')
+                trad = traduzir_texto(texto)
+                if trad and trad != texto: file.write(f'<span class="sub-tra">↳ {trad}</span>')
+                if any(p in texto.lower() or p in trad.lower() for p in keywords):
+                    noticias_filtradas_urgentes.append((href, texto, trad, "APA PsyPort"))
+file.write("</div></div>")
+file.close()
+
+# 5. APA Monitor
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample5" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[5] is not None:
+    for x in parser[5].find_all("section", class_="linkWidget tile square"):
+        for z in x.find_all("p", class_="title"):
+            for n in z.find_all("a"):
+                href = "https://apa.org" + str(n.get("href"))
+                texto = z.text.strip()
+                if len(texto) > 14:
+                    file.write(f'<a href="{href}" target="_blank">{texto}</a></br>')
+                    trad = traduzir_texto(texto)
+                    if trad and trad != texto: file.write(f'<span class="sub-tra">↳ {trad}</span>')
+                    if any(p in texto.lower() or p in trad.lower() for p in keywords):
+                        noticias_filtradas_urgentes.append((href, texto, trad, "APA Monitor"))
+file.write("</div></div>")
+file.close()
+
+# 6. Google Notícias
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample6" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[6] is not None:
+    for x in parser[6].find_all("article"):
+        for z in x.find_all("a", class_="VDXfz"):
+            href = "https://google.com" + str(z.get("href"))
+            texto = x.text.strip()
+            if len(texto) > 14:
+                file.write(f'<a href="{href}" target="_blank">{texto}</a></br>')
+                trad = traduzir_texto(texto)
+                if trad and trad != texto: file.write(f'<span class="sub-tra">↳ {trad}</span>')
+                if any(p in texto.lower() or p in trad.lower() for p in keywords):
+                    noticias_filtradas_urgentes.append((href, texto, trad, "Google Notícias"))
+file.write("</div></div>")
+file.close()
+
+# 7. SBP
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample7" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[7] is not None:
+    for x in parser[7].find_all("div", class_="content list"):
+        for z in x.find_all("p"):
+            for n in z.find_all("a"):
+                href = "https://sbponline.org.br" + str(n.get("href"))
+                texto = n.text.strip()
+                if len(texto) > 14:
+                    file.write(f'<a href="{href}" target="_blank">{texto}</a></br>')
+                    trad = traduzir_texto(texto)
+                    if trad and trad != texto: file.write(f'<span class="sub-tra">↳ {trad}</span>')
+                    if any(p in texto.lower() or p in trad.lower() for p in keywords):
+                        noticias_filtradas_urgentes.append((href, texto, trad, "SBP"))
+file.write("</div></div>")
+file.close()
+
+# 8. Neuroscience
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample8" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[8] is not None:
+    for x in parser[8].find_all("h3"):
+        for z in x.find_all("a"):
+            href = str(z.get("href"))
+            texto = x.text.strip()
+            if len(texto) > 14:
+                file.write(f'<a href="{href}" target="_blank">{texto}</a></br>')
+                trad = traduzir_texto(texto)
+                if trad and trad != texto: file.write(f'<span class="sub-tra">↳ {trad}</span>')
+                if any(p in texto.lower() or p in trad.lower() for p in keywords):
+                    noticias_filtradas_urgentes.append((href, texto, trad, "Neuroscience"))
+file.write("</div></div>")
+file.close()
+
+# 9. Positive Psychology
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample9" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[9] is not None:
+    for x in parser[9].find_all("a"):
+        for z in x.find_all("h3"):
+            href = str(x.get("href"))
+            texto = z.text.strip()
+            if len(texto) > 14:
+                file.write(f'<a href="{href}" target="_blank">{texto}</a></br>')
+                trad = traduzir_texto(texto)
+                if trad and trad != texto: file.write(f'<span class="sub-tra">↳ {trad}</span>')
+                if any(p in texto.lower() or p in trad.lower() for p in keywords):
+                    noticias_filtradas_urgentes.append((href, texto, trad, "Positive Psychology"))
+file.write("</div></div>")
+file.close()
+
+# 10. Positive Psychcentral
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample10" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[10] is not None:
+    for x in parser[10].find_all("div", class_="css-fdjy12"):
+        for z in x.find_all("a"):
+            href = "https://psychcentral.com" + str(z.get("href"))
+            texto = z.text.strip()
+            if len(texto) > 14:
+                file.write(f'<a href="{href}" target="_blank">{texto}</a></br>')
+                trad = traduzir_texto(texto)
+                if trad and trad != texto: file.write(f'<span class="sub-tra">↳ {trad}</span>')
+                if any(p in texto.lower() or p in trad.lower() for p in keywords):
+                    noticias_filtradas_urgentes.append((href, texto, trad, "Psychcentral"))
+file.write("</div></div>")
+file.close()
+
+# 11. IQ`s Corner
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample11" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[11] is not None:
+    for x in parser[11].find_all("h3"):
+        for z in x.find_all("a"):
+            href = str(z.get("href"))
+            texto = z.text.strip()
+            if len(texto) > 14:
+                file.write(f'<a href="{href}" target="_blank">{texto}</a></br>')
+                trad = traduzir_texto(texto)
+                if trad and trad != texto: file.write(f'<span class="sub-tra">↳ {trad}</span>')
+                if any(p in texto.lower() or p in trad.lower() for p in keywords):
+                    noticias_filtradas_urgentes.append((href, texto, trad, "IQ`s Corner"))
+file.write("</div></div>")
+file.close()
+
+# 12. Happier Human
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample12" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[12] is not None:
+    for x in parser[12].find_all("h2"):
+        for z in x.find_all("a"):
+            href = str(z.get("href"))
+            texto = z.text.strip()
+            if len(texto) > 14:
+                file.write(f'<a href="{href}" target="_blank">{texto}</a></br>')
+                trad = traduzir_texto(texto)
+                if trad and trad != texto: file.write(f'<span class="sub-tra">↳ {trad}</span>')
+                if any(p in texto.lower() or p in trad.lower() for p in keywords):
+                    noticias_filtradas_urgentes.append((href, texto, trad, "Happier Human"))
+file.write("</div></div>")
+file.close()
+
+# 13. PsyNewsDaily
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample13" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[13] is not None:
+    for x in parser[13].find_all("h2"):
+        for z in x.find_all("a"):
+            href = str(z.get("href"))
+            texto = z.text.strip()
+            if len(texto) > 14:
+                file.write(f'<a href="{href}" target="_blank">{texto}</a></br>')
+                trad = traduzir_texto(texto)
+                if trad and trad != texto: file.write(f'<span class="sub-tra">↳ {trad}</span>')
+                if any(p in texto.lower() or p in trad.lower() for p in keywords):
+                    noticias_filtradas_urgentes.append((href, texto, trad, "PsyNewsDaily"))
+file.write("</div></div>")
+file.close()
+
+# 14. Psychiatric Times
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample14" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[14] is not None:
+    for x in parser[14].find_all("a"):
+        for z in x.find_all("h2"):
+            href = "https://psychiatrictimes.com" + str(x.get("href"))
+            texto = z.text.strip()
+            if len(texto) > 14:
+                file.write(f'<a href="{href}" target="_blank">{texto}</a></br>')
+                trad = traduzir_texto(texto)
+                if trad and trad != texto: file.write(f'<span class="sub-tra">↳ {trad}</span>')
+                if any(p in texto.lower() or p in trad.lower() for p in keywords):
+                    noticias_filtradas_urgentes.append((href, texto, trad, "Psychiatric Times"))
+file.write("</div></div>")
+file.close()
+
+# 15. APS
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample15" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[15] is not None:
+    for x in parser[15].find_all("h3"):
+        for z in x.find_all("a"):
+            href = str(z.get("href"))
+            texto = z.text.strip()
+            if len(texto) > 14:
+                file.write(f'<a href="{href}" target="_blank">{texto}</a></br>')
+                trad = traduzir_texto(texto)
+                if trad and trad != texto: file.write(f'<span class="sub-tra">↳ {trad}</span>')
+                if any(p in texto.lower() or p in trad.lower() for p in keywords):
+                    noticias_filtradas_urgentes.append((href, texto, trad, "APS"))
+file.write("</div></div>")
+file.close()
+
+# 16. CFP
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample16" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[16] is not None:
+    for x in parser[16].find_all("h3"):
+        for z in x.find_all("a"):
+            link_completo = str(z.get("href"))
+            texto_limpo = z.text.strip()
+            file.write(f'<a href="{link_completo}">{texto_limpo}</a></br>')
+            traducao = traduzir_texto(texto_limpo)
+            if traducao and traducao != texto_limpo:
+                file.write(f'<span style="font-size:0.80rem; color:#6c757d; display:block; margin-bottom:8px;">↳ {traducao}</span>')
+            if any(p in texto_limpo.lower() or p in traducao.lower() for p in keywords):
+                noticias_filtradas_urgentes.append((link_completo, texto_limpo, traducao, "CFP"))
+file.write("</div></div>")
+file.close()
+
+# 17. Psicologia USP
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample17" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[17] is not None:
+    for x in parser[17].find_all("a"):
+        for z in x.find_all("h3"):
+            link_completo = "https://scielo.br" + str(x.get("href"))
+            texto_limpo = z.text.strip()
+            file.write(f'<a href="{link_completo}">{texto_limpo}</a></br>')
+            traducao = traduzir_texto(texto_limpo)
+            if traducao and traducao != texto_limpo:
+                file.write(f'<span style="font-size:0.80rem; color:#6c757d; display:block; margin-bottom:8px;">↳ {traducao}</span>')
+            if any(p in texto_limpo.lower() or p in traducao.lower() for p in keywords):
+                noticias_filtradas_urgentes.append((link_completo, texto_limpo, traducao, "Psicologia USP"))
+file.write("</div></div>")
+file.close()
+
+# 18. Conselho Regional de Psicologia SP
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample18" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[18] is not None:
+    for x in parser[18].find_all("a"):
+        for z in x.find_all("h3"):
+            link_completo = str(x.get("href"))
+            texto_limpo = z.text.strip()
+            file.write(f'<a href="{link_completo}">{texto_limpo}</a></br>')
+            traducao = traduzir_texto(texto_limpo)
+            if traducao and traducao != texto_limpo:
+                file.write(f'<span style="font-size:0.80rem; color:#6c757d; display:block; margin-bottom:8px;">↳ {traducao}</span>')
+            if any(p in texto_limpo.lower() or p in traducao.lower() for p in keywords):
+                noticias_filtradas_urgentes.append((link_completo, texto_limpo, traducao, "CRP-SP"))
+file.write("</div></div>")
+file.close()
+
+# 19. El País Psicologia
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample19" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[19] is not None:
+    for x in parser[19].find_all("h2"):
+        for z in x.find_all("a"):
+            link_completo = "https://elpais.com" + str(z.get("href"))
+            texto_limpo = z.text.strip()
+            file.write(f'<a href="{link_completo}">{texto_limpo}</a></br>')
+            traducao = traduzir_texto(texto_limpo)
+            if traducao and traducao != texto_limpo:
+                file.write(f'<span style="font-size:0.80rem; color:#6c757d; display:block; margin-bottom:8px;">↳ {traducao}</span>')
+            if any(p in texto_limpo.lower() or p in traducao.lower() for p in keywords):
+                noticias_filtradas_urgentes.append((link_completo, texto_limpo, traducao, "El País"))
+file.write("</div></div>")
+file.close()
+
+# 20. G1 Saúde Mental
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample20" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[20] is not None:
+    for x in parser[20].find_all("div", class_="_evt"):
+        for z in x.find_all("a"):
+            link_completo = str(z.get("href"))
+            texto_limpo = z.text.strip()
+            file.write(f'<a href="{link_completo}">{texto_limpo}</a></br>')
+            traducao = traduzir_texto(texto_limpo)
+            if traducao and traducao != texto_limpo:
+                file.write(f'<span style="font-size:0.80rem; color:#6c757d; display:block; margin-bottom:8px;">↳ {traducao}</span>')
+            if any(p in texto_limpo.lower() or p in traducao.lower() for p in keywords):
+                noticias_filtradas_urgentes.append((link_completo, texto_limpo, traducao, "G1"))
+file.write("</div></div>")
+file.close()
+
+# 21. Medical Xpress
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample21" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[21] is not None:
+    for x in parser[21].find_all("div"):
+        for z in x.find_all("a"):
+            link_completo = str(z.get("href"))
+            texto_limpo = z.text.strip()
+            file.write(f'<a href="{link_completo}">{texto_limpo}</a></br>')
+            traducao = traduzir_texto(texto_limpo)
+            if traducao and traducao != texto_limpo:
+                file.write(f'<span style="font-size:0.80rem; color:#6c757d; display:block; margin-bottom:8px;">↳ {traducao}</span>')
+            if any(p in texto_limpo.lower() or p in traducao.lower() for p in keywords):
+                noticias_filtradas_urgentes.append((link_completo, texto_limpo, traducao, "Medical Xpress"))
+file.write("</div></div>")
+file.close()
+
+# 22. Psychreg
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample22" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[22] is not None:
+    for x in parser[22].find_all("div", class_="col-md-4"):
+        for z in x.find_all("a"):
+            link_completo = str(z.get("href"))
+            texto_limpo = z.text.strip()
+            file.write(f'<a href="{link_completo}">{texto_limpo}</a></br>')
+            traducao = traduzir_texto(texto_limpo)
+            if traducao and traducao != texto_limpo:
+                file.write(f'<span style="font-size:0.80rem; color:#6c757d; display:block; margin-bottom:8px;">↳ {traducao}</span>')
+            if any(p in texto_limpo.lower() or p in traducao.lower() for p in keywords):
+                noticias_filtradas_urgentes.append((link_completo, texto_limpo, traducao, "Psychreg"))
+file.write("</div></div>")
+file.close()
+
+# 23. Folha Equilíbrio Mente
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample23" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[23] is not None:
+    for x in parser[23].find_all("a"):
+        for z in x.find_all("h2"):
+            link_completo = str(x.get("href"))
+            texto_limpo = z.text.strip()
+            file.write(f'<a href="{link_completo}">{texto_limpo}</a></br>')
+            traducao = traduzir_texto(texto_limpo)
+            if traducao and traducao != texto_limpo:
+                file.write(f'<span style="font-size:0.80rem; color:#6c757d; display:block; margin-bottom:8px;">↳ {traducao}</span>')
+            if any(p in texto_limpo.lower() or p in traducao.lower() for p in keywords):
+                noticias_filtradas_urgentes.append((link_completo, texto_limpo, traducao, "Folha"))
+file.write("</div></div>")
+file.close()
+
+# 24. PsychCrunch
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample24" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[24] is not None:
+    for x in parser[24].find_all("div", class_="libsyn-item-title"):
+        for z in x.find_all("a"):
+            link_completo = str(z.get("href"))
+            texto_limpo = z.text.strip()
+            file.write(f'<a href="{link_completo}">{texto_limpo}</a></br>')
+            traducao = traduzir_texto(texto_limpo)
+            if traducao and traducao != texto_limpo:
+                file.write(f'<span style="font-size:0.80rem; color:#6c757d; display:block; margin-bottom:8px;">↳ {traducao}</span>')
+            if any(p in texto_limpo.lower() or p in traducao.lower() for p in keywords):
+                noticias_filtradas_urgentes.append((link_completo, texto_limpo, traducao, "PsychCrunch"))
+file.write("</div></div>")
+file.close()
+
+# 25. A Mente É Maravilhosa Neurociência
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample25" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[25] is not None:
+    for x in parser[25].find_all("a", class_="jsx-151512268 jsx-1424224867 default-a-link global-link jsx-3363598852"):
+        link_completo = "https://amenteemaravilhosa.com.br" + str(x.get("href"))
+        texto_limpo = x.text.strip()
+        file.write(f'<a href="{link_completo}">{texto_limpo}</a></br>')
+        traducao = traduzir_texto(texto_limpo)
+        if traducao and traducao != texto_limpo:
+            file.write(f'<span style="font-size:0.80rem; color:#6c757d; display:block; margin-bottom:8px;">↳ {traducao}</span>')
+        if any(p in texto_limpo.lower() or p in traducao.lower() for p in keywords):
+            noticias_filtradas_urgentes.append((link_completo, texto_limpo, traducao, "A Mente É Maravilhosa Neurociência"))
+file.write("</div></div>")
+file.close()
+
+# 26. A Mente É Maravilhosa Psicologia
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample26" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[26] is not None:
+    for x in parser[26].find_all("a", class_="jsx-151512268 jsx-1424224867 default-a-link global-link jsx-3363598852"):
+        link_completo = "https://amenteemaravilhosa.com.br" + str(x.get("href"))
+        texto_limpo = x.text.strip()
+        file.write(f'<a href="{link_completo}">{texto_limpo}</a></br>')
+        traducao = traduzir_texto(texto_limpo)
+        if traducao and traducao != texto_limpo:
+            file.write(f'<span style="font-size:0.80rem; color:#6c757d; display:block; margin-bottom:8px;">↳ {traducao}</span>')
+        if any(p in texto_limpo.lower() or p in traducao.lower() for p in keywords):
+            noticias_filtradas_urgentes.append((link_completo, texto_limpo, traducao, "A Mente É Maravilhosa Psicologia"))
+file.write("</div></div>")
+file.close()
+
+# 27. A Mente É Maravilhosa Relações
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample27" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[27] is not None:
+    for x in parser[27].find_all("a", class_="jsx-151512268 jsx-1424224867 default-a-link global-link jsx-3363598852"):
+        link_completo = "https://amenteemaravilhosa.com.br" + str(x.get("href"))
+        texto_limpo = x.text.strip()
+        file.write(f'<a href="{link_completo}">{texto_limpo}</a></br>')
+        traducao = traduzir_texto(texto_limpo)
+        if traducao and traducao != texto_limpo:
+            file.write(f'<span style="font-size:0.80rem; color:#6c757d; display:block; margin-bottom:8px;">↳ {traducao}</span>')
+        if any(p in texto_limpo.lower() or p in traducao.lower() for p in keywords):
+            noticias_filtradas_urgentes.append((link_completo, texto_limpo, traducao, "A Mente É Maravilhosa Relações"))
+file.write("</div></div>")
+file.close()
+
+# 28. A Mente É Maravilhosa Saúde
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample28" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[28] is not None:
+    for x in parser[28].find_all("a", class_="jsx-151512268 jsx-1424224867 default-a-link global-link jsx-3363598852"):
+        link_completo = "https://amenteemaravilhosa.com.br" + str(x.get("href"))
+        texto_limpo = x.text.strip()
+        file.write(f'<a href="{link_completo}">{texto_limpo}</a></br>')
+        traducao = traduzir_texto(texto_limpo)
+        if traducao and traducao != texto_limpo:
+            file.write(f'<span style="font-size:0.80rem; color:#6c757d; display:block; margin-bottom:8px;">↳ {traducao}</span>')
+        if any(p in texto_limpo.lower() or p in traducao.lower() for p in keywords):
+            noticias_filtradas_urgentes.append((link_completo, texto_limpo, traducao, "A Mente É Maravilhosa Saúde"))
+file.write("</div></div>")
+file.close()
+
+# 29. Big Think Neuropsych
+file = open(namefile, "a", encoding="utf-8")
+file.write('<div class="collapse" id="collapseExample29" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body">')
+if parser[29] is not None:
+    for x in parser[29].find_all("h1", class_="card-headline"):
+        for z in x.find_all("a"):
+            link_completo = str(z.get("href"))
+            texto_limpo = z.text.strip()
+            file.write(f'<a href="{link_completo}">{texto_limpo}</a></br>')
+            traducao = traduzir_texto(texto_limpo)
+            if traducao and traducao != texto_limpo:
+                file.write(f'<span style="font-size:0.80rem; color:#6c757d; display:block; margin-bottom:8px;">↳ {traducao}</span>')
+            if any(p in texto_limpo.lower() or p in traducao.lower() for p in keywords):
+                noticias_filtradas_urgentes.append((link_completo, texto_limpo, traducao, "Big Think"))
+file.write("</div></div>")
+file.close()
+
+
+# =====================================================================
+# BLOCO DE FECHAMENTO E MONTAGEM DA CAIXA EXCLUSIVA DE PALAVRAS-CHAVE
+# =====================================================================
+file = open(namefile, "a", encoding="utf-8")
+
+# Inserção da caixa de Palavras-Chave Ativas no mesmo padrão estrito dos botões Bootstrap
+file.write('<div class="collapse" id="collapseKeywords" data-parent="#myGroup" Style>')
+file.write('<div class="card card-body bg-light">')
+file.write(f'<p class="text-muted small">Termos monitorados ativos: {", ".join(keywords)}</p>')
+
+if not noticias_filtradas_urgentes:
+    file.write('<p class="text-muted">Nenhum artigo correspondente encontrado nas últimas varreduras.</p>')
+else:
+    for l_url, l_orig, l_trad, l_fonte in noticias_filtradas_urgentes:
+        file.write(f'<a href="{l_url}" target="_blank">📌 [{l_fonte}] {l_orig}</a></br>')
+        if l_trad and l_trad != l_orig:
+            file.write(f'<span style="font-size:0.80rem; color:#6c757d; display:block; margin-bottom:8px;">↳ Tradução: {l_trad}</span>')
+
+file.write("</div></div>")
+
+# Scripts finais padrão do Bootstrap coletados do rodapé do seu arquivo original
+file.write('<div>')
+file.write('<script src="https://jsdelivr.net"></script>')
+file.write('<script src="https://jsdelivr.net"></script>')
+file.write('<script src="https://jsdelivr.net"></script>')
+file.write('<script src="https://jquery.com"></script>')
+file.write('<script src="https://cloudflare.com"></script>')
+file.write('<script src="https://bootstrapcdn.com"></script>')
+file.write('</div></body>')
+
+# Fechamento definitivo do arquivo index.html
+file.close()
+print("Sucesso! O script concluiu com precisão toda a árvore de renderização do design nativo.")
+
