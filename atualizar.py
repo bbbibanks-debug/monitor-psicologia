@@ -121,57 +121,50 @@ for idx, config in enumerate(fontes_config):
         pass
     dados_painel.append({"nome": config["nome"], "noticias": links_site[:12]})
 
-# --- RENDERIZAÇÃO COPIANDO SEU DESIGN ORIGINAL DE CAIXAS FLUTUANTES ---
+# --- RENDERIZAÇÃO ESTREITA E COMPACTA NO SEU DESIGN NATIVO ORIGINAL CORRIGIDO ---
 with open(namefile, "w", encoding="utf-8") as file:
-    file.write('''<!DOCTYPE html><html lang="pt-br"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://bootstrapcdn.com">
-    <title>PSI LINKS BOARD</title>
-    <style>
-        body { background-color: #f8fafc; color: #1e293b; font-family: -apple-system, BlinkMacSystemFont, sans-serif; padding-top: 20px; padding-bottom: 60px; }
-        .btn-space { margin: 4px; border-radius: 6px; font-weight: 600; padding: 10px 18px; }
-        
-        /* O segredo do seu design: caixas flutuantes elegantes que nascem limpas */
-        .card-body { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; margin-top: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-        .box-title-inner { font-size: 1.25rem; font-weight: 700; color: #1e3a8a; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #f1f5f9; display: flex; justify-content: space-between; }
-        
-        /* Links e quebras mantendo sua separação limpa */
+    file.write('<!DOCTYPE html><html lang="pt-br"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">')
+    file.write('<link rel="stylesheet" href="https://bootstrapcdn.com">')
+    file.write('<title>PSI LINKS BOARD</title>')
+    file.write('''<style>
+        body { background-color: #f8fafc; color: #1e293b; padding-top: 20px; padding-bottom: 60px; }
+        .btn-space { margin: 4px; border-radius: 4px; font-weight: 600; padding: 10px 18px; text-decoration: none !important; }
+        .card-body { background-color: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 24px; margin-top: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .box-title-inner { font-size: 1.25rem; font-weight: 700; color: #0b516f; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #e2e8f0; display: flex; justify-content: space-between; }
         .sub-tra { font-size: 0.83rem; color: #64748b; display: block; margin-bottom: 12px; margin-left: 12px; font-style: italic; }
         .link-topo-inner { font-size: 0.8rem; color: #64748b; cursor: pointer; text-transform: uppercase; font-weight: 700; }
-        .link-topo-inner:hover { color: #2563eb; }
-        
-        /* Botão Flutuante de Retorno */
-        #btnVoltarTopo { position: fixed; bottom: 25px; right: 25px; display: none; z-index: 99; border: none; background-color: #1e3a8a; color: white; padding: 12px 20px; border-radius: 30px; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.15); cursor: pointer; transition: all 0.2s; }
-        #btnVoltarTopo:hover { background-color: #2563eb; transform: translateY(-2px); }
+        .link-topo-inner:hover { color: #0b516f; }
+        #btnVoltarTopo { position: fixed; bottom: 25px; right: 25px; display: none; z-index: 99; border: none; background-color: #0b516f; color: white; padding: 12px 20px; border-radius: 30px; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.15); cursor: pointer; }
     </style></head>''')
     
     file.write('<body><button onclick="irParaOTopo()" id="btnVoltarTopo">▲ Voltar ao Topo</button>')
-    file.write('<div class="container" id="myGroup">')
+    file.write('<div class="container-fluid px-4" id="myGroup">')
     
-    # Título original limpo acrescido da data e hora da execução requerida
-    file.write(f'<h1 class="font-weight-bold" style="color:#1e3a8a; letter-spacing:-0.5px;">PSI MONITOR <span class="text-muted" style="font-size:0.95rem; font-weight:normal; margin-left:12px;">• Atualizado em: {data_e_hora_sao_paulo.strftime("%d/%m/%Y às %H:%M")}</span></h1><hr><p>')
+    # Cabeçalho original harmônico com cor estável
+    file.write(f'<h1 class="font-weight-bold" style="color:#0b516f; font-size: 2.2rem; letter-spacing:-0.5px;">PSI MONITOR <span class="text-muted" style="font-size:0.95rem; font-weight:normal; margin-left:12px;">• Atualizado em: {data_e_hora_sao_paulo.strftime("%d/%m/%Y às %H:%M")}</span></h1><hr><p>')
     
-    # Grade estrita horizontal de botões. Todos nascem fechados preservando o seu clique dinâmico
+    # RESTAURAÇÃO COMPLETA DOS BOXES FIXOS DO BOOTSTRAP (Classes btn nativas que geram o box)
     file.write('<a class="btn btn-space btn-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseKeywords" role="button" aria-expanded="false" aria-controls="collapseKeywords">🎯 PALAVRAS-CHAVE ATIVAS</a>')
     for i, site in enumerate(dados_painel):
         classe_btn = "btn-outline-danger" if not site["noticias"] else "btn-outline-info"
         file.write(f'<a class="btn btn-space {classe_btn} btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex{i}" role="button" aria-expanded="false">{site["nome"]}</a>')
     file.write('</p>')
 
-    # --- SETOR DE JANELAS FLUTUANTES (SÓ APARECEM NO CLIQUE) ---
+    # --- SETOR DE CAIXAS TOTALMENTE FECHADAS POR PADRÃO (Sem a classe 'show') ---
     
-    # Janela de Palavras-Chave (Sem a classe 'show', nasce oculta e limpa)
+    # Caixa Palavras-Chave (Totalmente Fechada)
     file.write('<div class="collapse" id="collapseKeywords" data-parent="#myGroup"><div class="card card-body">')
-    file.write(f'<div class="box-title-inner"><span>🎯 Palavras-Chave ({", ".join(keywords)})</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Fechar / Subir</span></div>')
+    file.write(f'<div class="box-title-inner"><span>🎯 Palavras-Chave ({", ".join(keywords)})</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Subir</span></div>')
     if not noticias_filtradas_urgentes:
         file.write('<p class="text-muted">Nenhum artigo correspondente encontrado.</p>')
     else:
         for n in noticias_filtradas_urgentes:
-            file.write(f'<a href="{n["url"]}" target="_blank" class="font-weight-bold" style="color:#2563eb;">📌 [{n["fonte"]}] {n["texto"]}</a></br>\n')
+            file.write(f'<a href="{n["url"]}" target="_blank" class="font-weight-bold" style="color:#0b516f;">📌 [{n["fonte"]}] {n["texto"]}</a></br>\n')
             if n["traducao"] and n["traducao"] != n["texto"]:
                 file.write(f'<span class="sub-tra">↳ Tradução: {n["traducao"]}</span>\n')
     file.write('</div></div>\n')
 
-    # As 30 Janelas dos Portais (Todas sem a tag 'show'. O layout inicia 100% limpo e abre por clique)
+    # As 30 Janelas dos Portais (Todas "collapse" puras, nascem 100% FECHADAS)
     for i, site in enumerate(dados_painel):
         file.write(f'<div class="collapse" id="collapseIndex{i}" data-parent="#myGroup" Style><div class="card card-body">\n')
         file.write(f'<div class="box-title-inner"><span>🌐 {site["nome"]}</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div>')
@@ -180,13 +173,12 @@ with open(namefile, "w", encoding="utf-8") as file:
             file.write('<p class="text-muted">Nenhum artigo relevante capturado nesta rodada.</p>\n')
         else:
             for n in site["noticias"]:
-                file.write(f'<a href="{n["url"]}" target="_blank" style="color:#1e293b; font-weight:500;">🔗 {n["texto"]}</a></br>\n')
+                file.write(f'<a href="{n["url"]}" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 {n["texto"]}</a></br>\n')
                 if n["traducao"] and n["traducao"] != n["texto"]:
                     file.write(f'<span class="sub-tra">↳ {n["traducao"]}</span>\n')
                     
         file.write('</div></div>\n')
 
-    # Scripts do Bootstrap + Lógica de animação suave e botão dinâmico
     file.write('''</div><div>
     <script src="https://jquery.com"></script>
     <script src="https://cloudflare.com"></script>
@@ -206,4 +198,4 @@ with open(namefile, "w", encoding="utf-8") as file:
     </script>
     </div></body></html>''')
 
-print("Sucesso total! Design de janelas limpas e flutuantes por clique totalmente restaurado.")
+print("Sucesso! O design dos boxes fixos e fechados foi 100% corrigido.")
