@@ -1,0 +1,34 @@
+name: Executar Monitor Diário Completo
+
+on:
+  schedule:
+    # Executa de forma totalmente automática duas vezes ao dia: às 06:00 e às 18:00 (Horário de Brasília)
+    - cron: '0 9,21 * * *'
+  workflow_dispatch: # ATIVA O BOTÃO MANUAL: Permite rodar todas as tarefas com 1 único clique
+
+jobs:
+  executar_raspagem:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 1. Baixar o código do repositório
+      uses: actions/checkout@v4
+
+    - name: 2. Configurar o Python do sistema
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: 3. Instalar dependências (incluindo o deep-translator)
+      run: |
+        pip install -r requirements.txt
+
+    - name: 4. Executar o Script Python (atualizar.py)
+      run: python atualizar.py
+
+    - name: 5. Gravar e atualizar os resultados no index.html
+      run: |
+        git config --global user.name "GitHub Action Bot"
+        git config --global user.email "action@github.com"
+        git add index.html
+        # Verifica se o arquivo mudou para evitar commits vazios que dão erro
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Painel atualizado automaticamente pelo robô" && git push)
