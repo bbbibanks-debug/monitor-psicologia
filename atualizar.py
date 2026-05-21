@@ -16,13 +16,13 @@ data_e_hora_em_texto = data_e_hora_sao_paulo.strftime("%d/%m/%Y às %H:%M")
 # Nome padrão do arquivo de saída
 namefile = "index.html"
 
-# 3) Carregamento da lista de exclusão independente
+# 3) Carregamento corrigido da lista de exclusão independente externa
 urls_bloqueadas = []
 if os.path.exists("blacklist.txt"):
     with open("blacklist.txt", "r", encoding="utf-8") as f:
-        urls_bloqueadas = [linha.strip().lower() for linea in f if linha.strip()]
+        urls_bloqueadas = [linha.strip().lower() for linha in f if linha.strip()]
 
-# Mapping - LISTA LIMPA (Removidos os sites com erros 403 e 404)
+# Mapping - Apenas os sites estáveis e funcionais
 links = [
     "https://verywellmind.com",
     "https://psychologytoday.com",
@@ -170,7 +170,7 @@ with open(namefile, "w", encoding="utf-8") as file:
         file.write(f'  <button class="btn-fonte{classe_ativa}" onclick="mostrarConteudo({idx}, this)">{nome}</button>\n')
     file.write('</div>\n\n')
 
-    # Correção crucial do desempacotamento inicial (Lendo explicitamente o índice 0)
+    # Caixa dinâmica inicial
     file.write('<div class="caixa-dinamica" id="conteudoResultados">\n')
     if 0 in links_raspados_por_fonte and len(links_raspados_por_fonte[0]) > 0:
         for url_lnk, txt_lnk, trad_lnk in links_raspados_por_fonte[0]:
