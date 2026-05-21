@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import requests
 from datetime import datetime, timezone, timedelta
 from deep_translator import GoogleTranslator
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urljoin
 
 # 2) Horário e Data da última captura (Horário de Brasília)
 diferenca = timedelta(hours=-3)
@@ -30,7 +30,8 @@ links = [
     "https://nih.gov",
     "https://apa.org",
     "https://apa.org",
-    "https://google.com",
+    # Link do Google Notícias parametrizado exatamente como solicitado
+    "https://news.google.com/topics/CAAqJQgKIh9DQkFTRVFvSUwyMHZNRFZ4Wm1nU0JYQjBMVUpTS0FBUAE?hl=pt-BR&gl=BR&ceid=BR%3Apt-419",
     "https://sbponline.org.br",
     "https://neurosciencenews.com",
     "https://positivepsychology.com",
@@ -67,7 +68,7 @@ tradutor = GoogleTranslator(source='auto', target='pt')
 def traduzir_texto(texto):
     if not texto or len(texto.strip()) < 3:
         return ""
-    if texto.strip().startswith("http") or any(p in texto.lower() for p in ["psicologia", "saúde", "mente", "notícias", "conselho", "noticias", "crp"]):
+    if texto.strip().startswith("http") or any(p in texto.lower() for p in ["psicologia", "saúde", "mente", "notícias", "conselho", "noticias", "crp", "borderline", "narcisista"]):
         return texto
     try:
         return tradutor.translate(texto)
@@ -89,29 +90,64 @@ for x in range(len(links)):
         response.raise_for_status()
         p_obj = BeautifulSoup(response.text, "html.parser")
         
-        vistos = set() # Evita duplicados na mesma fonte
+        vistos = set()
         
-        # 1) ALGORITMO DE RASPAGEM AMPLIADA (SITE RAIZ COMPLETO)
-        # Varre todas as tags de link ('a') presentes em toda a página inicial
-        for z in p_obj.find_all("a", href=True):
-            href = z.get("href")
-            url_completa = urljoin(url_raiz, href) # Resolve links relativos automaticamente
-            
-            if not url_permitida(url_completa) or url_completa in vistos:
-                continue
+        # === RASPAGEM REFINADA DO GOOGLE NOTÍCIAS (ÍNDICE 6) ===
+        if x == 6:
+            # Varre os artigos estruturais do feed do Google Notícias
+            for art in p_obj.find_all("article"):
+                # Captura o link real da notícia mapeado pelas tags internas
+                z = art.find("a", href=True)
+                if z and z.get("href"):
+                    href_val = z.get("href")
+                    url_completa = urljoin("https://news.google.com", href_val)
+                    
+                    if url_permitida(url_completa) and url_completa not in vistos:
+                        # Extrai o título da notícia procurando pelo texto de cabeçalho interno relevante
+                        txt = ""
+                        for elem in art.find_all(["h3", "h4", "a"]):
+                            if elem.text.strip():
+                                txt = elem.text.strip()
+                                break
+                        
+                        if len(txt) > 12:
+                            vistos.add(url_completa)
+                            # Como o feed já está em português brasileiro, passamos o texto direto
+                            links_raspados_por_fonte[x].append((url_completa, txt, txt))
+                            
+        # === RASPAGEM DA SCIENTIFIC AMERICAN REFINADA (ÍNDICE 2) ===
+        elif x == 2:
+            for h_tag in p_obj.find_all(["h2", "h3"]):
+                z = h_tag.find("a", href=True) if h_tag.name != "a" else h_tag
+                if not z and h_tag.parent.name == "a":
+                    z = h_tag.parent
                 
-            # Captura o texto visível ou o título interno do link
-            txt = z.text.strip()
-            if not txt and z.get("title"):
-                txt = z.get("title").strip()
+                if z and z.get("href"):
+                    url_completa = urljoin(url_raiz, z.get("href"))
+                    if url_permitida(url_completa) and url_completa not in vistos:
+                        txt = h_tag.text.strip()
+                        if len(txt) > 15:
+                            vistos.add(url_completa)
+                            links_raspados_por_fonte[x].append((url_completa, txt, traduzir_texto(txt)))
+                            
+        # === OUTROS SITES (MANTENDO A BUSCA AMPLIADA SEGUNDO O PADRÃO GERAL) ===
+        else:
+            for z in p_obj.find_all("a", href=True):
+                href = z.get("href")
+                url_completa = urljoin(url_raiz, href)
                 
-            # Limpeza de ruídos comuns da página inicial (menus, botões vazios, termos repetidos)
-            if len(txt) < 15 or any(menu in txt.lower() for menu in ["home", "about us", "contact", "privacy policy", "terms of use", "subscribe", "login", "sign in", "facebook", "twitter", "instagram", "linkedin", "cookies"]):
-                continue
-                
-            # Armazena e traduz o artigo válido encontrado
-            vistos.add(url_completa)
-            links_raspados_por_fonte[x].append((url_completa, txt, traduzir_texto(txt)))
+                if not url_permitida(url_completa) or url_completa in vistos:
+                    continue
+                    
+                txt = z.text.strip()
+                if not txt and z.get("title"):
+                    txt = z.get("title").strip()
+                    
+                if len(txt) < 15 or any(menu in txt.lower() for menu in ["home", "about us", "contact", "privacy policy", "terms of use", "subscribe", "login", "sign in", "facebook", "twitter", "instagram", "linkedin", "cookies"]):
+                    continue
+                    
+                vistos.add(url_completa)
+                links_raspados_por_fonte[x].append((url_completa, txt, traduzir_texto(txt)))
             
     except Exception as e:
         print(f"Erro ao raspar {links[x]}: {e}")
@@ -122,7 +158,7 @@ with open(namefile, "w", encoding="utf-8") as file:
     file.write('<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n')
     file.write('<title>PSI LINKS BOARD</title>\n')
     
-    # === DESIGN MANTIDO RIGOROSAMENTE INALTERADO ===
+    # CSS Totalmente Preservado
     file.write('<style>\n')
     file.write('  body { font-family: system-ui, -apple-system, sans-serif; margin: 0; padding: 24px; color: #333; background-color: #ffffff; }\n')
     file.write('  h1 { font-size: 28px; font-weight: bold; margin-bottom: 2px; color: #111; }\n')
@@ -157,10 +193,10 @@ with open(namefile, "w", encoding="utf-8") as file:
         file.write(f'  <button class="btn-fonte{classe_ativa}" onclick="mostrarConteudo({idx}, this)">{nome}</button>\n')
     file.write('</div>\n\n')
 
-    # Inicialização da caixa dinâmica com os dados da primeira fonte (VeryWell Mind)
+    # Inicialização da caixa dinâmica com os dados da primeira fonte
     file.write('<div class="caixa-dinamica" id="conteudoResultados">\n')
-    if 0 in links_raspados_por_fonte and len(links_raspados_por_fonte[0]) > 0:
-        for url_lnk, txt_lnk, trad_lnk in links_raspados_por_fonte[0]:
+    if 0 in links_raspados_por_fonte and len(links_raspados_por_fonte) > 0:
+        for url_lnk, txt_lnk, trad_lnk in links_raspados_por_fonte:
             file.write('  <div class="item-artigo">\n')
             file.write(f'    <a href="{url_lnk}" target="_blank">{txt_lnk if txt_lnk else url_lnk}</a>\n')
             if trad_lnk and trad_lnk != txt_lnk:
