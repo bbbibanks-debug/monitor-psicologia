@@ -20,9 +20,9 @@ namefile = "index.html"
 urls_bloqueadas = []
 if os.path.exists("blacklist.txt"):
     with open("blacklist.txt", "r", encoding="utf-8") as f:
-        urls_bloqueadas = [linha.strip().lower() for linha in f if linha.strip()]
+        urls_bloqueadas = [linha.strip().lower() for linea in f if linha.strip()]
 
-# Mapping
+# Mapping - LISTA LIMPA (Removidos os sites com erros 403 e 404)
 links = [
     "https://verywellmind.com",
     "https://psychologytoday.com",
@@ -30,24 +30,16 @@ links = [
     "https://nih.gov",
     "https://apa.org",
     "https://apa.org",
-    # Link do Google Notícias parametrizado exatamente como solicitado
-    "https://news.google.com/topics/CAAqJQgKIh9DQkFTRVFvSUwyMHZNRFZ4Wm1nU0JYQjBMVUpTS0FBUAE?hl=pt-BR&gl=BR&ceid=BR%3Apt-419",
+    "https://google.com",
     "https://sbponline.org.br",
     "https://neurosciencenews.com",
     "https://positivepsychology.com",
     "https://psychcentral.com",
-    "http://iqscorner.com",
     "https://happierhuman.com",
     "https://psychnewsdaily.com",
-    "https://psychiatrictimes.com",
-    "https://psychologicalscience.org",
     "https://cfp.org.br",
-    "https://scielo.br",
-    "https://crpsp.org",
-    "https://elpais.com",
     "https://globo.com",
     "https://medicalxpress.com",
-    "https://psychreg.org",
     "https://uol.com.br",
     "https://libsyn.com",
     "https://amenteemaravilhosa.com.br",
@@ -92,36 +84,28 @@ for x in range(len(links)):
         
         vistos = set()
         
-        # === RASPAGEM REFINADA DO GOOGLE NOTÍCIAS (ÍNDICE 6) ===
-        if x == 6:
-            # Varre os artigos estruturais do feed do Google Notícias
+        # === GOOGLE NOTÍCIAS REFINADO ===
+        if "://google.com" in url_raiz:
             for art in p_obj.find_all("article"):
-                # Captura o link real da notícia mapeado pelas tags internas
                 z = art.find("a", href=True)
                 if z and z.get("href"):
-                    href_val = z.get("href")
-                    url_completa = urljoin("https://news.google.com", href_val)
-                    
+                    url_completa = urljoin("https://://google.com", z.get("href"))
                     if url_permitida(url_completa) and url_completa not in vistos:
-                        # Extrai o título da notícia procurando pelo texto de cabeçalho interno relevante
                         txt = ""
                         for elem in art.find_all(["h3", "h4", "a"]):
                             if elem.text.strip():
                                 txt = elem.text.strip()
                                 break
-                        
                         if len(txt) > 12:
                             vistos.add(url_completa)
-                            # Como o feed já está em português brasileiro, passamos o texto direto
                             links_raspados_por_fonte[x].append((url_completa, txt, txt))
                             
-        # === RASPAGEM DA SCIENTIFIC AMERICAN REFINADA (ÍNDICE 2) ===
-        elif x == 2:
+        # === SCIENTIFIC AMERICAN REFINADA ===
+        elif "scientificamerican.com" in url_raiz:
             for h_tag in p_obj.find_all(["h2", "h3"]):
                 z = h_tag.find("a", href=True) if h_tag.name != "a" else h_tag
                 if not z and h_tag.parent.name == "a":
                     z = h_tag.parent
-                
                 if z and z.get("href"):
                     url_completa = urljoin(url_raiz, z.get("href"))
                     if url_permitida(url_completa) and url_completa not in vistos:
@@ -130,27 +114,22 @@ for x in range(len(links)):
                             vistos.add(url_completa)
                             links_raspados_por_fonte[x].append((url_completa, txt, traduzir_texto(txt)))
                             
-        # === OUTROS SITES (MANTENDO A BUSCA AMPLIADA SEGUNDO O PADRÃO GERAL) ===
+        # === OUTROS SITES (BUSCA AMPLIADA GERAL) ===
         else:
             for z in p_obj.find_all("a", href=True):
-                href = z.get("href")
-                url_completa = urljoin(url_raiz, href)
-                
+                url_completa = urljoin(url_raiz, z.get("href"))
                 if not url_permitida(url_completa) or url_completa in vistos:
                     continue
-                    
                 txt = z.text.strip()
                 if not txt and z.get("title"):
                     txt = z.get("title").strip()
-                    
-                if len(txt) < 15 or any(menu in txt.lower() for menu in ["home", "about us", "contact", "privacy policy", "terms of use", "subscribe", "login", "sign in", "facebook", "twitter", "instagram", "linkedin", "cookies"]):
+                if len(txt) < 15 or any(m in txt.lower() for m in ["home", "about us", "contact", "privacy policy", "terms of use", "subscribe", "login", "sign in", "facebook", "twitter", "instagram", "linkedin", "cookies"]):
                     continue
-                    
                 vistos.add(url_completa)
                 links_raspados_por_fonte[x].append((url_completa, txt, traduzir_texto(txt)))
             
     except Exception as e:
-        print(f"Erro ao raspar {links[x]}: {e}")
+        print(f"Aviso: Omissão temporária ou erro ao raspar {links[x]}: {e}")
 
 # Geração do arquivo HTML definitivo - DESIGN EXIGIDO 100% INTACTO
 with open(namefile, "w", encoding="utf-8") as file:
@@ -158,7 +137,6 @@ with open(namefile, "w", encoding="utf-8") as file:
     file.write('<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n')
     file.write('<title>PSI LINKS BOARD</title>\n')
     
-    # CSS Totalmente Preservado
     file.write('<style>\n')
     file.write('  body { font-family: system-ui, -apple-system, sans-serif; margin: 0; padding: 24px; color: #333; background-color: #ffffff; }\n')
     file.write('  h1 { font-size: 28px; font-weight: bold; margin-bottom: 2px; color: #111; }\n')
@@ -182,9 +160,8 @@ with open(namefile, "w", encoding="utf-8") as file:
     nomes_fontes = [
         "VeryWell Mind", "Psychology Today", "Scientific American", "The National Institute of Mental Health (NIMH)",
         "APA PsyPort", "APA Monitor", "Google Notícias", "SBP", "Neuroscience", "Positive Psychology",
-        "Positive Psychcentral", "IQ's Corner", "Happier Human", "PsyNewsDaily", "Psychiatric Times", "APS", "CFP",
-        "Psicologia USP", "Conselho Regional de Psicologia SP", "El País Psicologia", "G1 Saúde Mental",
-        "Medical Xpress", "Psychreg", "Folha Equilíbrio Mente", "PsychCrunch", "A Mente é Maravilhosa-Neurociência",
+        "Positive Psychcentral", "Happier Human", "PsyNewsDaily", "CFP", "G1 Saúde Mental",
+        "Medical Xpress", "Folha Equilíbrio Mente", "PsychCrunch", "A Mente é Maravilhosa-Neurociência",
         "A Mente é Maravilhosa-Psicologia", "A Mente é Maravilhosa-Relações", "A Mente é Maravilhosa-Saúde", "Big Think"
     ]
     
@@ -193,10 +170,10 @@ with open(namefile, "w", encoding="utf-8") as file:
         file.write(f'  <button class="btn-fonte{classe_ativa}" onclick="mostrarConteudo({idx}, this)">{nome}</button>\n')
     file.write('</div>\n\n')
 
-    # Inicialização da caixa dinâmica com os dados da primeira fonte
+    # Correção crucial do desempacotamento inicial (Lendo explicitamente o índice 0)
     file.write('<div class="caixa-dinamica" id="conteudoResultados">\n')
-    if 0 in links_raspados_por_fonte and len(links_raspados_por_fonte) > 0:
-        for url_lnk, txt_lnk, trad_lnk in links_raspados_por_fonte:
+    if 0 in links_raspados_por_fonte and len(links_raspados_por_fonte[0]) > 0:
+        for url_lnk, txt_lnk, trad_lnk in links_raspados_por_fonte[0]:
             file.write('  <div class="item-artigo">\n')
             file.write(f'    <a href="{url_lnk}" target="_blank">{txt_lnk if txt_lnk else url_lnk}</a>\n')
             if trad_lnk and trad_lnk != txt_lnk:
