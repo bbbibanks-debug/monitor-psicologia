@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PSI LINKS BOARD</title>
 <style>
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 24px; color: #212529; background-color: #fff; }
-  h1 { font-size: 2rem; font-weight: 700; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 0.5px; }
-  .grid-botoes { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
-  .btn-fonte { background: #fff; border: 1px solid #17a2b8; color: #17a2b8; padding: 10px 16px; font-size: 16px; border-radius: 6px; cursor: pointer; transition: all 0.2s ease; text-decoration: none; display: inline-block; font-weight: 400; }
-  .btn-fonte:hover { background-color: #17a2b8; color: #fff; }
-  .btn-fonte.ativo { background-color: #e2f6f8; border-color: #117a8b; color: #117a8b; font-weight: 500; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); }
-  .caixa-dinamica { border: 1px solid #dee2e6; border-radius: 6px; padding: 20px; min-height: 100px; background-color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-  .caixa-dinamica a { display: block; color: #007bff; text-decoration: none; margin-bottom: 10px; font-size: 15px; line-height: 1.4; }
-  .caixa-dinamica a:hover { text-decoration: underline; color: #0056b3; }
-  .vazio { color: #6c757d; font-style: italic; }
+  body { font-family: system-ui, -apple-system, sans-serif; margin: 0; padding: 24px; color: #333; background-color: #ffffff; }
+  h1 { font-size: 28px; font-weight: bold; margin-bottom: 20px; color: #111; }
+  .grid-botoes { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+  .btn-fonte { background: #ffffff; border: 1px solid #1192a4; color: #1192a4; padding: 8px 14px; font-size: 15px; border-radius: 6px; cursor: pointer; transition: all 0.15s ease; font-weight: 400; }
+  .btn-fonte:hover { background-color: #1192a4; color: #ffffff; }
+  .btn-fonte.ativo { background-color: #e6f7f9; border-color: #0b6c7a; color: #0b6c7a; font-weight: 500; }
+  .caixa-dinamica { border: 1px solid #cccccc; border-radius: 6px; padding: 20px; min-height: 120px; background-color: #ffffff; }
+  .caixa-dinamica a { display: block; color: #0066cc; text-decoration: none; margin-bottom: 12px; font-size: 15px; line-height: 1.4; }
+  .caixa-dinamica a:hover { text-decoration: underline; color: #004499; }
+  .vazio { color: #777777; font-style: italic; }
 </style>
 </head>
 <body>
@@ -52,7 +52,6 @@
   <button class="btn-fonte" onclick="mostrarConteudo(29, this)">Big Think</button>
 </div>
 
-<!-- Caixa de resultados dinâmica -->
 <div class="caixa-dinamica" id="conteudoResultados">
   <a href="https://www.verywellmind.com/mental-health-and-exercise-11935851" target="_blank">Move Your Body, Lift Your Mind: The Mental Health Benefits of Exercise</a>
   <a href="https://www.verywellmind.com/a-therapist-explains-the-6-signs-that-you-should-dump-your-psychiatrist-8601888" target="_blank">6 Signs That You Should Dump Your Psychiatrist, According to a Mental Health Professional</a>
@@ -84,7 +83,6 @@ Neurologist</a>
 </div>
 
 <script>
-  // Banco de dados em memória gerado pela raspagem
   const bancoDeDados = {
     0: [
       { url: "https://www.verywellmind.com/mental-health-and-exercise-11935851", texto: "Move Your Body, Lift Your Mind: The Mental Health Benefits of Exercise" },
@@ -408,6 +406,8 @@ Neurologist</a>
       { url: "https://medicalxpress.com/news/2026-05-origami-method-diagnosis-neurodegenerative-disease.html", texto: "" },
       { url: "https://medicalxpress.com/news/2026-05-smartphone-cravings-lapses-potential-addiction.html", texto: "Smartphone data predict smoking cravings and lapses, with potential to treat addiction and other conditions" },
       { url: "https://medicalxpress.com/news/2026-05-smartphone-cravings-lapses-potential-addiction.html", texto: "" },
+      { url: "https://medicalxpress.com/news/2026-05-energy-age-membrane-lipid-destabilize.html", texto: "Why energy fades with age: Missing membrane lipid may destabilize mitochondria" },
+      { url: "https://medicalxpress.com/news/2026-05-energy-age-membrane-lipid-destabilize.html", texto: "" },
       { url: "https://medicalxpress.com/news/2026-05-gut-bacteria-linked-immunotherapy-success.html", texto: "Gut bacteria linked to immunotherapy success in melanoma patients" },
       { url: "https://medicalxpress.com/news/2026-05-gut-bacteria-linked-immunotherapy-success.html", texto: "" },
       { url: "https://medicalxpress.com/news/2026-05-early-diabetes-children-feasible-routine.html", texto: "Early detection of type 1 diabetes in children is feasible from routine pediatric care" },
@@ -441,11 +441,10 @@ Neurologist</a>
       { url: "https://medicalxpress.com/news/2026-05-heart-chambers-severely-affected-atrial.html", texto: "" },
       { url: "https://medicalxpress.com/news/2026-05-gestational-diabetes-weight.html", texto: "Gestational diabetes increases risk of type 2 diabetes—even at normal weight" },
       { url: "https://medicalxpress.com/news/2026-05-gestational-diabetes-weight.html", texto: "" },
-      { url: "https://medicalxpress.com/news/2026-05-teenager-food-choices-life.html", texto: "What you eat as a teenager may shape food choices later in life" },
-      { url: "https://medicalxpress.com/news/2026-05-teenager-food-choices-life.html", texto: "" },
       { url: "https://medicalxpress.com/news/2026-05-scientists-capture-housekeeping-immune-cells.html", texto: "Scientists capture 'housekeeping' immune cells attacking live melanoma" },
       { url: "https://medicalxpress.com/news/2026-05-origami-method-diagnosis-neurodegenerative-disease.html", texto: "'Origami' method could speed up diagnosis of neurodegenerative disease" },
       { url: "https://medicalxpress.com/news/2026-05-smartphone-cravings-lapses-potential-addiction.html", texto: "Smartphone data predict smoking cravings and lapses, with potential to treat addiction and other conditions" },
+      { url: "https://medicalxpress.com/news/2026-05-energy-age-membrane-lipid-destabilize.html", texto: "Why energy fades with age: Missing membrane lipid may destabilize mitochondria" },
       { url: "https://medicalxpress.com/news/2026-05-gut-bacteria-linked-immunotherapy-success.html", texto: "Gut bacteria linked to immunotherapy success in melanoma patients" },
       { url: "https://medicalxpress.com/news/2026-05-early-diabetes-children-feasible-routine.html", texto: "Early detection of type 1 diabetes in children is feasible from routine pediatric care" },
       { url: "https://medicalxpress.com/news/2026-05-duration-depression-severely-disease-brain.html", texto: "Duration of depression may influence how severely the disease alters the brain" },
@@ -464,138 +463,16 @@ Neurologist</a>
       { url: "https://medicalxpress.com/news/2026-05-ai-everyday-language-genetic-diagnosis.html", texto: "AI uses everyday language to make genetic diagnosis easier" },
       { url: "https://medicalxpress.com/news/2026-05-heart-chambers-severely-affected-atrial.html", texto: "Both heart chambers are more severely affected in atrial fibrillation than previously thought, study reveals" },
       { url: "https://medicalxpress.com/news/2026-05-gestational-diabetes-weight.html", texto: "Gestational diabetes increases risk of type 2 diabetes—even at normal weight" },
-      { url: "https://medicalxpress.com/news/2026-05-teenager-food-choices-life.html", texto: "What you eat as a teenager may shape food choices later in life" },
     ],
     22: [
     ],
     23: [
-      { url: "https://www1.folha.uol.com.br/poder/2026/05/congresso-derruba-vetos-de-lula-e-decide-liberar-verba-a-municipios-antes-da-eleicao.shtml", texto: "Congresso derruba vetos de Lula e libera verba a cidades durante eleição" },
-      { url: "https://www1.folha.uol.com.br/ilustrada/2026/05/dark-horse-e-investigado-pela-ancine-e-pode-pagar-multa-de-ate-r-100-mil.shtml", texto: "Ancine investiga 'Dark Horse', e filme sobre Bolsonaro pode levar multa de até R$ 100 mil" },
-      { url: "https://noticias.uol.com.br/cotidiano/ultimas-noticias/2026/05/21/coletiva-autoridades-prisao-deolane-pcc.ghtm", texto: "Troca de bilhetes em presídio de SP originou investigação contra Deolane Bezerra" },
-      { url: "https://noticias.uol.com.br/politica/ultimas-noticias/2026/05/21/alcolumbre-sobre-ignorar-pedidos-de-cpmi-do-master-nao-posso-responder.ghtm", texto: "Alcolumbre evita explicar por que não leu requerimento para criar CPI do Master" },
-      { url: "https://www.uol.com.br/esporte/futebol/ultimas-noticias/2026/05/21/doria-rescinde-contrato-com-sao-paulo-apos-receber-ameacas-nas-redes.ghtm", texto: "Dória rescinde contrato com São Paulo após receber ameaças nas redes" },
-      { url: "https://tab.uol.com.br/noticias/redacao/2026/05/21/em-sp-eles-nao-tem-tempo-o-encontro-dos-milionarios-brasileiros-em-ny.htm", texto: "O Brasil do poder e do dinheiro que se reúne em Nova York à sombra do Master" },
-      { url: "https://tab.uol.com.br/noticias/redacao/2026/05/21/em-sp-eles-nao-tem-tempo-o-encontro-dos-milionarios-brasileiros-em-ny.htm", texto: "" },
-      { url: "https://www.uol.com.br/flash/?c=a1f7a1671087c2577660131fec95fe6120260521", texto: "Cadillac Escalade e Mercedes: veja carros de Deolane apreendidos pela polícia de SP" },
-      { url: "https://www1.folha.uol.com.br/esporte/2026/05/neuer-e-courtois-podem-deixar-gilmar-leao-e-taffarel-para-tras-na-copa.shtml", texto: "Neuer e Courtois podem deixar Gilmar, Leão e Taffarel para trás na Copa do Mundo" },
-      { url: "https://www.uol.com.br/carros/avaliacao/avaliacao-jetour-s06.htm", texto: "Ousadia e economia: Jetour S06 é nova aposta chinesa para quebrar barreiras" },
-      { url: "https://noticias.uol.com.br/colunas/leticia-casado/2026/05/21/campanha-flavio-marqueteiro.htm", texto: "Letícia Casado" },
-      { url: "https://noticias.uol.com.br/colunas/leticia-casado/2026/05/21/campanha-flavio-marqueteiro.htm", texto: "Gestão de Rogério Marinho agrava crise de Flávio" },
-      { url: "https://noticias.uol.com.br/colunas/alexandre-borges/2026/05/21/flavio-desaba-em-pesquisa-procura-se-paraquedas.htm", texto: "Alexandre Borges" },
-      { url: "https://noticias.uol.com.br/colunas/alexandre-borges/2026/05/21/flavio-desaba-em-pesquisa-procura-se-paraquedas.htm", texto: "Flávio desaba em pesquisa; procuram-se paraquedas" },
-      { url: "https://noticias.uol.com.br/colunas/leonardo-sakamoto/2026/05/21/flavio-bolsonaro-culpa-a-azeitona-da-empada-apos-indigestao-no-rodizio.htm", texto: "Sakamoto" },
-      { url: "https://noticias.uol.com.br/colunas/leonardo-sakamoto/2026/05/21/flavio-bolsonaro-culpa-a-azeitona-da-empada-apos-indigestao-no-rodizio.htm", texto: "Flávio Bolsonaro desconta no marqueteiro" },
-      { url: "https://www.uol.com.br/esporte/colunas/milly-lacombe/2026/05/21/palmeiras-sob-vaias-e-justo.htm", texto: "Milly Lacombe" },
-      { url: "https://www.uol.com.br/esporte/colunas/milly-lacombe/2026/05/21/palmeiras-sob-vaias-e-justo.htm", texto: "Palmeiras sob vaias é justo?" },
       { url: "https://www.uol.com.br/guia-de-compras/ao-vivo/2025/06/18/monitor-de-ofertas-uol.htm", texto: "MONITOR DE OFERTAS" },
-      { url: "https://www.uol.com.br/guia-de-compras/ao-vivo/2025/06/18/monitor-de-ofertas-uol.htm", texto: "Secador 5 em 1 com escova, babyliss e difusor está por R$ 376; veja mais" },
-      { url: "https://www.uol.com.br/esporte/futebol/ultimas-noticias/2026/05/21/neymar-trata-lesao-no-ct-enquanto-santos-estuda-homenagem-antes-da-selecao.ghtm", texto: "Neymar trata lesão no CT, enquanto Santos estuda homenagem antes de ida à seleção" },
-      { url: "https://www.uol.com.br/flash/?c=b293ed64387b6f6c8c551fa3396bce20260521", texto: "Julio Gomes: Abel apontou o dedo para os jogadores após derrota" },
-      { url: "https://noticias.uol.com.br/colunas/carlos-madeiro/2026/05/21/frances-baleado-foi-alvo-de-emboscada-de-influenciadora-no-ce-diz-policia.htm", texto: "Francês baleado foi alvo de emboscada de influenciadora no Ceará, diz polícia" },
-      { url: "https://www1.folha.uol.com.br/colunas/monicabergamo/2026/05/camara-de-sp-vota-projeto-para-colocar-parada-lgbt-em-lugares-fechados-e-sem-menores.shtml", texto: "Câmara de SP avança projeto para pôr Parada LGBT+ em lugar fechado e sem menores" },
-      { url: "https://www.uol.com.br/carros/colunas/paula-gama/2026/05/21/industria-de-pneus-segue-anfavea-e-pede-imposto-maior-para-importados.htm", texto: "Como pneu chinês virou a nova ameaça à indústria automotiva no Brasil" },
-      { url: "https://economia.uol.com.br/noticias/estadao-conteudo/2026/05/21/aneel-aprova-por-unanimidade-homologacao-dos-produtos-de-2026-do-leilao-de-reserva.htm", texto: "Aneel aprova usinas térmicas em leilão alvo de disputa judicial" },
-      { url: "https://noticias.uol.com.br/colunas/carla-araujo/2026/05/21/gilmarpalloza-quer-limpar-estigma-e-tera-como-atracao-nobel-de-economia.htm", texto: "'Gilmarpalooza' quer limpar estigma e terá como atração Nobel de Economia" },
-      { url: "https://www.uol.com.br/flash/?c=f17c7718e8b4ba4de8a59166a2e14a20260521", texto: "Deputada do PL defende a escala 6x1 e é vaiada por trabalhadores na Câmara" },
-      { url: "https://economia.uol.com.br/noticias/redacao/2026/05/21/novo-desenrola-renegociacao-dividas-ministerio-da-fazenda-dario-durigan.ghtm", texto: "Novo Desenrola: mais de 1 milhão de pessoas já renegociaram R$ 10 bilhões em dívidas" },
       { url: "https://www.ingresso.com/?city=sao-paulo&partnership=home&utm_source=uol.com.br&utm_medium=link-logo&utm_campaign=modulo-home-uol", texto: "Ingresso.com" },
-      { url: "https://www.uol.com.br/flash/?c=1bfeb49dc9fa65d067c2adb7dff176be20260520", texto: "Nem toda reforma precisa apagar o passado: casa de 1940 em SP se renova e mantém memória viva" },
-      { url: "https://www.uol.com.br/flash/?c=94bec7e9e0f4796118153bcc8cbf1a8720260521", texto: "Assista ao novo trailer da segunda temporada de 'Avatar: O Último Mestre do Ar'" },
-      { url: "https://economia.uol.com.br/noticias/redacao/2026/05/21/uol-lanca-comunidade-para-otakus-e-reforca-conteudo-de-anime.ghtm", texto: "Squad de animes: UOL apresenta time de criadores de conteúdo otaku; conheça" },
-      { url: "https://tnonline.uol.com.br/noticias/parana/desaparecimento-de-primas-no-pr-completa-30-dias-veja-o-que-a-policia-sabe-ate-agora-1091731", texto: "Desaparecimento de primas no PR completa 30 dias; veja o que a polícia sabe até agora" },
-      { url: "https://noticias.uol.com.br/internacional/ultimas-noticias/2026/05/21/gemeas-fazem-historia-e-conquistam-os-maiores-titulos-academicos-nos-eua.ghtm", texto: "Gêmeas fazem história e conquistam maiores títulos do ensino médio nos Estados Unidos" },
-      { url: "https://noticias.uol.com.br/cotidiano/ultimas-noticias/2026/05/21/por-que-achar-petroleo-no-meu-quintal-nao-garante-que-eu-va-ficar-rico.ghtm", texto: "Por que achar petróleo no meu quintal não garante que eu vá ficar rico" },
       { url: "https://www.uol.com.br/flash/?c=cb79f019ffefb2664b64d1adefa047fc20260520", texto: "FILMES E SÉRIES" },
-      { url: "https://www.uol.com.br/flash/?c=cb79f019ffefb2664b64d1adefa047fc20260520", texto: "Bruxas, entidades malignas e espíritos do bem: os lançamentos da semana nos cinemas" },
-      { url: "https://www.uol.com.br/esporte/futebol/ultimas-noticias/2026/05/21/uol-tera-loja-exclusiva-com-itens-inspirados-em-jargoes-do-esporte.ghtm", texto: "Em clima de Copa, UOL lança loja de camisetas de futebol" },
-      { url: "https://noticias.uol.com.br/ultimas-noticias/afp/2026/05/21/epidemia-de-ebola-se-propaga-na-republica-democratica-do-congo.htm", texto: "República Democrática do Congo tem ao menos 160 mortes suspeitas por ebola" },
-      { url: "https://www.uol.com.br/flash/?c=720e9feca9ee83536a132b89836178520260520", texto: "No pop, no indie ou no jazz, mulheres tomam palcos do C6 Fest; veja a programação" },
-      { url: "https://www.uol.com.br/flash/?c=1484b35dac302a5cfec03e3fd9e0120260520", texto: "'Abuso fez personagem perder a capacidade de expressar emoções', diz atriz de 'Off Campus'" },
-      { url: "https://economia.uol.com.br/colunas/aline-sordili/2026/05/21/james-murdoch-fecha-acordo-por-parte-da-vox-e-expoe-preco-da-midia-na-ia.htm", texto: "James Murdoch fecha acordo por parte da Vox e expõe preço da mídia na IA" },
       { url: "https://noticias.uol.com.br/blogs-e-colunas", texto: "Colunistas" },
-      { url: "https://economia.uol.com.br/colunas/aline-sordili/2026/05/21/james-murdoch-fecha-acordo-por-parte-da-vox-e-expoe-preco-da-midia-na-ia.htm ", texto: "Aline Sordili" },
-      { url: "https://economia.uol.com.br/colunas/aline-sordili/2026/05/21/james-murdoch-fecha-acordo-por-parte-da-vox-e-expoe-preco-da-midia-na-ia.htm ", texto: "James Murdoch fecha acordo por parte da Vox e expõe preço da mídia na IA" },
-      { url: "https://www.uol.com.br/splash/colunas/na-sua-tela/2026/05/21/disney-plus-super-app-flywheel-walt.htm", texto: "Na Sua Tela" },
-      { url: "https://www.uol.com.br/splash/colunas/na-sua-tela/2026/05/21/disney-plus-super-app-flywheel-walt.htm", texto: "Demorou 100 anos, mas o Disney+ pode concretizar o sonho de Walt" },
-      { url: "https://www.uol.com.br/vivabem/colunas/lucia-helena/2026/05/21/por-que-o-sus-ainda-prescreve-drogas-ineficazes-contra-o-cancer-de-prostata.htm ", texto: "Lúcia Helena" },
-      { url: "https://www.uol.com.br/vivabem/colunas/lucia-helena/2026/05/21/por-que-o-sus-ainda-prescreve-drogas-ineficazes-contra-o-cancer-de-prostata.htm ", texto: "Por que o SUS ainda prescreve drogas ineficazes contra o câncer de próstata" },
-      { url: "https://noticias.uol.com.br/colunas/joao-paulo-charleaux/2026/05/21/escandalo-da-flotilha-coroa-derrota-moral-de-israel.htm", texto: "João Paulo Charleaux" },
-      { url: "https://noticias.uol.com.br/colunas/joao-paulo-charleaux/2026/05/21/escandalo-da-flotilha-coroa-derrota-moral-de-israel.htm", texto: "Escândalo da flotilha coroa derrota moral de Israel" },
-      { url: "https://noticias.uol.com.br/colunas/daniela-lima/2026/05/21/nosso-ministro-alexandre-de-moraes-stf-ve-michelle-de-olho-no-planalto.htm ", texto: "Daniela Lima" },
-      { url: "https://noticias.uol.com.br/colunas/daniela-lima/2026/05/21/nosso-ministro-alexandre-de-moraes-stf-ve-michelle-de-olho-no-planalto.htm ", texto: "'Nosso ministro Alexandre de Moraes': STF vê Michelle de olho no Planalto" },
-      { url: "https://www1.folha.uol.com.br/colunas/dora-kramer/2026/05/malandragem-de-deputados-tenta-fazer-o-publico-de-mane.shtml", texto: "Dora Kramer" },
-      { url: "https://www1.folha.uol.com.br/colunas/dora-kramer/2026/05/malandragem-de-deputados-tenta-fazer-o-publico-de-mane.shtml", texto: "Malandragem de deputados tenta fazer o público de mané" },
-      { url: "https://www1.folha.uol.com.br/blogs/que-imposto-e-esse/2026/05/procuradoria-de-sp-quer-arrecadar-r-74-bi-da-divida-ativa-estadual-em-2026.shtml", texto: "Que Imposto é Esse" },
-      { url: "https://www1.folha.uol.com.br/blogs/que-imposto-e-esse/2026/05/procuradoria-de-sp-quer-arrecadar-r-74-bi-da-divida-ativa-estadual-em-2026.shtml", texto: "Procuradoria de SP quer arrecadar R$ 7,4 bilhões da dívida ativa estadual em 2026" },
-      { url: "https://www1.folha.uol.com.br/colunas/djamila-ribeiro/2026/05/professor-kabengele-munanga-uma-lenda-viva.shtml", texto: "Djamila Ribeiro" },
-      { url: "https://www1.folha.uol.com.br/colunas/djamila-ribeiro/2026/05/professor-kabengele-munanga-uma-lenda-viva.shtml", texto: "Professor Kabengele Munanga: uma lenda viva" },
-      { url: "https://www.uol.com.br/splash/noticias/2026/05/21/enquadrado-no-uol.ghtm", texto: "Sadovski" },
-      { url: "https://www.uol.com.br/splash/noticias/2026/05/21/enquadrado-no-uol.ghtm", texto: "'O Mandaloriano e Grogu' não era ideal para volta de Star Wars" },
-      { url: "https://f5.folha.uol.com.br/colunistas/de-faixa-a-coroa/2026/05/gaucha-e-mineira-defendem-o-brasil-na-final-do-miss-eco-2026-conheca.shtml", texto: "De Faixa a Coroa" },
-      { url: "https://f5.folha.uol.com.br/colunistas/de-faixa-a-coroa/2026/05/gaucha-e-mineira-defendem-o-brasil-na-final-do-miss-eco-2026-conheca.shtml", texto: "Gaúcha e mineira defendem o Brasil na final do Miss Eco 2026; conheça" },
-      { url: "https://f5.folha.uol.com.br/colunistas/rosana-hermann/2026/05/virginia-fonseca-e-um-sintoma-da-sociedade.shtml", texto: "Rosana Hermann" },
-      { url: "https://f5.folha.uol.com.br/colunistas/rosana-hermann/2026/05/virginia-fonseca-e-um-sintoma-da-sociedade.shtml", texto: "Virginia Fonseca é um sintoma da sociedade" },
-      { url: "https://www1.folha.uol.com.br/colunas/transparencia-publica/2026/05/camara-aprova-projeto-para-blindar-partidos-de-fiscalizacao-e-multas.shtml", texto: "Transparência pública" },
-      { url: "https://www1.folha.uol.com.br/colunas/transparencia-publica/2026/05/camara-aprova-projeto-para-blindar-partidos-de-fiscalizacao-e-multas.shtml", texto: "Câmara aprova projeto para blindar partidos de fiscalização e multas" },
-      { url: "https://www1.folha.uol.com.br/colunas/thiago-amparo/2026/05/cadastro-de-condenados-por-crime-sexual-e-inconstitucional.shtml", texto: "Thiago Amparo" },
-      { url: "https://www1.folha.uol.com.br/colunas/thiago-amparo/2026/05/cadastro-de-condenados-por-crime-sexual-e-inconstitucional.shtml", texto: "Cadastro de condenados por crime sexual é inconstitucional" },
-      { url: "https://www1.folha.uol.com.br/colunas/marcosaugustogoncalves/2026/05/flavio-bolsonaro-queima-o-filme-leva-cavalo-de-pau-e-lula-ganha.shtml", texto: "Marcos Augusto Gonçalves" },
-      { url: "https://www1.folha.uol.com.br/colunas/marcosaugustogoncalves/2026/05/flavio-bolsonaro-queima-o-filme-leva-cavalo-de-pau-e-lula-ganha.shtml", texto: "Flávio Bolsonaro queima o filme, leva cavalo de pau, e Lula ganha" },
-      { url: "https://www1.folha.uol.com.br/colunas/marcelo-bechler/2026/05/euforia-e-pressao-na-lista-para-a-copa.shtml", texto: "Marcelo Bechler" },
-      { url: "https://www1.folha.uol.com.br/colunas/marcelo-bechler/2026/05/euforia-e-pressao-na-lista-para-a-copa.shtml", texto: "Euforia e pressão na lista para a Copa" },
-      { url: "https://noticias.uol.com.br/colunas/carla-araujo/2026/05/21/ministros-do-stf-veem-dificuldade-em-tse-barrar-filme-sobre-bolsonaro.htm", texto: "Carla Araújo" },
-      { url: "https://noticias.uol.com.br/colunas/carla-araujo/2026/05/21/ministros-do-stf-veem-dificuldade-em-tse-barrar-filme-sobre-bolsonaro.htm", texto: "Ministros do STF veem dificuldade para TSE barrar filme sobre Bolsonaro" },
-      { url: "https://noticias.uol.com.br/colunas/natalia-portinari/2026/05/21/vorcaro-desviou-r-111-milhoes-antes-de-comprar-master-aponta-investigacao.htm", texto: "Natália Portinari" },
-      { url: "https://noticias.uol.com.br/colunas/natalia-portinari/2026/05/21/vorcaro-desviou-r-111-milhoes-antes-de-comprar-master-aponta-investigacao.htm", texto: "Vorcaro desviou R$ 111 milhões durante compra do Master, diz investigação" },
-      { url: "https://www.uol.com.br/carros/colunas/paula-gama/2026/05/21/industria-de-pneus-segue-anfavea-e-pede-imposto-maior-para-importados.htm", texto: "Paula Gama" },
-      { url: "https://www.uol.com.br/carros/colunas/paula-gama/2026/05/21/industria-de-pneus-segue-anfavea-e-pede-imposto-maior-para-importados.htm", texto: "Como pneu chinês virou a nova ameaça à indústria automotiva no Brasil" },
-      { url: "https://www.uol.com.br/esporte/colunas/pole-position/2026/05/21/gp-do-canada-datas-horarios-e-tudo-sobre-a-5-etapa-da-f1-em-2026.htm", texto: "Julianne Cerasoli" },
-      { url: "https://www.uol.com.br/esporte/colunas/pole-position/2026/05/21/gp-do-canada-datas-horarios-e-tudo-sobre-a-5-etapa-da-f1-em-2026.htm", texto: "GP do Canadá: datas, horários e mais sobre a quinta etapa da F1 em 2026" },
-      { url: "https://noticias.uol.com.br/colunas/josmar-jozino/2026/05/21/chefe-do-pcc-foragido-tres-vezes-da-prisao-e-assassinado-a-tiros-na-bolivia.htm", texto: "Josmar Jozino" },
-      { url: "https://noticias.uol.com.br/colunas/josmar-jozino/2026/05/21/chefe-do-pcc-foragido-tres-vezes-da-prisao-e-assassinado-a-tiros-na-bolivia.htm", texto: "Chefe do PCC foragido três vezes da prisão é assassinado a tiros na Bolívia" },
-      { url: "https://www.uol.com.br/esporte/colunas/saque-e-voleio/2026/05/21/joao-fonseca-estreia-contra-qualifier-na-secao-de-djokovic-em-roland-garros.htm", texto: "Saque e Voleio" },
-      { url: "https://www.uol.com.br/esporte/colunas/saque-e-voleio/2026/05/21/joao-fonseca-estreia-contra-qualifier-na-secao-de-djokovic-em-roland-garros.htm", texto: "João Fonseca estreia contra qualifier na seção de Djokovic em Roland Garros" },
-      { url: "https://www1.folha.uol.com.br/colunas/jorge-abrahao/2026/05/a-melhor-obra-que-um-gestor-publico-pode-fazer.shtml", texto: "Jorge Abrahão" },
-      { url: "https://www1.folha.uol.com.br/colunas/jorge-abrahao/2026/05/a-melhor-obra-que-um-gestor-publico-pode-fazer.shtml", texto: "A melhor obra que um gestor público pode fazer" },
-      { url: "https://www1.folha.uol.com.br/colunas/lucia-guimaraes/2026/05/guerra-vai-mal-para-a-russia-mas-recuar-nao-e-opcao-para-putin.shtml", texto: "Lúcia Guimarães" },
-      { url: "https://www1.folha.uol.com.br/colunas/lucia-guimaraes/2026/05/guerra-vai-mal-para-a-russia-mas-recuar-nao-e-opcao-para-putin.shtml", texto: "Guerra vai mal para a Rússia, mas recuar não é opção para Putin" },
-      { url: "https://www1.folha.uol.com.br/colunas/zecacamargo/2026/05/a-fantasia-dos-lugares-onde-turistas-nao-vao.shtml", texto: "Zeca Camargo" },
-      { url: "https://www1.folha.uol.com.br/colunas/zecacamargo/2026/05/a-fantasia-dos-lugares-onde-turistas-nao-vao.shtml", texto: "A fantasia dos lugares onde turistas não vão" },
-      { url: "https://www.uol.com.br/esporte/futebol/ultimas-noticias/2026/05/21/doria-rescinde-contrato-com-sao-paulo-apos-receber-ameacas-nas-redes.ghtm", texto: "Dória rescinde contrato com São Paulo após receber ameaças nas redes" },
-      { url: "https://noticias.uol.com.br/cotidiano/ultimas-noticias/2026/05/21/coletiva-autoridades-prisao-deolane-pcc.ghtm", texto: "Troca de bilhetes em presídio de SP originou investigação contra Deolane" },
-      { url: "https://www.uol.com.br/splash/noticias/2026/05/21/juliette-revela-frequencia-que-transa-e-romulo-arantes-reage-vou-embora.ghtm", texto: "Juliette diz frequência com que transa, e Romulo Estrela reage" },
-      { url: "https://noticias.uol.com.br/colunas/carlos-madeiro/2026/05/21/frances-baleado-foi-alvo-de-emboscada-de-influenciadora-no-ce-diz-policia.htm", texto: "Francês baleado foi alvo de emboscada de influenciadora no CE, diz polícia" },
-      { url: "https://noticias.uol.com.br/colunas/alexandre-borges/2026/05/21/flavio-desaba-em-pesquisa-procura-se-paraquedas.htm", texto: "Alexandre Borges: Flávio desaba em pesquisa; procuram-se paraquedas" },
       { url: "https://www.uol.com.br/esporte", texto: "Esporte" },
-      { url: "https://www.uol.com.br/esporte/futebol/ultimas-noticias/2026/05/21/al-nassr-damac-campeonato-saudita-como-foi-o-jogo.ghtm", texto: "Cristiano Ronaldo faz dois, chora, e Al-Nassr conquista título do Saudita com goleada" },
-      { url: "https://www1.folha.uol.com.br/esporte/2026/05/copa-do-mundo-leva-futebol-para-parques-escolas-e-terracos-de-ny.shtml", texto: "Copa do Mundo leva futebol para parques, escolas e terraços de Nova York" },
-      { url: "https://www.uol.com.br/esporte/futebol/ultimas-noticias/2026/05/21/davi-lacerda-e-escolhido-para-apitar-flamengo-x-palmeiras.ghtm", texto: "Davi Lacerda é escolhido para apitar Flamengo x Palmeiras no Brasileirão" },
-      { url: "https://www.uol.com.br/esporte/futebol/ultimas-noticias/2026/05/21/endrick-estevao-rayan-e-mais-4-brasileiros-sao-indicados-ao-golden-boy.ghtm", texto: "Endrick, Estêvão, Rayan e mais quatro brasileiros são indicados ao prêmio Golden Boy" },
-      { url: "https://noticias.uol.com.br/colunas/tatiana-farah/2026/05/21/ex-dirigente-do-flamengo-vai-assumir-cargo-na-camara-dos-deputados.htm", texto: "Ex-dirigente do Flamengo, Marcos Braz vai assumir cargo na Câmara dos Deputados" },
-      { url: "https://www.uol.com.br/esporte/colunas/pole-position/2026/05/21/estao-tentando-me-aposentar-mas-eu-nem-penso-nisso-diz-lewis-hamilton.htm", texto: "'Estão tentando me aposentar mas eu nem penso nisso', diz Lewis Hamilton" },
-      { url: "https://www.uol.com.br/esporte/futebol/ultimas-noticias/2026/05/21/dibu-martinez-diz-que-jogou-final-da-liga-europa-com-dedo-quebrado.ghtm", texto: "Dibu Martínez diz que jogou final da Liga Europa com dedo quebrado" },
-      { url: "https://www.uol.com.br/flash/?c=aa839bf47672cc6742ab17b8ab8a5ff20260521", texto: "Memphis já conseguiu o que queria no Corinthians, diz Casagrande" },
-      { url: "https://www.uol.com.br/flash/?c=c66ba04932d7156ac04a97f525ba27a620260521", texto: "Nico Williams, da seleção da Espanha, celebra ida de Neymar à Copa do Mundo" },
-      { url: "https://f5.folha.uol.com.br/colunistas/outro-canal/2026/05/netflix-vai-rastrear-olhar-do-espectador-para-medir-a-atencao-de-brasileiros-ao-que-e-mostrado.shtml", texto: "Netflix vai monitorar atenção dos brasileiros ao conteúdo exibido" },
-      { url: "https://noticiasdatv.uol.com.br/noticia/celebridades/apresentadora-da-band-faz-alerta-ao-descobrir-aneurisma-apos-ignorar-sintomas-151648", texto: "Apresentadora da Band descobre aneurisma após ignorar sintomas" },
-      { url: "https://www.uol.com.br/splash/noticias/2026/05/21/ex-bbb-marcos-harter-e-punido-pelo-cfm-por-infringir-codigo-de-etica-medica.ghtm", texto: "Ex-BBB Marcos Harter é punido pelo CFM por infringir Código de Ética Médica" },
-      { url: "https://natelinha.uol.com.br/televisao/2026/05/21/ana-paula-renault-revela-correria-e-fala-em-gratidao-ao-publico-nao-tenho-dormido-242429.php", texto: "Ana Paula Renault revela correria: 'Não tenho dormido'" },
-      { url: "https://tangerina.uol.com.br/filmes-series/netflix-novo-documentario-sobre-michael-jackson-aborda-julgamento-de-2005/", texto: "Novo documentário sobre Michael Jackson aborda julgamento de 2005" },
-      { url: "https://clube.uol.com.br/festaclubedos30/psP-pague-apenas-r-80-taxa-no-ingresso?utm_source=splash_CLUBEDOS30_1905&utm_medium=splash_CLUBEDOS30_1905", texto: "Clube UOL: garanta ingresso a R$ 80 + taxa para edição especial do Clube dos 30" },
-      { url: "https://tangerina.uol.com.br/filmes-series/sexta-temporada-de-emily-em-paris-e-confirmada-como-a-ultima-da-serie/", texto: "Sexta temporada de 'Emily em Paris' é confirmada como a última da série" },
-      { url: "https://tangerina.uol.com.br/filmes-series/euphoria-desperdica-personagem-que-poderia-salvar-temporada-mais-polemica/", texto: "Opinião: 'Euphoria' desperdiça personagem que poderia salvar temporada polêmica" },
-      { url: "https://www.uol.com.br/flash/?c=adbd24bc8013d3f047363068ec1d7ca320260521", texto: "Conheça o brasileiro que colocou capoeira no universo 'Star Wars'" },
-      { url: "https://www.uol.com.br/splash/noticias/2026/05/21/quando-renato-goes-entra-em-quem-ama-cuida.ghtm", texto: "Homem do porta-retrato: quando Renato Góes entra em 'Quem Ama Cuida'?" },
       { url: "https://noticias.uol.com.br", texto: "Notícias" },
-      { url: "https://www1.folha.uol.com.br/mundo/2026/05/cuba-aceita-ajuda-de-us-100-milhoes-dos-eua-em-meio-a-crise-humanitaria-diz-secretario-de-trump.shtml", texto: "Cuba aceita US$ 100 mi dos EUA em meio a crise humanitária, diz secretário de Trump" },
-      { url: "https://www1.folha.uol.com.br/cotidiano/2026/05/nova-linha-do-metro-vai-ligar-diadema-a-zona-leste-de-sp-com-previsao-de-funicionar-em-2037.shtml", texto: "Nova linha do Metrô ligará Diadema à zona leste de SP, com previsão para 2037" },
-      { url: "https://www1.folha.uol.com.br/colunas/painel/2026/05/dc-abre-processo-para-expulsar-aldo-rebelo-do-partido.shtml", texto: "DC abre processo para expulsar Aldo Rebelo após ataques ao presidente do partido" },
-      { url: "https://noticias.uol.com.br/politica/ultimas-noticias/2026/05/21/tse-torna-candidatos-em-sp-inelegiveis-por-usar-igreja-para-se-promover.htm", texto: "TSE torna candidatos em São Paulo inelegíveis por usar igreja para se promover" },
-      { url: "https://www.uol.com.br/flash/?c=1ce4d912aa4ac0de089cd5111bb8c20260521", texto: "Realtime Big Data: Cleitinho lidera em 1º e 2º turnos na corrida pelo governo de Minas" },
-      { url: "https://noticias.uol.com.br/cotidiano/ultimas-noticias/2026/05/21/investigacao-atropelamento-filha-de-diplomata.ghtm", texto: "Polícia apura atropelamento que matou filha de diplomata no Rio de Janeiro" },
-      { url: "https://www.uol.com.br/tilt/noticias/redacao/2026/05/21/golpe-digital-pena-sobe-mas-essas-7-dicas-vao-blindar-sua-vida-virtual.ghtm", texto: "Roubaram seu celular? Veja sete medidas para evitar golpes e travar o Pix" },
-      { url: "https://www1.folha.uol.com.br/mercado/2026/05/novos-diretores-chegam-a-cvm-paralisada-e-sem-julgamentos-ha-cinco-meses.shtml", texto: "Novos diretores chegam a CVM paralisada e sem julgamentos há cinco meses" },
-      { url: "https://www.uol.com.br/flash/?c=44864f4bfca5241d69ed4a918089bc620260520", texto: "Zambelli tem nova audiência na Itália amanhã; saiba como está a extradição" },
       { url: "https://uolhost.uol.com.br/?utm_medium=uol.com.br&utm_source=interna&utm_campaign=espaco_home_uol_publicidade&utm_content=link_fixo_host&utm_term=espaco_1 ", texto: "Host" },
       { url: "https://plus.uol.com.br/?utm_source=home_organic_box&utm_medium=home&utm_campaign=home_organic_box", texto: "+" },
       { url: "https://pagseguro.uol.com.br/campanhas/maquinas-cartao-taxas-faturamento/?utm_campaign=selo_produtos_uol_publicador&utm_content=taxa_058", texto: "PAGBANK" },
@@ -603,21 +480,6 @@ Neurologist</a>
       { url: "https://online.pucrs.br/?utm_source=uol&utm_medium=home&utm_campaign=always-on", texto: "PUCRS Online" },
       { url: "https://online.faap.br/", texto: "Faap Online" },
       { url: "https://www.uol.com.br/carros", texto: "Carros" },
-      { url: "https://www.uol.com.br/carros/colunas/paula-gama/2026/05/20/governo-lanca-credito-para-uber-e-taxi-veja-carros-elegiveis.htm", texto: "De elétricos a SUVs: quais carros ganharam descontos para Uber e taxistas" },
-      { url: "https://www.uol.com.br/flash/?c=157f1e79210ecc85b2d359e3a23954a20260520", texto: "Exame para tirar CNH já pode ser feito com carro próprio em SP; veja regras" },
-      { url: "https://www.uol.com.br/carros/colunas/cacador-de-carros/2026/05/21/8-perguntas-para-fazer-antes-de-comprar-um-carro-usado.htm", texto: "Cuidado com furadas: 8 perguntas que você deve fazer antes de comprar carro" },
-      { url: "https://www.uol.com.br/tilt/noticias/redacao/2026/05/21/gastos-com-ia-devem-chegar-a-r-20-trilhoes-por-ano-ate-2030-diz-nvidia.ghtm", texto: "Gastos com IA devem chegar a R$ 20 trilhões por ano até 2030, diz Nvidia" },
-      { url: "https://www.uol.com.br/tilt/noticias/redacao/2026/05/21/tempo-negativo-e-confirmado-por-fisicos-em-novo-estudo-quantico.ghtm", texto: "'Tempo negativo' é confirmado por físicos em novo estudo quântico" },
-      { url: "https://www.uol.com.br/tilt/noticias/redacao/2026/05/21/quem-foi-o-astronauta-sovietico-que-ficou-preso-por-311-dias-no-espaco.htm", texto: "Quem foi o astronauta soviético que ficou preso por 311 dias no espaço" },
-      { url: "https://www.uol.com.br/nossa/colunas/rafael-tonon/2026/05/21/sem-estrela-verde-michelin-muda-para-ir-alem-de-um-guia-de-restaurantes.htm", texto: "Sem Estrela Verde, Michelin muda para ir além de um guia de restaurantes" },
-      { url: "https://www.uol.com.br/nossa/noticias/redacao/2026/05/21/4-tipos-de-programas-de-relacionamento-que-podem-te-ajudar-numa-viagem.ghtm", texto: "Além de milhas: 4 programas que podem melhorar a experiência da sua viagem" },
-      { url: "https://www.uol.com.br/flash/?c=d2879be88bf2adb6db6e86a3a3993f5620260521", texto: "Vanessa Lopes revela as 5 viagens que mais gosta para relaxar" },
-      { url: "https://tab.uol.com.br/noticias/redacao/2026/05/18/internet-rapida-avanca-mas-falta-computador-em-1-a-cada-4-escolas-publicas.htm", texto: "Internet rápida avança, mas falta computador em 1 a cada 4 escolas públicas" },
-      { url: "https://tab.uol.com.br/noticias/redacao/2026/05/17/documento-apreendido-pela-pf-mostra-plano-b-de-venda-do-master-pre-brb.htm", texto: "Documento apreendido pela PF mostra 'plano B' de venda do Master pré-BRB" },
-      { url: "https://www.uol.com.br/ecoa/colunas/tony-marlon/2026/05/20/procura-se-um-idolo.htm", texto: "Procura-se um ídolo" },
-      { url: "https://www.uol.com.br/ecoa/colunas/carlos-nobre/2026/05/19/energia-dos-oceanos-pode-ajudar-caribe-a-enfrentar-pobreza-e-clima.htm", texto: "Energia dos oceanos pode ajudar Caribe a enfrentar pobreza e clima" },
-      { url: "https://www.uol.com.br/play/videos/universa/2026/04/08/debora-lamm-admite-pavor-inusitado-eu-tenho-medo-de-alma-desde-crianca.htm", texto: "Débora Lamm admite pavor inusitado: 'Eu tenho medo de alma desde criança'" },
-      { url: "https://www.uol.com.br/play/videos/splash/2026/03/25/fa-de-transporte-por-trilhos-me-sinto-na-disney-visitando-obra-de-metro.htm", texto: "Fã de transporte por trilhos: 'Me sinto na Disney visitando obra de metrô'" },
     ],
     24: [
     ],
@@ -634,7 +496,6 @@ Neurologist</a>
   };
 
   function mostrarConteudo(id, elementoAlvo) {
-    // Altera a classe visual dos botões ativos
     document.querySelectorAll(".btn-fonte").forEach(btn => btn.classList.remove("ativo"));
     elementoAlvo.classList.add("ativo");
 
