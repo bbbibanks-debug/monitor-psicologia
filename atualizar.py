@@ -66,7 +66,7 @@ for x in range(len(links)):
     except Exception:
         pass
 
-# --- 3. ESCRITA DA GRADE DE BOTÕES (ESTRUTURA ORIGINAL ESTRITA) ---
+# --- 3. ESCRITA DA GRADE DE BOTÕES (CORREÇÃO DE CONTAINER DA ID DO BOOTSTRAP) ---
 file = open(namefile, "w", encoding="utf-8")
 file.write('<!DOCTYPE html>')
 file.write('<html lang="pt-br">')
@@ -75,13 +75,13 @@ file.write('<link rel="stylesheet" href="https://bootstrapcdn.com">')
 file.write('<title>PSI LINKS BOARD</title>')
 file.write('<style>.btn-space { margin: 4px; } .sub-tra { font-size: 0.82rem; color: #6c757d; display: block; margin-bottom: 8px; margin-left: 10px; }</style>')
 file.write('</head>')
+# AJUSTADO ID PARA MATCH COM AS ABAS INDIVIDUAIS (myGroup)
 file.write('<body><div class="container" id="myGroup">')
 
-# Cabeçalho limpo com data em texto mutável sutil
 file.write(f'<h1>PSI MONITOR <small class="text-muted" style="font-size: 0.45em; margin-left: 10px;">• Atualizado em: {data_e_hora_sao_paulo.strftime("%d/%m/%Y às %H:%M")}</small></h1><p>')
 
 file.write('<a class="btn btn-space btn-danger btn-lg" data-toggle="collapse" href="#collapseKeywords" role="button" aria-expanded="false">🎯 PALAVRAS-CHAVE ATIVAS</a>')
-file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false">VeryWell Mind</a>')
+file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample0" role="button" aria-expanded="false">VeryWell Mind</a>')
 file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false">Psychology Today</a>')
 file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false">Scientific American</a>')
 file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false">The National Institute of Mental Health (NIMH)</a>')
@@ -114,11 +114,10 @@ file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collap
 file.write('</p>')
 file.close()
 
-# --- 4. ENGINE DE EXTRAÇÃO E INFRAESTRUTURA DE ANINHAMENTO CORRETAS ---
+# --- 4. ENGINE DE GRAVAÇÃO (ESTRUTURA DE ANINHAMENTO TOTALMENTE CORRIGIDA) ---
 def gravar_box_estrito(html_id, links_encontrados, url_base, fonte_nome):
     vistos = set()
     file_append = open(namefile, "a", encoding="utf-8")
-    # Abre estritamente os contêineres de layout antes de injetar os links
     file_append.write(f'<div class="collapse" id="{html_id}" data-parent="#myGroup" Style><div class="card card-body">')
     
     for tag_a in links_encontrados:
@@ -129,7 +128,6 @@ def gravar_box_estrito(html_id, links_encontrados, url_base, fonte_nome):
         
         if href not in vistos:
             vistos.add(href)
-            # Injeção limpa de tags consecutivas sem quebrar os limites da div
             file_append.write(f'<a href="{href}" target="_blank">{texto}</a></br>')
             trad = traduzir_texto(texto)
             if trad and trad != texto:
@@ -138,13 +136,12 @@ def gravar_box_estrito(html_id, links_encontrados, url_base, fonte_nome):
             if any(p in texto.lower() or p in trad.lower() for p in keywords):
                 noticias_filtradas_urgentes.append((href, texto, trad, fonte_nome))
                 
-    # Fecha de forma estrita as duas divisões na ordem correta, sem misturar tags
     file_append.write('</div></div>')
     file_append.close()
 
-# 0. VeryWell Mind (Corrigido estrutural dinâmico)
+# 0. VeryWell Mind
 if parser[0] is not None:
-    gravar_box_estrito("collapseExample", parser[0].find_all("a", class_=lambda c: c and ('card' in c or 'link' in c))[:12], "https://verywellmind.com", "VeryWell Mind")
+    gravar_box_estrito("collapseExample0", parser[0].find_all("a", class_=lambda c: c and ('card' in c or 'link' in c))[:12], "https://verywellmind.com", "VeryWell Mind")
 
 # 1. Psychology Today
 if parser[1] is not None:
@@ -282,7 +279,7 @@ if parser[24] is not None:
     for x in parser[24].find_all("div", class_="libsyn-item-title"): items.extend(x.find_all("a"))
     gravar_box_estrito("collapseExample24", items, "", "PsychCrunch")
 
-# 25 a 28. A Mente é Maravilhosa
+# 25 a 28. A Mente é Maravilhosa (Uso correto do array parser[x])
 base_amm = "https://amenteemaravilhosa.com.br"
 class_amm = "jsx-151512268 jsx-1424224867 default-a-link global-link jsx-3363598852"
 if parser[25] is not None: gravar_box_estrito("collapseExample25", parser[25].find_all("a", class_=class_amm), base_amm, "AMM Neuro")
@@ -311,7 +308,6 @@ else:
             
 file.write('</div></div>')
 
-# Injeção estrita e sequencial do encerramento das dependências JS do Bootstrap 4
 file.write('''</div><div>
 <script src="https://jquery.com"></script>
 <script src="https://cloudflare.com"></script>
@@ -319,4 +315,4 @@ file.write('''</div><div>
 </div></body></html>''')
 file.close()
 
-print("Sucesso! index.html compilado com o alinhamento das divs de colapso corrigido.")
+print("Sucesso! index.html compilado com o alinhamento de contêineres e seletores corrigidos.")
