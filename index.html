@@ -1,103 +1,95 @@
-<!DOCTYPE html><html lang="pt-br"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://bootstrapcdn.com">
-    <title>PSI LINKS BOARD</title>
-    <style>
-        body { background-color: #f8fafc; color: #1e293b; font-family: -apple-system, BlinkMacSystemFont, sans-serif; padding-top: 20px; padding-bottom: 60px; }
-        .btn-space { margin: 4px; border-radius: 6px; font-weight: 600; padding: 10px 18px; }
-        
-        /* O segredo do seu design: caixas flutuantes elegantes que nascem limpas */
-        .card-body { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; margin-top: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-        .box-title-inner { font-size: 1.25rem; font-weight: 700; color: #1e3a8a; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #f1f5f9; display: flex; justify-content: space-between; }
-        
-        /* Links e quebras mantendo sua separação limpa */
+<!DOCTYPE html><html lang="pt-br"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link rel="stylesheet" href="https://bootstrapcdn.com"><title>PSI LINKS BOARD</title><style>
+        body { background-color: #f8fafc; color: #1e293b; padding-top: 20px; padding-bottom: 60px; }
+        .btn-space { margin: 4px; border-radius: 4px; font-weight: 600; padding: 10px 18px; text-decoration: none !important; }
+        .card-body { background-color: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 24px; margin-top: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .box-title-inner { font-size: 1.25rem; font-weight: 700; color: #0b516f; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #e2e8f0; display: flex; justify-content: space-between; }
         .sub-tra { font-size: 0.83rem; color: #64748b; display: block; margin-bottom: 12px; margin-left: 12px; font-style: italic; }
         .link-topo-inner { font-size: 0.8rem; color: #64748b; cursor: pointer; text-transform: uppercase; font-weight: 700; }
-        .link-topo-inner:hover { color: #2563eb; }
-        
-        /* Botão Flutuante de Retorno */
-        #btnVoltarTopo { position: fixed; bottom: 25px; right: 25px; display: none; z-index: 99; border: none; background-color: #1e3a8a; color: white; padding: 12px 20px; border-radius: 30px; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.15); cursor: pointer; transition: all 0.2s; }
-        #btnVoltarTopo:hover { background-color: #2563eb; transform: translateY(-2px); }
-    </style></head><body><button onclick="irParaOTopo()" id="btnVoltarTopo">▲ Voltar ao Topo</button><div class="container" id="myGroup"><h1 class="font-weight-bold" style="color:#1e3a8a; letter-spacing:-0.5px;">PSI MONITOR <span class="text-muted" style="font-size:0.95rem; font-weight:normal; margin-left:12px;">• Atualizado em: 21/05/2026 às 14:19</span></h1><hr><p><a class="btn btn-space btn-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseKeywords" role="button" aria-expanded="false" aria-controls="collapseKeywords">🎯 PALAVRAS-CHAVE ATIVAS</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex0" role="button" aria-expanded="false">VeryWell Mind</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex1" role="button" aria-expanded="false">Psychology Today</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex2" role="button" aria-expanded="false">Scientific American</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex3" role="button" aria-expanded="false">The National Institute of Mental Health (NIMH)</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex4" role="button" aria-expanded="false">APA PsyPort</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex5" role="button" aria-expanded="false">APA Monitor</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex6" role="button" aria-expanded="false">Google Notícias</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex7" role="button" aria-expanded="false">SBP</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex8" role="button" aria-expanded="false">Neuroscience</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex9" role="button" aria-expanded="false">Positive Psychology</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex10" role="button" aria-expanded="false">Positive Psychcentral</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex11" role="button" aria-expanded="false">IQ`s Corner</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex12" role="button" aria-expanded="false">Happier Human</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex13" role="button" aria-expanded="false">PsyNewsDaily</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex14" role="button" aria-expanded="false">Psychiatric Times</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex15" role="button" aria-expanded="false">APS</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex16" role="button" aria-expanded="false">CFP</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex17" role="button" aria-expanded="false">Psicologia USP</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex18" role="button" aria-expanded="false">Conselho Regional de Psicologia SP</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex19" role="button" aria-expanded="false">El País Psicologia</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex20" role="button" aria-expanded="false">G1 Saúde Mental</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex21" role="button" aria-expanded="false">Medical Xpress</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex22" role="button" aria-expanded="false">Psychreg</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex23" role="button" aria-expanded="false">Folha Equilíbrio Mente</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex24" role="button" aria-expanded="false">PsychCrunch</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex25" role="button" aria-expanded="false">A Mente é Maravilhosa-Neurociência</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex26" role="button" aria-expanded="false">A Mente é Maravilhosa-Psicologia</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex27" role="button" aria-expanded="false">A Mente é Maravilhosa-Relações</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex28" role="button" aria-expanded="false">A Mente é Maravilhosa-Saúde</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex29" role="button" aria-expanded="false">Big Think</a></p><div class="collapse" id="collapseKeywords" data-parent="#myGroup"><div class="card card-body"><div class="box-title-inner"><span>🎯 Palavras-Chave (anxiety, depressão, burnout, tcc, neuroscience)</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Fechar / Subir</span></div><a href="https://neurosciencenews.com/immunotherapy-arthritis-il6-depression-30735/" target="_blank" class="font-weight-bold" style="color:#2563eb;">📌 [Neuroscience] Arthritis Drug Rescues Hard-to-Treat Depression</a></br>
+        .link-topo-inner:hover { color: #0b516f; }
+        #btnVoltarTopo { position: fixed; bottom: 25px; right: 25px; display: none; z-index: 99; border: none; background-color: #0b516f; color: white; padding: 12px 20px; border-radius: 30px; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.15); cursor: pointer; }
+    </style></head><body><button onclick="irParaOTopo()" id="btnVoltarTopo">▲ Voltar ao Topo</button><div class="container-fluid px-4" id="myGroup"><h1 class="font-weight-bold" style="color:#0b516f; font-size: 2.2rem; letter-spacing:-0.5px;">PSI MONITOR <span class="text-muted" style="font-size:0.95rem; font-weight:normal; margin-left:12px;">• Atualizado em: 21/05/2026 às 14:26</span></h1><hr><p><a class="btn btn-space btn-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseKeywords" role="button" aria-expanded="false" aria-controls="collapseKeywords">🎯 PALAVRAS-CHAVE ATIVAS</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex0" role="button" aria-expanded="false">VeryWell Mind</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex1" role="button" aria-expanded="false">Psychology Today</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex2" role="button" aria-expanded="false">Scientific American</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex3" role="button" aria-expanded="false">The National Institute of Mental Health (NIMH)</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex4" role="button" aria-expanded="false">APA PsyPort</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex5" role="button" aria-expanded="false">APA Monitor</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex6" role="button" aria-expanded="false">Google Notícias</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex7" role="button" aria-expanded="false">SBP</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex8" role="button" aria-expanded="false">Neuroscience</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex9" role="button" aria-expanded="false">Positive Psychology</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex10" role="button" aria-expanded="false">Positive Psychcentral</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex11" role="button" aria-expanded="false">IQ`s Corner</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex12" role="button" aria-expanded="false">Happier Human</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex13" role="button" aria-expanded="false">PsyNewsDaily</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex14" role="button" aria-expanded="false">Psychiatric Times</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex15" role="button" aria-expanded="false">APS</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex16" role="button" aria-expanded="false">CFP</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex17" role="button" aria-expanded="false">Psicologia USP</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex18" role="button" aria-expanded="false">Conselho Regional de Psicologia SP</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex19" role="button" aria-expanded="false">El País Psicologia</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex20" role="button" aria-expanded="false">G1 Saúde Mental</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex21" role="button" aria-expanded="false">Medical Xpress</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex22" role="button" aria-expanded="false">Psychreg</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex23" role="button" aria-expanded="false">Folha Equilíbrio Mente</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex24" role="button" aria-expanded="false">PsychCrunch</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex25" role="button" aria-expanded="false">A Mente é Maravilhosa-Neurociência</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex26" role="button" aria-expanded="false">A Mente é Maravilhosa-Psicologia</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex27" role="button" aria-expanded="false">A Mente é Maravilhosa-Relações</a><a class="btn btn-space btn-outline-info btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex28" role="button" aria-expanded="false">A Mente é Maravilhosa-Saúde</a><a class="btn btn-space btn-outline-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseIndex29" role="button" aria-expanded="false">Big Think</a></p><div class="collapse" id="collapseKeywords" data-parent="#myGroup"><div class="card card-body"><div class="box-title-inner"><span>🎯 Palavras-Chave (anxiety, depressão, burnout, tcc, neuroscience)</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Subir</span></div><a href="https://neurosciencenews.com/brain-network-connectivity-mdd-30745/" target="_blank" class="font-weight-bold" style="color:#0b516f;">📌 [Neuroscience] Long-Term Depression Reverses Brain Network Connectivity</a></br>
+<span class="sub-tra">↳ Tradução: A depressão de longo prazo reverte a conectividade da rede cerebral</span>
+<a href="https://neurosciencenews.com/immunotherapy-arthritis-il6-depression-30735/" target="_blank" class="font-weight-bold" style="color:#0b516f;">📌 [Neuroscience] Arthritis Drug Rescues Hard-to-Treat Depression</a></br>
 <span class="sub-tra">↳ Tradução: Medicamento para artrite resgata depressão difícil de tratar</span>
-<a href="https://pro.positivepsychology.com/product/17-positive-cbt-exercises/" target="_blank" class="font-weight-bold" style="color:#2563eb;">📌 [Positive Psychology] 17 Positive CBT & Cognitive Therapy Exercises</a></br>
+<a href="https://pro.positivepsychology.com/product/17-positive-cbt-exercises/" target="_blank" class="font-weight-bold" style="color:#0b516f;">📌 [Positive Psychology] 17 Positive CBT & Cognitive Therapy Exercises</a></br>
 <span class="sub-tra">↳ Tradução: 17 exercícios positivos de TCC e terapia cognitiva</span>
 </div></div>
 <div class="collapse" id="collapseIndex0" data-parent="#myGroup" Style><div class="card card-body">
-<div class="box-title-inner"><span>🌐 VeryWell Mind</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="#main" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Skip to content</a></br>
+<div class="box-title-inner"><span>🌐 VeryWell Mind</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="#main" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Skip to content</a></br>
 <span class="sub-tra">↳ Pular para o conteúdo</span>
-<a href="https://www.verywellmind.com/conditions-a-z-4797402" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Conditions A-Z</a></br>
+<a href="https://www.verywellmind.com/conditions-a-z-4797402" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Conditions A-Z</a></br>
 <span class="sub-tra">↳ Condições A-Z</span>
-<a href="https://www.verywellmind.com/bipolar-disorder-4157274" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Bipolar Disorder</a></br>
+<a href="https://www.verywellmind.com/bipolar-disorder-4157274" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Bipolar Disorder</a></br>
 <span class="sub-tra">↳ Transtorno bipolar</span>
-<a href="https://www.verywellmind.com/therapy-7092217" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Therapy Center</a></br>
+<a href="https://www.verywellmind.com/therapy-7092217" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Therapy Center</a></br>
 <span class="sub-tra">↳ Centro de Terapia</span>
-<a href="https://www.verywellmind.com/how-to-know-when-it-s-time-to-see-a-therapist-5077040" target="_blank" style="color:#1e293b; font-weight:500;">🔗 When To See a Therapist</a></br>
+<a href="https://www.verywellmind.com/how-to-know-when-it-s-time-to-see-a-therapist-5077040" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 When To See a Therapist</a></br>
 <span class="sub-tra">↳ Quando consultar um terapeuta</span>
-<a href="https://www.verywellmind.com/how-to-choose-the-best-type-of-therapy-for-you-6500320" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Types of Therapy</a></br>
+<a href="https://www.verywellmind.com/how-to-choose-the-best-type-of-therapy-for-you-6500320" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Types of Therapy</a></br>
 <span class="sub-tra">↳ Tipos de terapia</span>
-<a href="https://www.verywellmind.com/best-online-therapy-4691206" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Best Online Therapy</a></br>
+<a href="https://www.verywellmind.com/best-online-therapy-4691206" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Best Online Therapy</a></br>
 <span class="sub-tra">↳ Melhor terapia online</span>
-<a href="https://www.verywellmind.com/best-online-marriage-counseling-4691952" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Best Couples Therapy</a></br>
+<a href="https://www.verywellmind.com/best-online-marriage-counseling-4691952" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Best Couples Therapy</a></br>
 <span class="sub-tra">↳ Melhor terapia de casal</span>
-<a href="https://www.verywellmind.com/stress-management-overview-4581770" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Managing Stress</a></br>
+<a href="https://www.verywellmind.com/stress-management-overview-4581770" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Managing Stress</a></br>
 <span class="sub-tra">↳ Gerenciando o estresse</span>
-<a href="https://www.verywellmind.com/sleep-and-dreaming-4157166" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Sleep and Dreaming</a></br>
+<a href="https://www.verywellmind.com/sleep-and-dreaming-4157166" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Sleep and Dreaming</a></br>
 <span class="sub-tra">↳ Dormir e sonhar</span>
-<a href="https://www.verywellmind.com/emotions-4157165" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Understanding Emotions</a></br>
+<a href="https://www.verywellmind.com/emotions-4157165" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Understanding Emotions</a></br>
 <span class="sub-tra">↳ Compreendendo as emoções</span>
-<a href="https://www.verywellmind.com/self-improvement-4157212" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Self-Improvement</a></br>
+<a href="https://www.verywellmind.com/self-improvement-4157212" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Self-Improvement</a></br>
 <span class="sub-tra">↳ Autoaperfeiçoamento</span>
 </div></div>
 <div class="collapse" id="collapseIndex1" data-parent="#myGroup" Style><div class="card card-body">
-<div class="box-title-inner"><span>🌐 Psychology Today</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://www.psychologytoday.com/us" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Psychology Today</a></br>
+<div class="box-title-inner"><span>🌐 Psychology Today</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://www.psychologytoday.com/us" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Psychology Today</a></br>
 <span class="sub-tra">↳ Psicologia hoje</span>
-<a href="https://psychologytoday.com#" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Psychology Today</a></br>
+<a href="https://psychologytoday.com#" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Psychology Today</a></br>
 <span class="sub-tra">↳ Psicologia hoje</span>
-<a href="https://www.psychologytoday.com/us/therapists" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Psychology Today</a></br>
+<a href="https://www.psychologytoday.com/us/therapists" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Psychology Today</a></br>
 <span class="sub-tra">↳ Psicologia hoje</span>
-<a href="https://member.psychologytoday.com/us/login" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Psychology Today</a></br>
+<a href="https://member.psychologytoday.com/us/login" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Psychology Today</a></br>
 <span class="sub-tra">↳ Psicologia hoje</span>
-<a href="https://join.psychologytoday.com/us/signup" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Psychology Today</a></br>
+<a href="https://join.psychologytoday.com/us/signup" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Psychology Today</a></br>
 <span class="sub-tra">↳ Psicologia hoje</span>
-<a href="https://www.psychologytoday.com/us/therapists/tx/austin" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Psychology Today</a></br>
+<a href="https://www.psychologytoday.com/us/therapists/tx/austin" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Psychology Today</a></br>
 <span class="sub-tra">↳ Psicologia hoje</span>
-<a href="https://www.psychologytoday.com/us/therapists/ny/brooklyn" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Psychology Today</a></br>
+<a href="https://www.psychologytoday.com/us/therapists/ny/brooklyn" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Psychology Today</a></br>
 <span class="sub-tra">↳ Psicologia hoje</span>
-<a href="https://www.psychologytoday.com/us/therapists/il/chicago" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Psychology Today</a></br>
+<a href="https://www.psychologytoday.com/us/therapists/il/chicago" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Psychology Today</a></br>
 <span class="sub-tra">↳ Psicologia hoje</span>
-<a href="https://www.psychologytoday.com/us/therapists/co/denver" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Psychology Today</a></br>
+<a href="https://www.psychologytoday.com/us/therapists/co/denver" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Psychology Today</a></br>
 <span class="sub-tra">↳ Psicologia hoje</span>
-<a href="https://www.psychologytoday.com/us/therapists/tx/houston" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Psychology Today</a></br>
+<a href="https://www.psychologytoday.com/us/therapists/tx/houston" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Psychology Today</a></br>
 <span class="sub-tra">↳ Psicologia hoje</span>
-<a href="https://www.psychologytoday.com/us/therapists/ca/los-angeles" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Psychology Today</a></br>
+<a href="https://www.psychologytoday.com/us/therapists/ca/los-angeles" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Psychology Today</a></br>
 <span class="sub-tra">↳ Psicologia hoje</span>
-<a href="https://www.psychologytoday.com/us/therapists/ny/new-york" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Psychology Today</a></br>
+<a href="https://www.psychologytoday.com/us/therapists/ny/new-york" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Psychology Today</a></br>
 <span class="sub-tra">↳ Psicologia hoje</span>
 </div></div>
 <div class="collapse" id="collapseIndex2" data-parent="#myGroup" Style><div class="card card-body">
-<div class="box-title-inner"><span>🌐 Scientific American</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="#main" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Skip to main content</a></br>
+<div class="box-title-inner"><span>🌐 Scientific American</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="#main" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Skip to main content</a></br>
 <span class="sub-tra">↳ Pular para o conteúdo principal</span>
-<a href="https://scientificamerican.com/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Skip to main content</a></br>
+<a href="https://scientificamerican.com/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Skip to main content</a></br>
 <span class="sub-tra">↳ Pular para o conteúdo principal</span>
-<a href="https://scientificamerican.com/anxiety/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Skip to main content</a></br>
+<a href="https://scientificamerican.com/anxiety/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Skip to main content</a></br>
 <span class="sub-tra">↳ Pular para o conteúdo principal</span>
-<a href="https://scientificamerican.com/behavior/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Skip to main content</a></br>
+<a href="https://scientificamerican.com/behavior/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Skip to main content</a></br>
 <span class="sub-tra">↳ Pular para o conteúdo principal</span>
-<a href="https://scientificamerican.com/cognition/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Skip to main content</a></br>
+<a href="https://scientificamerican.com/cognition/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Skip to main content</a></br>
 <span class="sub-tra">↳ Pular para o conteúdo principal</span>
-<a href="https://scientificamerican.com/consciousness/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Skip to main content</a></br>
+<a href="https://scientificamerican.com/consciousness/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Skip to main content</a></br>
 <span class="sub-tra">↳ Pular para o conteúdo principal</span>
-<a href="https://scientificamerican.com/creativity/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Skip to main content</a></br>
+<a href="https://scientificamerican.com/creativity/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Skip to main content</a></br>
 <span class="sub-tra">↳ Pular para o conteúdo principal</span>
-<a href="https://scientificamerican.com/intelligence/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Skip to main content</a></br>
+<a href="https://scientificamerican.com/intelligence/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Skip to main content</a></br>
 <span class="sub-tra">↳ Pular para o conteúdo principal</span>
-<a href="https://scientificamerican.com/memory/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Skip to main content</a></br>
+<a href="https://scientificamerican.com/memory/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Skip to main content</a></br>
 <span class="sub-tra">↳ Pular para o conteúdo principal</span>
-<a href="https://scientificamerican.com/mental-health/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Skip to main content</a></br>
+<a href="https://scientificamerican.com/mental-health/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Skip to main content</a></br>
 <span class="sub-tra">↳ Pular para o conteúdo principal</span>
-<a href="https://scientificamerican.com/mental-illness/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Skip to main content</a></br>
+<a href="https://scientificamerican.com/mental-illness/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Skip to main content</a></br>
 <span class="sub-tra">↳ Pular para o conteúdo principal</span>
-<a href="https://scientificamerican.com/mindfulness/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Skip to main content</a></br>
+<a href="https://scientificamerican.com/mindfulness/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Skip to main content</a></br>
 <span class="sub-tra">↳ Pular para o conteúdo principal</span>
 </div></div>
 <div class="collapse" id="collapseIndex3" data-parent="#myGroup" Style><div class="card card-body">
@@ -113,120 +105,120 @@
 <div class="box-title-inner"><span>🌐 Google Notícias</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><p class="text-muted">Nenhum artigo relevante capturado nesta rodada.</p>
 </div></div>
 <div class="collapse" id="collapseIndex7" data-parent="#myGroup" Style><div class="card card-body">
-<div class="box-title-inner"><span>🌐 SBP</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://sbponline.org.br/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Sociedade Brasileira de Psicologia</a></br>
-<a href="https://sbponline.org.br/apresentacao" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Sociedade Brasileira de Psicologia</a></br>
-<a href="https://sbponline.org.br/diretoria" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Sociedade Brasileira de Psicologia</a></br>
-<a href="https://sbponline.org.br/historia" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Sociedade Brasileira de Psicologia</a></br>
-<a href="https://sbponline.org.br/conselho" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Sociedade Brasileira de Psicologia</a></br>
-<a href="https://sbponline.org.br/historico" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Sociedade Brasileira de Psicologia</a></br>
-<a href="https://sbponline.org.br/estatuto-social" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Sociedade Brasileira de Psicologia</a></br>
-<a href="https://sbponline.org.br/regimento-interno" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Sociedade Brasileira de Psicologia</a></br>
-<a href="https://sbponline.org.br/eventos?category=Sbp" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Sociedade Brasileira de Psicologia</a></br>
-<a href="https://sbponline.org.br/eventos?category=Parceiros" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Sociedade Brasileira de Psicologia</a></br>
-<a href="https://sbponline.org.br/noticias" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Sociedade Brasileira de Psicologia</a></br>
-<a href="https://sbponline.org.br/sbp-e-books" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Sociedade Brasileira de Psicologia</a></br>
+<div class="box-title-inner"><span>🌐 SBP</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://sbponline.org.br/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Sociedade Brasileira de Psicologia</a></br>
+<a href="https://sbponline.org.br/apresentacao" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Sociedade Brasileira de Psicologia</a></br>
+<a href="https://sbponline.org.br/diretoria" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Sociedade Brasileira de Psicologia</a></br>
+<a href="https://sbponline.org.br/historia" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Sociedade Brasileira de Psicologia</a></br>
+<a href="https://sbponline.org.br/conselho" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Sociedade Brasileira de Psicologia</a></br>
+<a href="https://sbponline.org.br/historico" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Sociedade Brasileira de Psicologia</a></br>
+<a href="https://sbponline.org.br/estatuto-social" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Sociedade Brasileira de Psicologia</a></br>
+<a href="https://sbponline.org.br/regimento-interno" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Sociedade Brasileira de Psicologia</a></br>
+<a href="https://sbponline.org.br/eventos?category=Sbp" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Sociedade Brasileira de Psicologia</a></br>
+<a href="https://sbponline.org.br/eventos?category=Parceiros" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Sociedade Brasileira de Psicologia</a></br>
+<a href="https://sbponline.org.br/noticias" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Sociedade Brasileira de Psicologia</a></br>
+<a href="https://sbponline.org.br/sbp-e-books" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Sociedade Brasileira de Psicologia</a></br>
 </div></div>
 <div class="collapse" id="collapseIndex8" data-parent="#myGroup" Style><div class="card card-body">
-<div class="box-title-inner"><span>🌐 Neuroscience</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://neurosciencenews.com/emoji-test-social-skills-30744/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Emoji-Based Test Screens Kids’ Social Skills</a></br>
+<div class="box-title-inner"><span>🌐 Neuroscience</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://neurosciencenews.com/hormone-irisin-neuroprotection-multiple-sclerosis-30746/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Exercise Hormone May Protect Neurons in Multiple Sclerosis</a></br>
+<span class="sub-tra">↳ O hormônio do exercício pode proteger os neurônios na esclerose múltipla</span>
+<a href="https://neurosciencenews.com/brain-network-connectivity-mdd-30745/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Long-Term Depression Reverses Brain Network Connectivity</a></br>
+<span class="sub-tra">↳ A depressão de longo prazo reverte a conectividade da rede cerebral</span>
+<a href="https://neurosciencenews.com/emoji-test-social-skills-30744/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Emoji-Based Test Screens Kids’ Social Skills</a></br>
 <span class="sub-tra">↳ Teste baseado em emojis avalia as habilidades sociais das crianças</span>
-<a href="https://neurosciencenews.com/schizophrenia-znf804a-gene-synaptic-excitability-30743/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Schizophrenia Risk Gene Linked to Hyper-Excitable Neurons</a></br>
+<a href="https://neurosciencenews.com/schizophrenia-znf804a-gene-synaptic-excitability-30743/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Schizophrenia Risk Gene Linked to Hyper-Excitable Neurons</a></br>
 <span class="sub-tra">↳ Gene de risco de esquizofrenia ligado a neurônios hiperexcitáveis</span>
-<a href="https://neurosciencenews.com/smoking-cessation-weight-gain-dementia-30742/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Healthy Weight and Quitting Smoking Reduce Dementia Risk</a></br>
+<a href="https://neurosciencenews.com/smoking-cessation-weight-gain-dementia-30742/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Healthy Weight and Quitting Smoking Reduce Dementia Risk</a></br>
 <span class="sub-tra">↳ Peso saudável e parar de fumar reduzem o risco de demência</span>
-<a href="https://neurosciencenews.com/quantum-emotions-physics-memory-30741/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Using Physics Equations to Map Memory Distortions</a></br>
-<span class="sub-tra">↳ Usando equações físicas para mapear distorções de memória</span>
-<a href="https://neurosciencenews.com/memory-test-alcohol-blackouts-30740/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Real-Time Memory Test Created to Spot Alcohol Blackouts</a></br>
-<span class="sub-tra">↳ Teste de memória em tempo real criado para detectar apagões por álcool</span>
-<a href="https://neurosciencenews.com/neuroscience-topics/neurology/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Neurology News Articles</a></br>
+<a href="https://neurosciencenews.com/neuroscience-topics/neurology/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Neurology News Articles</a></br>
 <span class="sub-tra">↳ Artigos de notícias sobre neurologia</span>
-<a href="https://neurosciencenews.com/alzheimers-apoe4-gene-als-30739/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Alzheimer’s Risk Gene May Drive Aggressive ALS</a></br>
+<a href="https://neurosciencenews.com/alzheimers-apoe4-gene-als-30739/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Alzheimer’s Risk Gene May Drive Aggressive ALS</a></br>
 <span class="sub-tra">↳ Gene de risco de Alzheimer pode causar ELA agressiva</span>
-<a href="https://neurosciencenews.com/digitized-handwriting-cognitive-decline-30738/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Can Handwriting Speed Forecast Cognitive Decline?</a></br>
+<a href="https://neurosciencenews.com/digitized-handwriting-cognitive-decline-30738/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Can Handwriting Speed Forecast Cognitive Decline?</a></br>
 <span class="sub-tra">↳ A velocidade da caligrafia pode prever o declínio cognitivo?</span>
-<a href="https://neurosciencenews.com/ai-facial-micromovements-pain-30729/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Tracking Facial Micromovements to Measure Pain</a></br>
+<a href="https://neurosciencenews.com/ai-facial-micromovements-pain-30729/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Tracking Facial Micromovements to Measure Pain</a></br>
 <span class="sub-tra">↳ Rastreando micromovimentos faciais para medir a dor</span>
-<a href="https://neurosciencenews.com/inflates-alzheimers-drug-efficacy-30525/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 New Math Method Inflates Alzheimer’s Drug Success by 29x</a></br>
+<a href="https://neurosciencenews.com/inflates-alzheimers-drug-efficacy-30525/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 New Math Method Inflates Alzheimer’s Drug Success by 29x</a></br>
 <span class="sub-tra">↳ Novo método matemático aumenta o sucesso dos medicamentos contra Alzheimer em 29 vezes</span>
-<a href="https://neurosciencenews.com/myelin-regeneration-ms-30723/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Genetic Maps Target Root Causes of Multiple Sclerosis</a></br>
+<a href="https://neurosciencenews.com/myelin-regeneration-ms-30723/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Genetic Maps Target Root Causes of Multiple Sclerosis</a></br>
 <span class="sub-tra">↳ Mapas genéticos visam as causas básicas da esclerose múltipla</span>
-<a href="https://neurosciencenews.com/ai-passes-turing-test-30733/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Advanced AI Passes the Turing Test for the First Time</a></br>
+<a href="https://neurosciencenews.com/ai-passes-turing-test-30733/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Advanced AI Passes the Turing Test for the First Time</a></br>
 <span class="sub-tra">↳ IA avançada passa no teste de Turing pela primeira vez</span>
 </div></div>
 <div class="collapse" id="collapseIndex9" data-parent="#myGroup" Style><div class="card card-body">
-<div class="box-title-inner"><span>🌐 Positive Psychology</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://pro.positivepsychology.com/store/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 View our courses</a></br>
+<div class="box-title-inner"><span>🌐 Positive Psychology</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://pro.positivepsychology.com/store/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 View our courses</a></br>
 <span class="sub-tra">↳ Veja nossos cursos</span>
-<a href="https://www.trustpilot.com/review/positivepsychology.com" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Rated 4.7 based on- 205+ reviews</a></br>
+<a href="https://www.trustpilot.com/review/positivepsychology.com" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Rated 4.7 based on- 205+ reviews</a></br>
 <span class="sub-tra">↳ Avaliado com 4,7 com base em mais de 205 avaliações</span>
-<a href="https://positivepsychology.com/search/send+unlock+email/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 send unlock email</a></br>
+<a href="https://positivepsychology.com/search/send+unlock+email/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 send unlock email</a></br>
 <span class="sub-tra">↳ enviar e-mail de desbloqueio</span>
-<a href="https://positivepsychology.com/schema-pattern-finder/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Schema Pattern Finder: Make Sense of Emotional Patterns</a></br>
+<a href="https://positivepsychology.com/schema-pattern-finder/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Schema Pattern Finder: Make Sense of Emotional Patterns</a></br>
 <span class="sub-tra">↳ Localizador de padrões de esquema: entenda os padrões emocionais</span>
-<a href="https://positivepsychology.com/schema-informed-reset-plan/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Overreacting? Use This 5-Step Schema-Informed Reset Plan</a></br>
+<a href="https://positivepsychology.com/schema-informed-reset-plan/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Overreacting? Use This 5-Step Schema-Informed Reset Plan</a></br>
 <span class="sub-tra">↳ Reação exagerada? Use este plano de redefinição informado pelo esquema de 5 etapas</span>
-<a href="https://positivepsychology.com/co-parenting/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Co-Parenting That Works: Building an Alliance</a></br>
+<a href="https://positivepsychology.com/co-parenting/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Co-Parenting That Works: Building an Alliance</a></br>
 <span class="sub-tra">↳ Co-parentalidade que funciona: construindo uma aliança</span>
-<a href="https://positivepsychology.com/strength-stack/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 How to Build a Personal Strength Stack</a></br>
+<a href="https://positivepsychology.com/strength-stack/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 How to Build a Personal Strength Stack</a></br>
 <span class="sub-tra">↳ Como construir uma pilha de força pessoal</span>
-<a href="https://positivepsychology.com/case-studies/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 CASE STUDY LIBRARY</a></br>
+<a href="https://positivepsychology.com/case-studies/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 CASE STUDY LIBRARY</a></br>
 <span class="sub-tra">↳ BIBLIOTECA DE ESTUDOS DE CASO</span>
-<a href="https://positivepsychology.com/case-studies/jeroen-beckers/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Jeroen Beckers: Empowering Entrepreneurs with Flow+ and Positive Psychology</a></br>
+<a href="https://positivepsychology.com/case-studies/jeroen-beckers/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Jeroen Beckers: Empowering Entrepreneurs with Flow+ and Positive Psychology</a></br>
 <span class="sub-tra">↳ Jeroen Beckers: Capacitando Empreendedores com Flow+ e Psicologia Positiva</span>
-<a href="https://positivepsychology.com/case-studies/debra-heslin/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Debra Heslin: A Transformative Corporate Coaching Toolkit For The Real World</a></br>
+<a href="https://positivepsychology.com/case-studies/debra-heslin/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Debra Heslin: A Transformative Corporate Coaching Toolkit For The Real World</a></br>
 <span class="sub-tra">↳ Debra Heslin: um kit de ferramentas de coaching corporativo transformador para o mundo real</span>
-<a href="https://positivepsychology.com/case-studies/allison-cowan/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Allison Cowan: Building Trust and Driving Impact as a Life Coach</a></br>
+<a href="https://positivepsychology.com/case-studies/allison-cowan/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Allison Cowan: Building Trust and Driving Impact as a Life Coach</a></br>
 <span class="sub-tra">↳ Allison Cowan: Construindo confiança e impulsionando impacto como coach de vida</span>
-<a href="https://pro.positivepsychology.com/product-category/masterclasses/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 ALL MASTERCLASSES</a></br>
+<a href="https://pro.positivepsychology.com/product-category/masterclasses/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 ALL MASTERCLASSES</a></br>
 <span class="sub-tra">↳ TODAS AS MASTERCLASSES</span>
 </div></div>
 <div class="collapse" id="collapseIndex10" data-parent="#myGroup" Style><div class="card card-body">
-<div class="box-title-inner"><span>🌐 Positive Psychcentral</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://www.psychcentral.com/program/black-mental-health" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Black Mental Health</a></br>
+<div class="box-title-inner"><span>🌐 Positive Psychcentral</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://www.psychcentral.com/program/black-mental-health" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Black Mental Health</a></br>
 <span class="sub-tra">↳ Saúde Mental Negra</span>
-<a href="https://www.psychcentral.com/health/refuge-in-grief" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Black Mental Health</a></br>
+<a href="https://www.psychcentral.com/health/refuge-in-grief" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Black Mental Health</a></br>
 <span class="sub-tra">↳ Saúde Mental Negra</span>
-<a href="https://www.psychcentral.com/program/emotional-health" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Black Mental Health</a></br>
+<a href="https://www.psychcentral.com/program/emotional-health" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Black Mental Health</a></br>
 <span class="sub-tra">↳ Saúde Mental Negra</span>
-<a href="https://www.psychcentral.com/relationships" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Black Mental Health</a></br>
+<a href="https://www.psychcentral.com/relationships" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Black Mental Health</a></br>
 <span class="sub-tra">↳ Saúde Mental Negra</span>
-<a href="https://www.psychcentral.com/program/trauma" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Black Mental Health</a></br>
+<a href="https://www.psychcentral.com/program/trauma" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Black Mental Health</a></br>
 <span class="sub-tra">↳ Saúde Mental Negra</span>
-<a href="https://www.psychcentral.com/program/understanding-therapy" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Black Mental Health</a></br>
+<a href="https://www.psychcentral.com/program/understanding-therapy" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Black Mental Health</a></br>
 <span class="sub-tra">↳ Saúde Mental Negra</span>
-<a href="https://www.psychcentral.com/program/mental-health-at-work" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Black Mental Health</a></br>
+<a href="https://www.psychcentral.com/program/mental-health-at-work" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Black Mental Health</a></br>
 <span class="sub-tra">↳ Saúde Mental Negra</span>
-<a href="https://www.psychcentral.com/content-series/my-life-with-ocd" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Black Mental Health</a></br>
+<a href="https://www.psychcentral.com/content-series/my-life-with-ocd" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Black Mental Health</a></br>
 <span class="sub-tra">↳ Saúde Mental Negra</span>
-<a href="https://www.psychcentral.com/content-series/caregivers-chronicles" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Black Mental Health</a></br>
+<a href="https://www.psychcentral.com/content-series/caregivers-chronicles" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Black Mental Health</a></br>
 <span class="sub-tra">↳ Saúde Mental Negra</span>
-<a href="https://www.psychcentral.com/content-series/empathy-at-work" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Black Mental Health</a></br>
+<a href="https://www.psychcentral.com/content-series/empathy-at-work" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Black Mental Health</a></br>
 <span class="sub-tra">↳ Saúde Mental Negra</span>
-<a href="https://www.psychcentral.com/content-series/sex-love-and-all-of-the-above" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Black Mental Health</a></br>
+<a href="https://www.psychcentral.com/content-series/sex-love-and-all-of-the-above" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Black Mental Health</a></br>
 <span class="sub-tra">↳ Saúde Mental Negra</span>
-<a href="https://www.psychcentral.com/content-series/parent-central" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Black Mental Health</a></br>
+<a href="https://www.psychcentral.com/content-series/parent-central" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Black Mental Health</a></br>
 <span class="sub-tra">↳ Saúde Mental Negra</span>
 </div></div>
 <div class="collapse" id="collapseIndex11" data-parent="#myGroup" Style><div class="card card-body">
 <div class="box-title-inner"><span>🌐 IQ`s Corner</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><p class="text-muted">Nenhum artigo relevante capturado nesta rodada.</p>
 </div></div>
 <div class="collapse" id="collapseIndex12" data-parent="#myGroup" Style><div class="card card-body">
-<div class="box-title-inner"><span>🌐 Happier Human</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://www.happierhuman.com/words-affirmation-wife-ss1/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 105 Words of Affirmation Every Wife Will Love</a></br>
+<div class="box-title-inner"><span>🌐 Happier Human</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://www.happierhuman.com/words-affirmation-wife-ss1/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 105 Words of Affirmation Every Wife Will Love</a></br>
 <span class="sub-tra">↳ 105 palavras de afirmação que toda esposa vai adorar</span>
-<a href="https://www.happierhuman.com/ice-breakers-work-wa1/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 359 Fun Ice Breaker Questions for Work Events</a></br>
+<a href="https://www.happierhuman.com/ice-breakers-work-wa1/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 359 Fun Ice Breaker Questions for Work Events</a></br>
 <span class="sub-tra">↳ 359 perguntas divertidas para quebrar o gelo para eventos de trabalho</span>
-<a href="https://www.happierhuman.com/questions-partner-ss1/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 135 Fun and Thought-Provoking Questions to Ask Your Partner</a></br>
+<a href="https://www.happierhuman.com/questions-partner-ss1/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 135 Fun and Thought-Provoking Questions to Ask Your Partner</a></br>
 <span class="sub-tra">↳ 135 perguntas divertidas e instigantes para fazer ao seu parceiro</span>
-<a href="https://www.happierhuman.com/words-encouragement-granddaughter-wa1/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 46 Special Words of Encouragement for Your Granddaughter</a></br>
+<a href="https://www.happierhuman.com/words-encouragement-granddaughter-wa1/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 46 Special Words of Encouragement for Your Granddaughter</a></br>
 <span class="sub-tra">↳ 46 palavras especiais de incentivo para sua neta</span>
-<a href="https://www.happierhuman.com/ice-breakers-couples-wa1/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 101 Fun Ice Breakers Questions for Dating and Couples</a></br>
+<a href="https://www.happierhuman.com/ice-breakers-couples-wa1/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 101 Fun Ice Breakers Questions for Dating and Couples</a></br>
 <span class="sub-tra">↳ 101 perguntas divertidas para quebrar o gelo para namoro e casais</span>
-<a href="https://www.happierhuman.com/rekindle-friendship-ss1/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 7 Steps to Rekindle an Old (or Broken) Friendship</a></br>
-<span class="sub-tra">↳ 7 etapas para reacender uma amizade antiga (ou quebrada)</span>
-<a href="https://www.happierhuman.com/toxic-sister-in-law-wa1/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 7 Steps to Handle a Toxic Sister‑in‑Law</a></br>
+<a href="https://www.happierhuman.com/rekindle-friendship-ss1/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 7 Steps to Rekindle an Old (or Broken) Friendship</a></br>
+<span class="sub-tra">↳ 7 passos para reacender uma amizade antiga (ou quebrada)</span>
+<a href="https://www.happierhuman.com/toxic-sister-in-law-wa1/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 7 Steps to Handle a Toxic Sister‑in‑Law</a></br>
 <span class="sub-tra">↳ 7 etapas para lidar com uma cunhada tóxica</span>
-<a href="https://www.happierhuman.com/detach-someone-wa1/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 13 Healthy Ways to Emotionally Detach from Someone</a></br>
+<a href="https://www.happierhuman.com/detach-someone-wa1/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 13 Healthy Ways to Emotionally Detach from Someone</a></br>
 <span class="sub-tra">↳ 13 maneiras saudáveis ​​de se desligar emocionalmente de alguém</span>
-<a href="https://www.happierhuman.com/depressed-friend-ss1/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 How to Comfort a Depressed Friend: 10 Crucial Steps</a></br>
+<a href="https://www.happierhuman.com/depressed-friend-ss1/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 How to Comfort a Depressed Friend: 10 Crucial Steps</a></br>
 <span class="sub-tra">↳ Como confortar um amigo deprimido: 10 etapas cruciais</span>
-<a href="https://www.happierhuman.com/ice-breakers-kids-wa1/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 151 Ice Breaker Questions to Get Kids Talking</a></br>
+<a href="https://www.happierhuman.com/ice-breakers-kids-wa1/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 151 Ice Breaker Questions to Get Kids Talking</a></br>
 <span class="sub-tra">↳ 151 perguntas para quebrar o gelo para fazer as crianças falarem</span>
 </div></div>
 <div class="collapse" id="collapseIndex13" data-parent="#myGroup" Style><div class="card card-body">
@@ -236,29 +228,29 @@
 <div class="box-title-inner"><span>🌐 Psychiatric Times</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><p class="text-muted">Nenhum artigo relevante capturado nesta rodada.</p>
 </div></div>
 <div class="collapse" id="collapseIndex15" data-parent="#myGroup" Style><div class="card card-body">
-<div class="box-title-inner"><span>🌐 APS</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://www.psychologicalscience.org/news/2026-may-editorial-fellows.html" target="_blank" style="color:#1e293b; font-weight:500;">🔗 2026 Editorial Fellows Bring Diverse and Global Perspectives</a></br>
+<div class="box-title-inner"><span>🌐 APS</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://www.psychologicalscience.org/news/2026-may-editorial-fellows.html" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 2026 Editorial Fellows Bring Diverse and Global Perspectives</a></br>
 <span class="sub-tra">↳ Bolsistas editoriais de 2026 trazem perspectivas diversas e globais</span>
-<a href="https://www.psychologicalscience.org/news/2026-may-nas-arts-sciences.html" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Fourteen APS Fellows Elected to Two Prestigious Organizations in 2026</a></br>
+<a href="https://www.psychologicalscience.org/news/2026-may-nas-arts-sciences.html" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Fourteen APS Fellows Elected to Two Prestigious Organizations in 2026</a></br>
 <span class="sub-tra">↳ Quatorze bolsistas da APS eleitos para duas organizações de prestígio em 2026</span>
-<a href="https://www.psychologicalscience.org/news/2026-apr-enjoy-positive-moments.html" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Why Is It Hard to Fully Enjoy Positive Moments?</a></br>
+<a href="https://www.psychologicalscience.org/news/2026-apr-enjoy-positive-moments.html" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Why Is It Hard to Fully Enjoy Positive Moments?</a></br>
 <span class="sub-tra">↳ Por que é difícil aproveitar plenamente os momentos positivos?</span>
-<a href="https://www.psychologicalscience.org/advocacy-policy" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Advocacy & Policy</a></br>
+<a href="https://www.psychologicalscience.org/advocacy-policy" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Advocacy & Policy</a></br>
 <span class="sub-tra">↳ Advocacia e Política</span>
-<a href="https://www.psychologicalscience.org/diversity-equity-inclusion" target="_blank" style="color:#1e293b; font-weight:500;">🔗 APS Commitment to Diversity, Equity, & Inclusion</a></br>
+<a href="https://www.psychologicalscience.org/diversity-equity-inclusion" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 APS Commitment to Diversity, Equity, & Inclusion</a></br>
 <span class="sub-tra">↳ Compromisso da APS com Diversidade, Equidade e Inclusão</span>
-<a href="https://www.psychologicalscience.org/conventions/virtual" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Webinars & Virtual Events</a></br>
+<a href="https://www.psychologicalscience.org/conventions/virtual" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Webinars & Virtual Events</a></br>
 <span class="sub-tra">↳ Webinars e eventos virtuais</span>
-<a href="https://www.psychologicalscience.org/conventions/2026-aps-annual-convention/teaching-sessions" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Teaching Sessions</a></br>
+<a href="https://www.psychologicalscience.org/conventions/2026-aps-annual-convention/teaching-sessions" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Teaching Sessions</a></br>
 <span class="sub-tra">↳ Sessões de ensino</span>
-<a href="https://www.psychologicalscience.org/members/fellows/aps-fellow-nomination" target="_blank" style="color:#1e293b; font-weight:500;">🔗 APS Fellow Nominations</a></br>
+<a href="https://www.psychologicalscience.org/members/fellows/aps-fellow-nomination" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 APS Fellow Nominations</a></br>
 <span class="sub-tra">↳ Nomeações para bolsistas APS</span>
-<a href="https://www.psychologicalscience.org/members/teaching" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Teaching Psychological Science</a></br>
+<a href="https://www.psychologicalscience.org/members/teaching" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Teaching Psychological Science</a></br>
 <span class="sub-tra">↳ Ensino de Ciências Psicológicas</span>
-<a href="https://www.psychologicalscience.org/members/apssc" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Student Members</a></br>
+<a href="https://www.psychologicalscience.org/members/apssc" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Student Members</a></br>
 <span class="sub-tra">↳ Membros Estudantes</span>
-<a href="https://www.psychologicalscience.org/resources-on-combating-misinformation" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Resources on Combating Misinformation</a></br>
+<a href="https://www.psychologicalscience.org/resources-on-combating-misinformation" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Resources on Combating Misinformation</a></br>
 <span class="sub-tra">↳ Recursos para combater a desinformação</span>
-<a href="https://www.psychologicalscience.org/career-resources-1" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Employment & Career</a></br>
+<a href="https://www.psychologicalscience.org/career-resources-1" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Employment & Career</a></br>
 <span class="sub-tra">↳ Emprego e carreira</span>
 </div></div>
 <div class="collapse" id="collapseIndex16" data-parent="#myGroup" Style><div class="card card-body">
@@ -274,18 +266,18 @@
 <div class="box-title-inner"><span>🌐 El País Psicologia</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><p class="text-muted">Nenhum artigo relevante capturado nesta rodada.</p>
 </div></div>
 <div class="collapse" id="collapseIndex20" data-parent="#myGroup" Style><div class="card card-body">
-<div class="box-title-inner"><span>🌐 G1 Saúde Mental</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://www.globo.com/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Globo.com, aqui você encontra notícias da sua região, esportes, entretenimento e muito mais</a></br>
-<a href="#" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Globo.com, aqui você encontra notícias da sua região, esportes, entretenimento e muito mais</a></br>
-<a href="https://g1.globo.com/?utm_source=globo.com&utm_medium=header" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Globo.com, aqui você encontra notícias da sua região, esportes, entretenimento e muito mais</a></br>
-<a href="https://oglobo.globo.com/?utm_source=globo.com&utm_medium=header&utm_campaign=chamada_header" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Globo.com, aqui você encontra notícias da sua região, esportes, entretenimento e muito mais</a></br>
-<a href="https://valor.globo.com/?utm_source=globo.com&utm_medium=header" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Globo.com, aqui você encontra notícias da sua região, esportes, entretenimento e muito mais</a></br>
-<a href="https://ge.globo.com/?utm_source=globo.com&utm_medium=header" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Globo.com, aqui você encontra notícias da sua região, esportes, entretenimento e muito mais</a></br>
-<a href="https://ge.globo.com/cartola/?utm_source=globocom&utm_medium=header&utm_campaign=c2022_10_cartola_cartola-2022_alcance&utm_content=HEA_cartola-2022" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Globo.com, aqui você encontra notícias da sua região, esportes, entretenimento e muito mais</a></br>
-<a href="https://globoplay.globo.com/?origemId=1760&utm_source=gcom&utm_medium=home&utm_campaign=gcom-botao-destaque-superior" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Globo.com, aqui você encontra notícias da sua região, esportes, entretenimento e muito mais</a></br>
-<a href="https://globopop.globo.com/?utm_source=globo.com&utm_medium=header" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Globo.com, aqui você encontra notícias da sua região, esportes, entretenimento e muito mais</a></br>
-<a href="https://gshow.globo.com/?utm_source=globo.com&utm_medium=header" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Globo.com, aqui você encontra notícias da sua região, esportes, entretenimento e muito mais</a></br>
-<a href="https://receitas.globo.com/?utm_source=globo.com&utm_medium=header" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Globo.com, aqui você encontra notícias da sua região, esportes, entretenimento e muito mais</a></br>
-<a href="https://revistaquem.globo.com/?utm_source=globo.com&utm_medium=header" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Globo.com, aqui você encontra notícias da sua região, esportes, entretenimento e muito mais</a></br>
+<div class="box-title-inner"><span>🌐 G1 Saúde Mental</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://www.globo.com/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Globo.com, aqui você encontra notícias da sua região, esportes, entretenimento e muito mais</a></br>
+<a href="#" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Globo.com, aqui você encontra notícias da sua região, esportes, entretenimento e muito mais</a></br>
+<a href="https://g1.globo.com/?utm_source=globo.com&utm_medium=header" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Globo.com, aqui você encontra notícias da sua região, esportes, entretenimento e muito mais</a></br>
+<a href="https://oglobo.globo.com/?utm_source=globo.com&utm_medium=header&utm_campaign=chamada_header" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Globo.com, aqui você encontra notícias da sua região, esportes, entretenimento e muito mais</a></br>
+<a href="https://valor.globo.com/?utm_source=globo.com&utm_medium=header" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Globo.com, aqui você encontra notícias da sua região, esportes, entretenimento e muito mais</a></br>
+<a href="https://ge.globo.com/?utm_source=globo.com&utm_medium=header" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Globo.com, aqui você encontra notícias da sua região, esportes, entretenimento e muito mais</a></br>
+<a href="https://ge.globo.com/cartola/?utm_source=globocom&utm_medium=header&utm_campaign=c2022_10_cartola_cartola-2022_alcance&utm_content=HEA_cartola-2022" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Globo.com, aqui você encontra notícias da sua região, esportes, entretenimento e muito mais</a></br>
+<a href="https://globoplay.globo.com/?origemId=1760&utm_source=gcom&utm_medium=home&utm_campaign=gcom-botao-destaque-superior" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Globo.com, aqui você encontra notícias da sua região, esportes, entretenimento e muito mais</a></br>
+<a href="https://globopop.globo.com/?utm_source=globo.com&utm_medium=header" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Globo.com, aqui você encontra notícias da sua região, esportes, entretenimento e muito mais</a></br>
+<a href="https://gshow.globo.com/?utm_source=globo.com&utm_medium=header" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Globo.com, aqui você encontra notícias da sua região, esportes, entretenimento e muito mais</a></br>
+<a href="https://receitas.globo.com/?utm_source=globo.com&utm_medium=header" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Globo.com, aqui você encontra notícias da sua região, esportes, entretenimento e muito mais</a></br>
+<a href="https://revistaquem.globo.com/?utm_source=globo.com&utm_medium=header" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Globo.com, aqui você encontra notícias da sua região, esportes, entretenimento e muito mais</a></br>
 </div></div>
 <div class="collapse" id="collapseIndex21" data-parent="#myGroup" Style><div class="card card-body">
 <div class="box-title-inner"><span>🌐 Medical Xpress</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><p class="text-muted">Nenhum artigo relevante capturado nesta rodada.</p>
@@ -294,105 +286,105 @@
 <div class="box-title-inner"><span>🌐 Psychreg</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><p class="text-muted">Nenhum artigo relevante capturado nesta rodada.</p>
 </div></div>
 <div class="collapse" id="collapseIndex23" data-parent="#myGroup" Style><div class="card card-body">
-<div class="box-title-inner"><span>🌐 Folha Equilíbrio Mente</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://uol.com.br//www.uol.com.br/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 UOL - Seu universo online</a></br>
-<a href="https://play.uol.com.br/?utm_source=home_organic_menu-fixo-header-pv&utm_medium=home&utm_campaign=home_organic_menu-fixo-header-pv " target="_blank" style="color:#1e293b; font-weight:500;">🔗 SiteUOL Play - TV Online</a></br>
-<a href="https://play.uol.com.br/lp/universalplus?utm_source=home_organic_menu-fixo-header-universal&utm_medium=home&utm_campaign=home_organic_menu-fixo-header-universal " target="_blank" style="color:#1e293b; font-weight:500;">🔗 SiteUniversal+</a></br>
-<a href="https://play.uol.com.br/lp/esportes/max?utm_source=home_organic_menu-fixo-header-champions&utm_medium=home&utm_campaign=home_organic_menu-fixo-header-champions " target="_blank" style="color:#1e293b; font-weight:500;">🔗 SiteChampions League</a></br>
-<a href="https://assistenciatecnica.uol.com.br/?utm_source=home_organic_menu-fixo-header&utm_medium=home&utm_campaign=home_organic_menu-fixo-header" target="_blank" style="color:#1e293b; font-weight:500;">🔗 SiteUOL Assistência Técnica</a></br>
-<a href="https://resolve.uol.com.br/?utm_source=home_organic_menu-fixo-header&utm_medium=home&utm_campaign=home_organic_menu-fixo-header" target="_blank" style="color:#1e293b; font-weight:500;">🔗 SiteUOL Resolve</a></br>
+<div class="box-title-inner"><span>🌐 Folha Equilíbrio Mente</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://uol.com.br//www.uol.com.br/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 UOL - Seu universo online</a></br>
+<a href="https://play.uol.com.br/?utm_source=home_organic_menu-fixo-header-pv&utm_medium=home&utm_campaign=home_organic_menu-fixo-header-pv " target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 SiteUOL Play - TV Online</a></br>
+<a href="https://play.uol.com.br/lp/universalplus?utm_source=home_organic_menu-fixo-header-universal&utm_medium=home&utm_campaign=home_organic_menu-fixo-header-universal " target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 SiteUniversal+</a></br>
+<a href="https://play.uol.com.br/lp/esportes/max?utm_source=home_organic_menu-fixo-header-champions&utm_medium=home&utm_campaign=home_organic_menu-fixo-header-champions " target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 SiteChampions League</a></br>
+<a href="https://assistenciatecnica.uol.com.br/?utm_source=home_organic_menu-fixo-header&utm_medium=home&utm_campaign=home_organic_menu-fixo-header" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 SiteUOL Assistência Técnica</a></br>
+<a href="https://resolve.uol.com.br/?utm_source=home_organic_menu-fixo-header&utm_medium=home&utm_campaign=home_organic_menu-fixo-header" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 SiteUOL Resolve</a></br>
 <span class="sub-tra">↳ SiteUOL Resolver</span>
-<a href="https://antivirus.uol.com.br/?utm_source=home_organic_menu-fixo-header&utm_medium=home&utm_campaign=home_organic_menu-fixo-header" target="_blank" style="color:#1e293b; font-weight:500;">🔗 SiteUOL Antivírus</a></br>
-<a href="https://batepapo.uol.com.br/?utm_source=home_organic_menu-fixo-header&utm_medium=home&utm_campaign=home_organic_menu-fixo-header" target="_blank" style="color:#1e293b; font-weight:500;">🔗 SiteBate-Papo UOL</a></br>
-<a href="https://uolhost.uol.com.br/loja-virtual/?utm_source=home_organic_menu-fixo-header&utm_medium=home&utm_campaign=home_organic_menu-fixo-header" target="_blank" style="color:#1e293b; font-weight:500;">🔗 SiteLoja Virtual</a></br>
-<a href="https://uolhost.uol.com.br/criador-de-sites/?utm_source=home_organic_menu-fixo-header&utm_medium=home&utm_campaign=home_organic_menu-fixo-header" target="_blank" style="color:#1e293b; font-weight:500;">🔗 SiteCriador de Sites</a></br>
-<a href="https://uolhost.uol.com.br/e-mail/?utm_source=home_organic_menu-fixo-header&utm_medium=home&utm_campaign=home_organic_menu-fixo-header" target="_blank" style="color:#1e293b; font-weight:500;">🔗 SiteE-mail Profissional</a></br>
-<a href="https://afiliados.uol.com.br/index.html?utm_source=home_organic_menu-fixo-header&utm_medium=home&utm_campaign=home_organic_menu-fixo-header#" target="_blank" style="color:#1e293b; font-weight:500;">🔗 SiteUOL Afiliados</a></br>
+<a href="https://antivirus.uol.com.br/?utm_source=home_organic_menu-fixo-header&utm_medium=home&utm_campaign=home_organic_menu-fixo-header" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 SiteUOL Antivírus</a></br>
+<a href="https://batepapo.uol.com.br/?utm_source=home_organic_menu-fixo-header&utm_medium=home&utm_campaign=home_organic_menu-fixo-header" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 SiteBate-Papo UOL</a></br>
+<a href="https://uolhost.uol.com.br/loja-virtual/?utm_source=home_organic_menu-fixo-header&utm_medium=home&utm_campaign=home_organic_menu-fixo-header" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 SiteLoja Virtual</a></br>
+<a href="https://uolhost.uol.com.br/criador-de-sites/?utm_source=home_organic_menu-fixo-header&utm_medium=home&utm_campaign=home_organic_menu-fixo-header" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 SiteCriador de Sites</a></br>
+<a href="https://uolhost.uol.com.br/e-mail/?utm_source=home_organic_menu-fixo-header&utm_medium=home&utm_campaign=home_organic_menu-fixo-header" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 SiteE-mail Profissional</a></br>
+<a href="https://afiliados.uol.com.br/index.html?utm_source=home_organic_menu-fixo-header&utm_medium=home&utm_campaign=home_organic_menu-fixo-header#" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 SiteUOL Afiliados</a></br>
 </div></div>
 <div class="collapse" id="collapseIndex24" data-parent="#myGroup" Style><div class="card card-body">
-<div class="box-title-inner"><span>🌐 PsychCrunch</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://libsyn.com/how-to-start-a-podcast/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 How To Start a Podcast</a></br>
+<div class="box-title-inner"><span>🌐 PsychCrunch</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://libsyn.com/how-to-start-a-podcast/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 How To Start a Podcast</a></br>
 <span class="sub-tra">↳ Como iniciar um podcast</span>
-<a href="https://libsyn.com/plans-and-pricing/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 How To Start a Podcast</a></br>
+<a href="https://libsyn.com/plans-and-pricing/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 How To Start a Podcast</a></br>
 <span class="sub-tra">↳ Como iniciar um podcast</span>
-<a href="https://libsyn.com/libsyn-podcast-hosting-features/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 How To Start a Podcast</a></br>
+<a href="https://libsyn.com/libsyn-podcast-hosting-features/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 How To Start a Podcast</a></br>
 <span class="sub-tra">↳ Como iniciar um podcast</span>
-<a href="https://libsyn.com/podcast-monetization" target="_blank" style="color:#1e293b; font-weight:500;">🔗 How To Start a Podcast</a></br>
+<a href="https://libsyn.com/podcast-monetization" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 How To Start a Podcast</a></br>
 <span class="sub-tra">↳ Como iniciar um podcast</span>
-<a href="https://advertising.libsyn.com/podcast-advertising" target="_blank" style="color:#1e293b; font-weight:500;">🔗 How To Start a Podcast</a></br>
+<a href="https://advertising.libsyn.com/podcast-advertising" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 How To Start a Podcast</a></br>
 <span class="sub-tra">↳ Como iniciar um podcast</span>
-<a href="https://libsyn.com/automatic-podcast-ads/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 How To Start a Podcast</a></br>
+<a href="https://libsyn.com/automatic-podcast-ads/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 How To Start a Podcast</a></br>
 <span class="sub-tra">↳ Como iniciar um podcast</span>
-<a href="https://libsyn.com/libsynpro-enterprise-podcasting/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 How To Start a Podcast</a></br>
+<a href="https://libsyn.com/libsynpro-enterprise-podcasting/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 How To Start a Podcast</a></br>
 <span class="sub-tra">↳ Como iniciar um podcast</span>
-<a href="https://advertising.libsyn.com/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 How To Start a Podcast</a></br>
+<a href="https://advertising.libsyn.com/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 How To Start a Podcast</a></br>
 <span class="sub-tra">↳ Como iniciar um podcast</span>
-<a href="https://five-api.libsyn.com/auth/authorize?client_id=Libsyn5&state=09e83cau1kmi&redirect_uri=https%3A%2F%2Ffive.libsyn.com%2F%3F_ga%3D2.221815960.1429756797.1660572676-1571578748.1639535206%26_gac%3D1.226292072.1658521338.Cj0KCQjw8uOWBhDXARIsAOxKJ2HmUW5qed2FljiX-ywSu-m-VLlYFd4jJDaS9OJlXiuiqbdOuXd66kYaAugYEALw_wcB" target="_blank" style="color:#1e293b; font-weight:500;">🔗 How To Start a Podcast</a></br>
+<a href="https://five-api.libsyn.com/auth/authorize?client_id=Libsyn5&state=09e83cau1kmi&redirect_uri=https%3A%2F%2Ffive.libsyn.com%2F%3F_ga%3D2.221815960.1429756797.1660572676-1571578748.1639535206%26_gac%3D1.226292072.1658521338.Cj0KCQjw8uOWBhDXARIsAOxKJ2HmUW5qed2FljiX-ywSu-m-VLlYFd4jJDaS9OJlXiuiqbdOuXd66kYaAugYEALw_wcB" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 How To Start a Podcast</a></br>
 <span class="sub-tra">↳ Como iniciar um podcast</span>
-<a href="https://signup.libsyn.com/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 How To Start a Podcast</a></br>
+<a href="https://signup.libsyn.com/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 How To Start a Podcast</a></br>
 <span class="sub-tra">↳ Como iniciar um podcast</span>
-<a href="#" target="_blank" style="color:#1e293b; font-weight:500;">🔗 How To Start a Podcast</a></br>
+<a href="#" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 How To Start a Podcast</a></br>
 <span class="sub-tra">↳ Como iniciar um podcast</span>
-<a href="https://signup.libsyn.com/?_gl=1*zcoqq4*_gcl_aw*R0NMLjE3NjM0NzMyMjAuQ2p3S0NBaUF6X0RJQmhCSkVpd0FWSDJYd09xeE1wOVhZM1NpUEJIazR5eTV2NFFXcGV5cE5CZFpqWlBERGFmZjBqb19sNXBTQVdCUGlCb0NIOGdRQXZEX0J3RQ..*_gcl_au*MTQ5NDI3NTQwMi4xNzYyMTg3OTM2*_ga*MTUyMTU0MTMyNy4xNzI2MTYzMDQ4*_ga_6MD8SMG8NT*czE3NjQ5NTU2OTMkbzY1MCRnMSR0MTc2NDk1NTcwNSRqNDgkbDAkaDA" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Start a new podcast today with a free month of podcast hosting.</a></br>
+<a href="https://signup.libsyn.com/?_gl=1*zcoqq4*_gcl_aw*R0NMLjE3NjM0NzMyMjAuQ2p3S0NBaUF6X0RJQmhCSkVpd0FWSDJYd09xeE1wOVhZM1NpUEJIazR5eTV2NFFXcGV5cE5CZFpqWlBERGFmZjBqb19sNXBTQVdCUGlCb0NIOGdRQXZEX0J3RQ..*_gcl_au*MTQ5NDI3NTQwMi4xNzYyMTg3OTM2*_ga*MTUyMTU0MTMyNy4xNzI2MTYzMDQ4*_ga_6MD8SMG8NT*czE3NjQ5NTU2OTMkbzY1MCRnMSR0MTc2NDk1NTcwNSRqNDgkbDAkaDA" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Start a new podcast today with a free month of podcast hosting.</a></br>
 <span class="sub-tra">↳ Comece um novo podcast hoje com um mês grátis de hospedagem de podcast.</span>
 </div></div>
 <div class="collapse" id="collapseIndex25" data-parent="#myGroup" Style><div class="card card-body">
-<div class="box-title-inner"><span>🌐 A Mente é Maravilhosa-Neurociência</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://amenteemaravilhosa.com.br/luis-horta-e-costa-classicos-como-o-benfica-vs-porto-revelam-a-pressao-mental-no-futebol-de-elite/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Luís Horta e Costa: “Clássicos como o Benfica vs Porto revelam a pressão mental no futebol de elite”</a></br>
+<div class="box-title-inner"><span>🌐 A Mente é Maravilhosa-Neurociência</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://amenteemaravilhosa.com.br/luis-horta-e-costa-classicos-como-o-benfica-vs-porto-revelam-a-pressao-mental-no-futebol-de-elite/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Luís Horta e Costa: “Clássicos como o Benfica vs Porto revelam a pressão mental no futebol de elite”</a></br>
 <span class="sub-tra">↳ Luís Horta e Costa: “Clássicos como Benfica x Porto revelam a pressão mental no futebol de elite”</span>
-<a href="https://amenteemaravilhosa.com.br/amor-proprio-por-que-e-mais-dificil-do-que-parece-e-como-comecar-a-construi-lo/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Amor-próprio: por que é mais difícil do que parece (e como começar a construí-lo)</a></br>
-<a href="https://amenteemaravilhosa.com.br/relacoes/relacionamentos-amorosos/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Relacionamentos amorosos</a></br>
-<a href="https://amenteemaravilhosa.com.br/viajar-portugal-destino-ideal-reconectar-parceiro/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Viajar para Portugal: o destino ideal para se reconectar com seu parceiro</a></br>
-<a href="https://amenteemaravilhosa.com.br/psicologia/psicologia-clinica/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Psicologia clínica</a></br>
-<a href="https://amenteemaravilhosa.com.br/nomofobia-como-vicio-celular-afeta-voce/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Nomofobia: O que é e como o vício em celular afeta você</a></br>
-<a href="https://amenteemaravilhosa.com.br/como-recarregar-bateria-mental-psiquiatra-marian-rojas-estape/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Como recarregar sua bateria mental, segundo a psiquiatra Marian Rojas Estapé.</a></br>
-<a href="https://amenteemaravilhosa.com.br/beneficios-ter-uniao-estavel/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Quais são os benefícios de ter uma união estável?</a></br>
-<a href="https://amenteemaravilhosa.com.br/likes-nova-moeda-social-como-afetam-cerebro-autoestima/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Os likes são a nova moeda social? Como eles afetam seu cérebro e sua autoestima</a></br>
-<a href="https://amenteemaravilhosa.com.br/fantasmas-psicologicos-passeio-pelo-porao-mente/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Os "fantasmas psicológicos": um passeio pelo porão da nossa mente</a></br>
-<a href="https://amenteemaravilhosa.com.br/fatos-interessantes-passado-sexual-pessoas/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 5 fatos interessantes sobre o passado sexual das pessoas</a></br>
-<a href="https://amenteemaravilhosa.com.br/combater-crises-no-casamento/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Dicas para combater as crises no casamento</a></br>
+<a href="https://amenteemaravilhosa.com.br/amor-proprio-por-que-e-mais-dificil-do-que-parece-e-como-comecar-a-construi-lo/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Amor-próprio: por que é mais difícil do que parece (e como começar a construí-lo)</a></br>
+<a href="https://amenteemaravilhosa.com.br/relacoes/relacionamentos-amorosos/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Relacionamentos amorosos</a></br>
+<a href="https://amenteemaravilhosa.com.br/viajar-portugal-destino-ideal-reconectar-parceiro/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Viajar para Portugal: o destino ideal para se reconectar com seu parceiro</a></br>
+<a href="https://amenteemaravilhosa.com.br/psicologia/psicologia-clinica/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Psicologia clínica</a></br>
+<a href="https://amenteemaravilhosa.com.br/nomofobia-como-vicio-celular-afeta-voce/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Nomofobia: O que é e como o vício em celular afeta você</a></br>
+<a href="https://amenteemaravilhosa.com.br/como-recarregar-bateria-mental-psiquiatra-marian-rojas-estape/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Como recarregar sua bateria mental, segundo a psiquiatra Marian Rojas Estapé.</a></br>
+<a href="https://amenteemaravilhosa.com.br/beneficios-ter-uniao-estavel/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Quais são os benefícios de ter uma união estável?</a></br>
+<a href="https://amenteemaravilhosa.com.br/likes-nova-moeda-social-como-afetam-cerebro-autoestima/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Os likes são a nova moeda social? Como eles afetam seu cérebro e sua autoestima</a></br>
+<a href="https://amenteemaravilhosa.com.br/fantasmas-psicologicos-passeio-pelo-porao-mente/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Os "fantasmas psicológicos": um passeio pelo porão da nossa mente</a></br>
+<a href="https://amenteemaravilhosa.com.br/fatos-interessantes-passado-sexual-pessoas/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 5 fatos interessantes sobre o passado sexual das pessoas</a></br>
+<a href="https://amenteemaravilhosa.com.br/combater-crises-no-casamento/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Dicas para combater as crises no casamento</a></br>
 </div></div>
 <div class="collapse" id="collapseIndex26" data-parent="#myGroup" Style><div class="card card-body">
-<div class="box-title-inner"><span>🌐 A Mente é Maravilhosa-Psicologia</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://amenteemaravilhosa.com.br/luis-horta-e-costa-classicos-como-o-benfica-vs-porto-revelam-a-pressao-mental-no-futebol-de-elite/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Luís Horta e Costa: “Clássicos como o Benfica vs Porto revelam a pressão mental no futebol de elite”</a></br>
+<div class="box-title-inner"><span>🌐 A Mente é Maravilhosa-Psicologia</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://amenteemaravilhosa.com.br/luis-horta-e-costa-classicos-como-o-benfica-vs-porto-revelam-a-pressao-mental-no-futebol-de-elite/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Luís Horta e Costa: “Clássicos como o Benfica vs Porto revelam a pressão mental no futebol de elite”</a></br>
 <span class="sub-tra">↳ Luís Horta e Costa: “Clássicos como Benfica x Porto revelam a pressão mental no futebol de elite”</span>
-<a href="https://amenteemaravilhosa.com.br/amor-proprio-por-que-e-mais-dificil-do-que-parece-e-como-comecar-a-construi-lo/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Amor-próprio: por que é mais difícil do que parece (e como começar a construí-lo)</a></br>
-<a href="https://amenteemaravilhosa.com.br/relacoes/relacionamentos-amorosos/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Relacionamentos amorosos</a></br>
-<a href="https://amenteemaravilhosa.com.br/viajar-portugal-destino-ideal-reconectar-parceiro/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Viajar para Portugal: o destino ideal para se reconectar com seu parceiro</a></br>
-<a href="https://amenteemaravilhosa.com.br/psicologia/psicologia-clinica/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Psicologia clínica</a></br>
-<a href="https://amenteemaravilhosa.com.br/nomofobia-como-vicio-celular-afeta-voce/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Nomofobia: O que é e como o vício em celular afeta você</a></br>
-<a href="https://amenteemaravilhosa.com.br/como-recarregar-bateria-mental-psiquiatra-marian-rojas-estape/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Como recarregar sua bateria mental, segundo a psiquiatra Marian Rojas Estapé.</a></br>
-<a href="https://amenteemaravilhosa.com.br/beneficios-ter-uniao-estavel/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Quais são os benefícios de ter uma união estável?</a></br>
-<a href="https://amenteemaravilhosa.com.br/likes-nova-moeda-social-como-afetam-cerebro-autoestima/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Os likes são a nova moeda social? Como eles afetam seu cérebro e sua autoestima</a></br>
-<a href="https://amenteemaravilhosa.com.br/fantasmas-psicologicos-passeio-pelo-porao-mente/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Os "fantasmas psicológicos": um passeio pelo porão da nossa mente</a></br>
-<a href="https://amenteemaravilhosa.com.br/fatos-interessantes-passado-sexual-pessoas/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 5 fatos interessantes sobre o passado sexual das pessoas</a></br>
-<a href="https://amenteemaravilhosa.com.br/combater-crises-no-casamento/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Dicas para combater as crises no casamento</a></br>
+<a href="https://amenteemaravilhosa.com.br/amor-proprio-por-que-e-mais-dificil-do-que-parece-e-como-comecar-a-construi-lo/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Amor-próprio: por que é mais difícil do que parece (e como começar a construí-lo)</a></br>
+<a href="https://amenteemaravilhosa.com.br/relacoes/relacionamentos-amorosos/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Relacionamentos amorosos</a></br>
+<a href="https://amenteemaravilhosa.com.br/viajar-portugal-destino-ideal-reconectar-parceiro/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Viajar para Portugal: o destino ideal para se reconectar com seu parceiro</a></br>
+<a href="https://amenteemaravilhosa.com.br/psicologia/psicologia-clinica/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Psicologia clínica</a></br>
+<a href="https://amenteemaravilhosa.com.br/nomofobia-como-vicio-celular-afeta-voce/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Nomofobia: O que é e como o vício em celular afeta você</a></br>
+<a href="https://amenteemaravilhosa.com.br/como-recarregar-bateria-mental-psiquiatra-marian-rojas-estape/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Como recarregar sua bateria mental, segundo a psiquiatra Marian Rojas Estapé.</a></br>
+<a href="https://amenteemaravilhosa.com.br/beneficios-ter-uniao-estavel/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Quais são os benefícios de ter uma união estável?</a></br>
+<a href="https://amenteemaravilhosa.com.br/likes-nova-moeda-social-como-afetam-cerebro-autoestima/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Os likes são a nova moeda social? Como eles afetam seu cérebro e sua autoestima</a></br>
+<a href="https://amenteemaravilhosa.com.br/fantasmas-psicologicos-passeio-pelo-porao-mente/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Os "fantasmas psicológicos": um passeio pelo porão da nossa mente</a></br>
+<a href="https://amenteemaravilhosa.com.br/fatos-interessantes-passado-sexual-pessoas/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 5 fatos interessantes sobre o passado sexual das pessoas</a></br>
+<a href="https://amenteemaravilhosa.com.br/combater-crises-no-casamento/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Dicas para combater as crises no casamento</a></br>
 </div></div>
 <div class="collapse" id="collapseIndex27" data-parent="#myGroup" Style><div class="card card-body">
-<div class="box-title-inner"><span>🌐 A Mente é Maravilhosa-Relações</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://amenteemaravilhosa.com.br/luis-horta-e-costa-classicos-como-o-benfica-vs-porto-revelam-a-pressao-mental-no-futebol-de-elite/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Luís Horta e Costa: “Clássicos como o Benfica vs Porto revelam a pressão mental no futebol de elite”</a></br>
+<div class="box-title-inner"><span>🌐 A Mente é Maravilhosa-Relações</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://amenteemaravilhosa.com.br/luis-horta-e-costa-classicos-como-o-benfica-vs-porto-revelam-a-pressao-mental-no-futebol-de-elite/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Luís Horta e Costa: “Clássicos como o Benfica vs Porto revelam a pressão mental no futebol de elite”</a></br>
 <span class="sub-tra">↳ Luís Horta e Costa: “Clássicos como Benfica x Porto revelam a pressão mental no futebol de elite”</span>
-<a href="https://amenteemaravilhosa.com.br/amor-proprio-por-que-e-mais-dificil-do-que-parece-e-como-comecar-a-construi-lo/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Amor-próprio: por que é mais difícil do que parece (e como começar a construí-lo)</a></br>
-<a href="https://amenteemaravilhosa.com.br/relacoes/relacionamentos-amorosos/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Relacionamentos amorosos</a></br>
-<a href="https://amenteemaravilhosa.com.br/viajar-portugal-destino-ideal-reconectar-parceiro/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Viajar para Portugal: o destino ideal para se reconectar com seu parceiro</a></br>
-<a href="https://amenteemaravilhosa.com.br/psicologia/psicologia-clinica/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Psicologia clínica</a></br>
-<a href="https://amenteemaravilhosa.com.br/nomofobia-como-vicio-celular-afeta-voce/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Nomofobia: O que é e como o vício em celular afeta você</a></br>
-<a href="https://amenteemaravilhosa.com.br/como-recarregar-bateria-mental-psiquiatra-marian-rojas-estape/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Como recarregar sua bateria mental, segundo a psiquiatra Marian Rojas Estapé.</a></br>
-<a href="https://amenteemaravilhosa.com.br/beneficios-ter-uniao-estavel/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Quais são os benefícios de ter uma união estável?</a></br>
-<a href="https://amenteemaravilhosa.com.br/likes-nova-moeda-social-como-afetam-cerebro-autoestima/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Os likes são a nova moeda social? Como eles afetam seu cérebro e sua autoestima</a></br>
-<a href="https://amenteemaravilhosa.com.br/fantasmas-psicologicos-passeio-pelo-porao-mente/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Os "fantasmas psicológicos": um passeio pelo porão da nossa mente</a></br>
-<a href="https://amenteemaravilhosa.com.br/fatos-interessantes-passado-sexual-pessoas/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 5 fatos interessantes sobre o passado sexual das pessoas</a></br>
-<a href="https://amenteemaravilhosa.com.br/combater-crises-no-casamento/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Dicas para combater as crises no casamento</a></br>
+<a href="https://amenteemaravilhosa.com.br/amor-proprio-por-que-e-mais-dificil-do-que-parece-e-como-comecar-a-construi-lo/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Amor-próprio: por que é mais difícil do que parece (e como começar a construí-lo)</a></br>
+<a href="https://amenteemaravilhosa.com.br/relacoes/relacionamentos-amorosos/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Relacionamentos amorosos</a></br>
+<a href="https://amenteemaravilhosa.com.br/viajar-portugal-destino-ideal-reconectar-parceiro/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Viajar para Portugal: o destino ideal para se reconectar com seu parceiro</a></br>
+<a href="https://amenteemaravilhosa.com.br/psicologia/psicologia-clinica/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Psicologia clínica</a></br>
+<a href="https://amenteemaravilhosa.com.br/nomofobia-como-vicio-celular-afeta-voce/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Nomofobia: O que é e como o vício em celular afeta você</a></br>
+<a href="https://amenteemaravilhosa.com.br/como-recarregar-bateria-mental-psiquiatra-marian-rojas-estape/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Como recarregar sua bateria mental, segundo a psiquiatra Marian Rojas Estapé.</a></br>
+<a href="https://amenteemaravilhosa.com.br/beneficios-ter-uniao-estavel/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Quais são os benefícios de ter uma união estável?</a></br>
+<a href="https://amenteemaravilhosa.com.br/likes-nova-moeda-social-como-afetam-cerebro-autoestima/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Os likes são a nova moeda social? Como eles afetam seu cérebro e sua autoestima</a></br>
+<a href="https://amenteemaravilhosa.com.br/fantasmas-psicologicos-passeio-pelo-porao-mente/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Os "fantasmas psicológicos": um passeio pelo porão da nossa mente</a></br>
+<a href="https://amenteemaravilhosa.com.br/fatos-interessantes-passado-sexual-pessoas/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 5 fatos interessantes sobre o passado sexual das pessoas</a></br>
+<a href="https://amenteemaravilhosa.com.br/combater-crises-no-casamento/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Dicas para combater as crises no casamento</a></br>
 </div></div>
 <div class="collapse" id="collapseIndex28" data-parent="#myGroup" Style><div class="card card-body">
-<div class="box-title-inner"><span>🌐 A Mente é Maravilhosa-Saúde</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://amenteemaravilhosa.com.br/luis-horta-e-costa-classicos-como-o-benfica-vs-porto-revelam-a-pressao-mental-no-futebol-de-elite/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Luís Horta e Costa: “Clássicos como o Benfica vs Porto revelam a pressão mental no futebol de elite”</a></br>
+<div class="box-title-inner"><span>🌐 A Mente é Maravilhosa-Saúde</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><a href="https://amenteemaravilhosa.com.br/luis-horta-e-costa-classicos-como-o-benfica-vs-porto-revelam-a-pressao-mental-no-futebol-de-elite/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Luís Horta e Costa: “Clássicos como o Benfica vs Porto revelam a pressão mental no futebol de elite”</a></br>
 <span class="sub-tra">↳ Luís Horta e Costa: “Clássicos como Benfica x Porto revelam a pressão mental no futebol de elite”</span>
-<a href="https://amenteemaravilhosa.com.br/amor-proprio-por-que-e-mais-dificil-do-que-parece-e-como-comecar-a-construi-lo/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Amor-próprio: por que é mais difícil do que parece (e como começar a construí-lo)</a></br>
-<a href="https://amenteemaravilhosa.com.br/relacoes/relacionamentos-amorosos/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Relacionamentos amorosos</a></br>
-<a href="https://amenteemaravilhosa.com.br/viajar-portugal-destino-ideal-reconectar-parceiro/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Viajar para Portugal: o destino ideal para se reconectar com seu parceiro</a></br>
-<a href="https://amenteemaravilhosa.com.br/psicologia/psicologia-clinica/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Psicologia clínica</a></br>
-<a href="https://amenteemaravilhosa.com.br/nomofobia-como-vicio-celular-afeta-voce/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Nomofobia: O que é e como o vício em celular afeta você</a></br>
-<a href="https://amenteemaravilhosa.com.br/como-recarregar-bateria-mental-psiquiatra-marian-rojas-estape/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Como recarregar sua bateria mental, segundo a psiquiatra Marian Rojas Estapé.</a></br>
-<a href="https://amenteemaravilhosa.com.br/beneficios-ter-uniao-estavel/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Quais são os benefícios de ter uma união estável?</a></br>
-<a href="https://amenteemaravilhosa.com.br/likes-nova-moeda-social-como-afetam-cerebro-autoestima/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Os likes são a nova moeda social? Como eles afetam seu cérebro e sua autoestima</a></br>
-<a href="https://amenteemaravilhosa.com.br/fantasmas-psicologicos-passeio-pelo-porao-mente/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Os "fantasmas psicológicos": um passeio pelo porão da nossa mente</a></br>
-<a href="https://amenteemaravilhosa.com.br/fatos-interessantes-passado-sexual-pessoas/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 5 fatos interessantes sobre o passado sexual das pessoas</a></br>
-<a href="https://amenteemaravilhosa.com.br/combater-crises-no-casamento/" target="_blank" style="color:#1e293b; font-weight:500;">🔗 Dicas para combater as crises no casamento</a></br>
+<a href="https://amenteemaravilhosa.com.br/amor-proprio-por-que-e-mais-dificil-do-que-parece-e-como-comecar-a-construi-lo/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Amor-próprio: por que é mais difícil do que parece (e como começar a construí-lo)</a></br>
+<a href="https://amenteemaravilhosa.com.br/relacoes/relacionamentos-amorosos/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Relacionamentos amorosos</a></br>
+<a href="https://amenteemaravilhosa.com.br/viajar-portugal-destino-ideal-reconectar-parceiro/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Viajar para Portugal: o destino ideal para se reconectar com seu parceiro</a></br>
+<a href="https://amenteemaravilhosa.com.br/psicologia/psicologia-clinica/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Psicologia clínica</a></br>
+<a href="https://amenteemaravilhosa.com.br/nomofobia-como-vicio-celular-afeta-voce/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Nomofobia: O que é e como o vício em celular afeta você</a></br>
+<a href="https://amenteemaravilhosa.com.br/como-recarregar-bateria-mental-psiquiatra-marian-rojas-estape/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Como recarregar sua bateria mental, segundo a psiquiatra Marian Rojas Estapé.</a></br>
+<a href="https://amenteemaravilhosa.com.br/beneficios-ter-uniao-estavel/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Quais são os benefícios de ter uma união estável?</a></br>
+<a href="https://amenteemaravilhosa.com.br/likes-nova-moeda-social-como-afetam-cerebro-autoestima/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Os likes são a nova moeda social? Como eles afetam seu cérebro e sua autoestima</a></br>
+<a href="https://amenteemaravilhosa.com.br/fantasmas-psicologicos-passeio-pelo-porao-mente/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Os "fantasmas psicológicos": um passeio pelo porão da nossa mente</a></br>
+<a href="https://amenteemaravilhosa.com.br/fatos-interessantes-passado-sexual-pessoas/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 5 fatos interessantes sobre o passado sexual das pessoas</a></br>
+<a href="https://amenteemaravilhosa.com.br/combater-crises-no-casamento/" target="_blank" style="color:#1e293b; font-weight:500; font-size:1.05rem;">🔗 Dicas para combater as crises no casamento</a></br>
 </div></div>
 <div class="collapse" id="collapseIndex29" data-parent="#myGroup" Style><div class="card card-body">
 <div class="box-title-inner"><span>🌐 Big Think</span><span class="link-topo-inner" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div><p class="text-muted">Nenhum artigo relevante capturado nesta rodada.</p>
