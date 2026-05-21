@@ -6,7 +6,8 @@
 <title>PSI LINKS BOARD</title>
 <style>
   body { font-family: system-ui, -apple-system, sans-serif; margin: 0; padding: 24px; color: #333; background-color: #ffffff; }
-  h1 { font-size: 28px; font-weight: bold; margin-bottom: 20px; color: #111; }
+  h1 { font-size: 28px; font-weight: bold; margin-bottom: 2px; color: #111; }
+  .data-captura { font-size: 14px; color: #666666; margin-bottom: 20px; font-style: italic; }
   .grid-botoes { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
   .btn-fonte { background: #ffffff; border: 1px solid #1192a4; color: #1192a4; padding: 8px 14px; font-size: 15px; border-radius: 6px; cursor: pointer; transition: all 0.15s ease; font-weight: 400; }
   .btn-fonte:hover { background-color: #1192a4; color: #ffffff; }
@@ -21,6 +22,7 @@
 </head>
 <body>
 <h1>PSI MONITOR</h1>
+<div class="data-captura">Última atualização: 21/05/2026 às 18:33</div>
 <div class="grid-botoes">
   <button class="btn-fonte ativo" onclick="mostrarConteudo(0, this)">VeryWell Mind</button>
   <button class="btn-fonte" onclick="mostrarConteudo(1, this)">Psychology Today</button>
@@ -76,10 +78,6 @@
     <span class="traducao">Antes de adquirir um novo hábito, primeiro conserte seu sono – aqui está o porquê</span>
   </div>
   <div class="item-artigo">
-    <a href="https://www.verywellmind.com/self-improvement-4157212" target="_blank">Self-Improvement</a>
-    <span class="traducao">Autoaperfeiçoamento</span>
-  </div>
-  <div class="item-artigo">
     <a href="https://www.verywellmind.com/tips-for-finding-your-purpose-in-life-4164689" target="_blank">7 Tips for Finding Your Purpose in Life</a>
     <span class="traducao">7 dicas para encontrar seu propósito na vida</span>
   </div>
@@ -90,10 +88,6 @@
   <div class="item-artigo">
     <a href="https://www.verywellmind.com/what-happens-to-your-brain-when-you-cut-out-added-sugar-11907903" target="_blank">What Happens To Your Brain After You Cut Out Added Sugar for a Month</a>
     <span class="traducao">O que acontece com seu cérebro depois que você corta o açúcar adicionado por um mês</span>
-  </div>
-  <div class="item-artigo">
-    <a href="https://www.verywellmind.com/therapy-4581775" target="_blank">Therapy</a>
-    <span class="traducao">Terapia</span>
   </div>
   <div class="item-artigo">
     <a href="https://www.verywellmind.com/how-to-know-when-it-s-time-to-see-a-therapist-5077040" target="_blank">How to Know When It’s Time to See a Therapist</a>
@@ -165,11 +159,9 @@ Neurologista</span>
       { url: "https://www.verywellmind.com/can-the-five-love-languages-help-your-relationship-4783538", texto: "What Are the Five Love Languages?", traducao: "Quais são as cinco linguagens do amor?" },
       { url: "https://www.verywellmind.com/what-is-an-empath-and-how-do-you-know-if-you-are-one-5119883", texto: "What Is an Empath and How Do You Know If You Are One?", traducao: "O que é um empata e como você sabe se é um?" },
       { url: "https://www.verywellmind.com/tackle-new-habit-sleep-11790711", texto: "Before You Tackle a New Habit, Fix Your Sleep First—Here’s Why", traducao: "Antes de adquirir um novo hábito, primeiro conserte seu sono – aqui está o porquê" },
-      { url: "https://www.verywellmind.com/self-improvement-4157212", texto: "Self-Improvement", traducao: "Autoaperfeiçoamento" },
       { url: "https://www.verywellmind.com/tips-for-finding-your-purpose-in-life-4164689", texto: "7 Tips for Finding Your Purpose in Life", traducao: "7 dicas para encontrar seu propósito na vida" },
       { url: "https://www.verywellmind.com/pomodoro-technique-history-steps-benefits-and-drawbacks-6892111", texto: "Why the Pomodoro Technique Is the Productivity Booster You Need to Try", traducao: "Por que a técnica Pomodoro é o impulsionador da produtividade que você precisa experimentar" },
       { url: "https://www.verywellmind.com/what-happens-to-your-brain-when-you-cut-out-added-sugar-11907903", texto: "What Happens To Your Brain After You Cut Out Added Sugar for a Month", traducao: "O que acontece com seu cérebro depois que você corta o açúcar adicionado por um mês" },
-      { url: "https://www.verywellmind.com/therapy-4581775", texto: "Therapy", traducao: "Terapia" },
       { url: "https://www.verywellmind.com/how-to-know-when-it-s-time-to-see-a-therapist-5077040", texto: "How to Know When It’s Time to See a Therapist", traducao: "Como saber quando é hora de consultar um terapeuta" },
       { url: "https://www.verywellmind.com/how-do-i-know-if-therapy-is-working-for-me-6742766", texto: "How Do I Know If Therapy Is Working?", traducao: "Como posso saber se a terapia está funcionando?" },
       { url: "https://www.verywellmind.com/couples-therapy-definition-types-techniques-and-efficacy-5191137", texto: "How Couples Therapy Can Improve Your Relationship", traducao: "Como a terapia de casal pode melhorar seu relacionamento" },
@@ -305,7 +297,7 @@ Neurologista</span>
       { url: "https://psychologytoday.com/us/blog/everyday-magic", texto: "Everyday Magic", traducao: "Magia Diária" },
       { url: "https://psychologytoday.com/us/blog/falling-in-love-is-easy/202605/marriage-911-are-you-lovers-or-just-roommates", texto: "", traducao: "" },
       { url: "https://psychologytoday.com/us/basics/relationships", texto: "Relationships", traducao: "Relacionamentos" },
-      { url: "https://psychologytoday.com/us/blog/falling-in-love-is-easy/202605/marriage-911-are-you-lovers-or-just-roommates", texto: "Marriage 911 — Are You Lovers or Just Roommates?", traducao: "Casamento 911 - Vocês são amantes ou apenas colegas de quarto?" },
+      { url: "https://psychologytoday.com/us/blog/falling-in-love-is-easy/202605/marriage-911-are-you-lovers-or-just-roommates", texto: "Marriage 911 — Are You Lovers or Just Roommates?", traducao: "Casamento 911 – Vocês são amantes ou apenas colegas de quarto?" },
       { url: "https://psychologytoday.com/us/contributors/cheryl-fraser-phd", texto: "Cheryl Fraser Ph.D.", traducao: "Cheryl Fraser Ph.D." },
       { url: "https://psychologytoday.com/us/blog/falling-in-love-is-easy", texto: "Falling in Love Is Easy", traducao: "Apaixonar-se é fácil" },
       { url: "https://psychologytoday.com/us/blog/beyond-school-walls/202605/money-and-the-mind", texto: "", traducao: "" },
@@ -362,18 +354,6 @@ Neurologista</span>
       { url: "https://psychologytoday.com/us?page=2", texto: "Next", traducao: "Próximo" },
     ],
     2: [
-      { url: "https://scientificamerican.com/article/spacex-punts-starship-v3-launch-to-may-21-as-investigation-opens-into-starbase-worker-death/", texto: "SpacecraftMay 19, 2026SpaceX punts Starship launch as investigation opens into Starbase worker’s death", traducao: "Nave espacial 19 de maio de 2026SpaceX interrompe o lançamento da Starship enquanto se abre a investigação sobre a morte do trabalhador da Starbase" },
-      { url: "https://scientificamerican.com/article/new-high-resolution-map-transforms-what-we-know-about-roman-roads-and-the-roman-empire/", texto: "ArchaeologyMay 19, 2026New map reveals lost roads of the Roman Empire", traducao: "Arqueologia19 de maio de 2026Novo mapa revela estradas perdidas do Império Romano" },
-      { url: "https://scientificamerican.com/article/the-riemann-hypothesis-is-a-million-dollar-math-problem-hardly-anyone-is-trying-to-solve/", texto: "MathematicsMay 19, 2026The million-dollar math problem hardly anyone is trying to solve", traducao: "Matemática19 de maio de 2026O problema matemático de um milhão de dólares que quase ninguém está tentando resolver" },
-      { url: "https://scientificamerican.com/article/the-programmer-whose-code-underpins-the-internet/", texto: "TechnologyMay 18, 2026The programmer whose code underpins the Internet", traducao: "Tecnologia18 de maio de 2026O programador cujo código sustenta a Internet" },
-      { url: "https://scientificamerican.com/article/quantum-computing-is-reaching-its-make-or-break-moment/", texto: "Quantum PhysicsMay 19, 2026Quantum computing is reaching its make-or-break moment", traducao: "Física Quântica 19 de maio de 2026 A computação quântica está atingindo seu momento decisivo" },
-      { url: "https://scientificamerican.com/article/an-ebola-outbreak-is-spreading-fast-should-you-be-worried/", texto: "Public HealthMay 20, 2026An Ebola outbreak is spreading fast. Should you be worried?", traducao: "Saúde Pública 20 de maio de 2026Um surto de Ebola está se espalhando rapidamente. Você deveria estar preocupado?" },
-      { url: "https://scientificamerican.com/article/spacex-punts-starship-v3-launch-to-may-21-as-investigation-opens-into-starbase-worker-death/", texto: "SpacecraftMay 19, 2026SpaceX punts Starship launch as investigation opens into Starbase worker’s death", traducao: "Nave espacial 19 de maio de 2026SpaceX interrompe o lançamento da Starship enquanto se abre a investigação sobre a morte do trabalhador da Starbase" },
-      { url: "https://scientificamerican.com/article/new-high-resolution-map-transforms-what-we-know-about-roman-roads-and-the-roman-empire/", texto: "ArchaeologyMay 19, 2026New map reveals lost roads of the Roman Empire", traducao: "Arqueologia19 de maio de 2026Novo mapa revela estradas perdidas do Império Romano" },
-      { url: "https://scientificamerican.com/article/the-riemann-hypothesis-is-a-million-dollar-math-problem-hardly-anyone-is-trying-to-solve/", texto: "MathematicsMay 19, 2026The million-dollar math problem hardly anyone is trying to solve", traducao: "Matemática19 de maio de 2026O problema matemático de um milhão de dólares que quase ninguém está tentando resolver" },
-      { url: "https://scientificamerican.com/article/the-programmer-whose-code-underpins-the-internet/", texto: "TechnologyMay 18, 2026The programmer whose code underpins the Internet", traducao: "Tecnologia18 de maio de 2026O programador cujo código sustenta a Internet" },
-      { url: "https://scientificamerican.com/article/quantum-computing-is-reaching-its-make-or-break-moment/", texto: "Quantum PhysicsMay 19, 2026Quantum computing is reaching its make-or-break moment", traducao: "Física Quântica 19 de maio de 2026 A computação quântica está atingindo seu momento decisivo" },
-      { url: "https://scientificamerican.com/article/an-ebola-outbreak-is-spreading-fast-should-you-be-worried/", texto: "Public HealthMay 20, 2026An Ebola outbreak is spreading fast. Should you be worried?", traducao: "Saúde Pública 20 de maio de 2026Um surto de Ebola está se espalhando rapidamente. Você deveria estar preocupado?" },
     ],
     3: [
     ],
@@ -386,36 +366,36 @@ Neurologista</span>
     7: [
     ],
     8: [
+      { url: "https://neurosciencenews.com/machine-learning-imap-depression-30744/", texto: "Machine Learning Doubles Depression Remission Rate", traducao: "O aprendizado de máquina dobra a taxa de remissão da depressão" },
+      { url: "https://neurosciencenews.com/structured-lifestyle-aging-30743/", texto: "Structured Programs Physically Slow Down Biological Aging", traducao: "Programas estruturados retardam fisicamente o envelhecimento biológico" },
+      { url: "https://neurosciencenews.com/dopamine-accelerate-learning-reward-30742/", texto: "Large Rewards Accelerate Learning Speed by Extending Brain Signals", traducao: "Grandes recompensas aceleram a velocidade de aprendizagem ao ampliar os sinais cerebrais" },
       { url: "https://neurosciencenews.com/sleep-rhythms-glymphatic-waste-dementia-30750/", texto: "Broken Sleep Rhythms: The Glymphatic Link to Dementia", traducao: "Ritmos de sono interrompidos: a ligação glinfática com a demência" },
       { url: "https://neurosciencenews.com/rna-origami-nanopore-genetics-als-30749/", texto: "RNA Origami and Nanopores Accurately Size ALS Genes", traducao: "Origami de RNA e nanoporos dimensionam com precisão os genes da ELA" },
-      { url: "https://neurosciencenews.com/vicious-cycles-mental-health-30748/", texto: "Study Maps 175 Vicious Mental Health Loops", traducao: "Estudo mapeia 175 ciclos viciosos de saúde mental" },
-      { url: "https://neurosciencenews.com/hormone-irisin-neuroprotection-multiple-sclerosis-30746/", texto: "Exercise Hormone May Protect Neurons in Multiple Sclerosis", traducao: "O hormônio do exercício pode proteger os neurônios na esclerose múltipla" },
-      { url: "https://neurosciencenews.com/brain-network-connectivity-mdd-30745/", texto: "Long-Term Depression Reverses Brain Network Connectivity", traducao: "A depressão de longo prazo reverte a conectividade da rede cerebral" },
       { url: "https://neurosciencenews.com/neuroscience-topics/neurology/", texto: "Neurology News Articles", traducao: "Artigos de notícias sobre neurologia" },
+      { url: "https://neurosciencenews.com/hormone-irisin-neuroprotection-multiple-sclerosis-30746/", texto: "Exercise Hormone May Protect Neurons in Multiple Sclerosis", traducao: "O hormônio do exercício pode proteger os neurônios na esclerose múltipla" },
       { url: "https://neurosciencenews.com/smoking-cessation-weight-gain-dementia-30742/", texto: "Healthy Weight and Quitting Smoking Reduce Dementia Risk", traducao: "Peso saudável e parar de fumar reduzem o risco de demência" },
       { url: "https://neurosciencenews.com/alzheimers-apoe4-gene-als-30739/", texto: "Alzheimer’s Risk Gene May Drive Aggressive ALS", traducao: "Gene de risco de Alzheimer pode causar ELA agressiva" },
       { url: "https://neurosciencenews.com/digitized-handwriting-cognitive-decline-30738/", texto: "Can Handwriting Speed Forecast Cognitive Decline?", traducao: "A velocidade da caligrafia pode prever o declínio cognitivo?" },
       { url: "https://neurosciencenews.com/ai-facial-micromovements-pain-30729/", texto: "Tracking Facial Micromovements to Measure Pain", traducao: "Rastreando micromovimentos faciais para medir a dor" },
-      { url: "https://neurosciencenews.com/inflates-alzheimers-drug-efficacy-30525/", texto: "New Math Method Inflates Alzheimer’s Drug Success by 29x", traducao: "Novo método matemático aumenta o sucesso dos medicamentos contra Alzheimer em 29 vezes" },
       { url: "https://neurosciencenews.com/ai-passes-turing-test-30733/", texto: "Advanced AI Passes the Turing Test for the First Time", traducao: "IA avançada passa no teste de Turing pela primeira vez" },
       { url: "https://neurosciencenews.com/natural-intelligence-brain-decision-making-30657/", texto: "Discovery Redefines the Architecture of Thought", traducao: "A descoberta redefine a arquitetura do pensamento" },
       { url: "https://neurosciencenews.com/physics-toy-model-ai-learning-30656/", texto: "Why Massive AI Models Actually Generalize Better", traducao: "Por que modelos massivos de IA realmente generalizam melhor" },
       { url: "https://neurosciencenews.com/organic-synaptic-transistors-neuromorphic-ai-30653/", texto: "Organic Synaptic Transistors for Sustainable AI Developed", traducao: "Desenvolvidos transistores sinápticos orgânicos para IA sustentável" },
       { url: "https://neurosciencenews.com/chatbots-factual-accuracy-sycophancy-30635/", texto: "“Warm” AI Chatbots Are More Likely to Lie", traducao: "Chatbots de IA “quentes” têm maior probabilidade de mentir" },
+      { url: "https://neurosciencenews.com/vicious-cycles-mental-health-30748/", texto: "Study Maps 175 Vicious Mental Health Loops", traducao: "Estudo mapeia 175 ciclos viciosos de saúde mental" },
+      { url: "https://neurosciencenews.com/brain-network-connectivity-mdd-30745/", texto: "Long-Term Depression Reverses Brain Network Connectivity", traducao: "A depressão de longo prazo reverte a conectividade da rede cerebral" },
       { url: "https://neurosciencenews.com/emoji-test-social-skills-30744/", texto: "Emoji-Based Test Screens Kids’ Social Skills", traducao: "Teste baseado em emojis avalia as habilidades sociais das crianças" },
       { url: "https://neurosciencenews.com/schizophrenia-znf804a-gene-synaptic-excitability-30743/", texto: "Schizophrenia Risk Gene Linked to Hyper-Excitable Neurons", traducao: "Gene de risco de esquizofrenia ligado a neurônios hiperexcitáveis" },
       { url: "https://neurosciencenews.com/parental-disapproval-child-friendship-30737/", texto: "Parent Disapproval Destroys Childhood Best Friendships", traducao: "A desaprovação dos pais destrói as melhores amizades da infância" },
-      { url: "https://neurosciencenews.com/immunotherapy-arthritis-il6-depression-30735/", texto: "Arthritis Drug Rescues Hard-to-Treat Depression", traducao: "Medicamento para artrite resgata depressão difícil de tratar" },
-      { url: "https://neurosciencenews.com/neutrophils-c4a-schizophrenia-30723/", texto: "Peripheral White Blood Cells Fuel Schizophrenia", traducao: "Glóbulos brancos periféricos alimentam a esquizofrenia" },
       { url: "https://neurosciencenews.com/sleep-duration-organ-aging-clocks-30686/", texto: "Sleep Duration Linked to Accelerated Aging", traducao: "Duração do sono associada ao envelhecimento acelerado" },
       { url: "https://neurosciencenews.com/napping-patterns-mortality-aging-30561/", texto: "Napping Patterns Predict Mortality Risk", traducao: "Padrões de cochilo predizem risco de mortalidade" },
       { url: "https://neurosciencenews.com/glucose-metabolism-myelin-development-30638/", texto: "Glucose Levels Signal the Growth of Myelin", traducao: "Os níveis de glicose sinalizam o crescimento da mielina" },
       { url: "https://neurosciencenews.com/lifestyle-activities-alzheimers-genetics-30569/", texto: "Midlife Hobbies Outperform Genetic Alzheimer’s Risk", traducao: "Hobbies da meia-idade superam o risco de Alzheimer genético" },
       { url: "https://neurosciencenews.com/abdominal-pump-brain-waste-removal-30618/", texto: "Abdominal Movement Flushes Neural Waste", traducao: "O movimento abdominal elimina resíduos neurais" },
+      { url: "https://neurosciencenews.com/machine-learning-imap-depression-30744/", texto: "Machine Learning Doubles Depression Remission Rate", traducao: "O aprendizado de máquina dobra a taxa de remissão da depressão" },
+      { url: "https://neurosciencenews.com/structured-lifestyle-aging-30743/", texto: "Structured Programs Physically Slow Down Biological Aging", traducao: "Programas estruturados retardam fisicamente o envelhecimento biológico" },
+      { url: "https://neurosciencenews.com/dopamine-accelerate-learning-reward-30742/", texto: "Large Rewards Accelerate Learning Speed by Extending Brain Signals", traducao: "Grandes recompensas aceleram a velocidade de aprendizagem ao ampliar os sinais cerebrais" },
       { url: "https://neurosciencenews.com/sleep-rhythms-glymphatic-waste-dementia-30750/", texto: "Broken Sleep Rhythms: The Glymphatic Link to Dementia", traducao: "Ritmos de sono interrompidos: a ligação glinfática com a demência" },
-      { url: "https://neurosciencenews.com/rna-origami-nanopore-genetics-als-30749/", texto: "RNA Origami and Nanopores Accurately Size ALS Genes", traducao: "Origami de RNA e nanoporos dimensionam com precisão os genes da ELA" },
-      { url: "https://neurosciencenews.com/vicious-cycles-mental-health-30748/", texto: "Study Maps 175 Vicious Mental Health Loops", traducao: "Estudo mapeia 175 ciclos viciosos de saúde mental" },
-      { url: "https://neurosciencenews.com/hormone-irisin-neuroprotection-multiple-sclerosis-30746/", texto: "Exercise Hormone May Protect Neurons in Multiple Sclerosis", traducao: "O hormônio do exercício pode proteger os neurônios na esclerose múltipla" },
     ],
     9: [
       { url: "https://positivepsychology.com/schema-pattern-finder/", texto: "Schema Pattern Finder: Make Sense of Emotional Patterns", traducao: "Localizador de padrões de esquema: entenda os padrões emocionais" },
@@ -499,24 +479,24 @@ Neurologista</span>
       { url: "https://medicalxpress.com/news/2026-05-pink-noise-anesthesia-surgery.html", texto: "", traducao: "" },
       { url: "https://medicalxpress.com/news/2026-05-child-death-states.html", texto: "Child death rates in the United States have increased, study finds", traducao: "As taxas de mortalidade infantil nos Estados Unidos aumentaram, segundo estudo" },
       { url: "https://medicalxpress.com/news/2026-05-child-death-states.html", texto: "", traducao: "" },
-      { url: "https://medicalxpress.com/news/2026-05-energy-age-membrane-lipid-destabilize.html", texto: "Why energy fades with age: Missing membrane lipid may destabilize mitochondria", traducao: "Por que a energia diminui com a idade: a falta de lipídios na membrana pode desestabilizar as mitocôndrias" },
-      { url: "https://medicalxpress.com/news/2026-05-energy-age-membrane-lipid-destabilize.html", texto: "", traducao: "" },
       { url: "https://medicalxpress.com/news/2026-05-oneweek-radiotherapy-shown-safe-effective.html", texto: "One‑week radiotherapy course shown to be safe and effective in the long term for early‑stage breast cancer", traducao: "O curso de radioterapia de uma semana demonstrou ser seguro e eficaz a longo prazo para o cancro da mama em fase inicial" },
       { url: "https://medicalxpress.com/news/2026-05-oneweek-radiotherapy-shown-safe-effective.html", texto: "", traducao: "" },
+      { url: "https://medicalxpress.com/news/2026-05-energy-age-membrane-lipid-destabilize.html", texto: "Why energy fades with age: Missing membrane lipid may destabilize mitochondria", traducao: "Por que a energia diminui com a idade: a falta de lipídios na membrana pode desestabilizar as mitocôndrias" },
+      { url: "https://medicalxpress.com/news/2026-05-energy-age-membrane-lipid-destabilize.html", texto: "", traducao: "" },
       { url: "https://medicalxpress.com/news/2026-05-scientists-capture-housekeeping-immune-cells.html", texto: "Scientists capture 'housekeeping' immune cells attacking live melanoma", traducao: "Cientistas capturam células imunológicas 'domésticas' que atacam o melanoma vivo" },
       { url: "https://medicalxpress.com/news/2026-05-scientists-capture-housekeeping-immune-cells.html", texto: "", traducao: "" },
       { url: "https://medicalxpress.com/news/2026-05-smartphone-cravings-lapses-potential-addiction.html", texto: "Smartphone data predict smoking cravings and lapses, with potential to treat addiction and other conditions", traducao: "Dados de smartphones prevêem desejos e lapsos de fumar, com potencial para tratar dependência e outras condições" },
       { url: "https://medicalxpress.com/news/2026-05-smartphone-cravings-lapses-potential-addiction.html", texto: "", traducao: "" },
-      { url: "https://medicalxpress.com/news/2026-05-early-diabetes-children-feasible-routine.html", texto: "Early detection of type 1 diabetes in children is feasible from routine pediatric care", traducao: "A detecção precoce do diabetes tipo 1 em crianças é viável a partir de cuidados pediátricos de rotina" },
-      { url: "https://medicalxpress.com/news/2026-05-early-diabetes-children-feasible-routine.html", texto: "", traducao: "" },
       { url: "https://medicalxpress.com/news/2026-05-origami-method-diagnosis-neurodegenerative-disease.html", texto: "'Origami' method could speed up diagnosis of neurodegenerative disease", traducao: "O método 'Origami' pode acelerar o diagnóstico de doenças neurodegenerativas" },
       { url: "https://medicalxpress.com/news/2026-05-origami-method-diagnosis-neurodegenerative-disease.html", texto: "", traducao: "" },
+      { url: "https://medicalxpress.com/news/2026-05-early-diabetes-children-feasible-routine.html", texto: "Early detection of type 1 diabetes in children is feasible from routine pediatric care", traducao: "A detecção precoce do diabetes tipo 1 em crianças é viável a partir de cuidados pediátricos de rotina" },
+      { url: "https://medicalxpress.com/news/2026-05-early-diabetes-children-feasible-routine.html", texto: "", traducao: "" },
       { url: "https://medicalxpress.com/news/2026-05-duration-depression-severely-disease-brain.html", texto: "Duration of depression may influence how severely the disease alters the brain", traducao: "A duração da depressão pode influenciar a severidade com que a doença altera o cérebro" },
       { url: "https://medicalxpress.com/news/2026-05-duration-depression-severely-disease-brain.html", texto: "", traducao: "" },
-      { url: "https://medicalxpress.com/news/2026-05-gut-bacteria-linked-immunotherapy-success.html", texto: "Gut bacteria linked to immunotherapy success in melanoma patients", traducao: "Bactérias intestinais associadas ao sucesso da imunoterapia em pacientes com melanoma" },
-      { url: "https://medicalxpress.com/news/2026-05-gut-bacteria-linked-immunotherapy-success.html", texto: "", traducao: "" },
       { url: "https://medicalxpress.com/news/2026-05-brain-night-shift-clearance-dementia.html", texto: "The brain's night shift: How sleep, waste clearance and dementia may be linked", traducao: "O turno noturno do cérebro: como o sono, a eliminação de resíduos e a demência podem estar ligados" },
       { url: "https://medicalxpress.com/news/2026-05-brain-night-shift-clearance-dementia.html", texto: "", traducao: "" },
+      { url: "https://medicalxpress.com/news/2026-05-gut-bacteria-linked-immunotherapy-success.html", texto: "Gut bacteria linked to immunotherapy success in melanoma patients", traducao: "Bactérias intestinais associadas ao sucesso da imunoterapia em pacientes com melanoma" },
+      { url: "https://medicalxpress.com/news/2026-05-gut-bacteria-linked-immunotherapy-success.html", texto: "", traducao: "" },
       { url: "https://medicalxpress.com/news/2026-05-bigger-reward-faster.html", texto: "The bigger the reward, the faster we learn, researchers find", traducao: "Quanto maior a recompensa, mais rápido aprendemos, descobrem os pesquisadores" },
       { url: "https://medicalxpress.com/news/2026-05-bigger-reward-faster.html", texto: "", traducao: "" },
       { url: "https://medicalxpress.com/news/2026-05-decoding-inflammatory-bowel-disease-chip.html", texto: "Decoding inflammatory bowel disease—on a chip", traducao: "Decodificando a doença inflamatória intestinal – em um chip" },
@@ -532,21 +512,21 @@ Neurologista</span>
       { url: "https://medicalxpress.com/news/2026-05-wearable-knee-robot-children-muscle.html", texto: "", traducao: "" },
       { url: "https://medicalxpress.com/news/2026-05-scientists-harness-cells-combat-entire.html", texto: "Scientists discover how to harness T cells to combat entire viral families", traducao: "Cientistas descobrem como aproveitar células T para combater famílias virais inteiras" },
       { url: "https://medicalxpress.com/news/2026-05-scientists-harness-cells-combat-entire.html", texto: "", traducao: "" },
-      { url: "https://medicalxpress.com/news/2026-05-scientists-uncover-protein-hearts.html", texto: "Scientists uncover protein that could help failing hearts", traducao: "Cientistas descobrem proteína que pode ajudar corações com problemas" },
-      { url: "https://medicalxpress.com/news/2026-05-scientists-uncover-protein-hearts.html", texto: "", traducao: "" },
       { url: "https://medicalxpress.com/news/2026-05-heart-chambers-severely-affected-atrial.html", texto: "Both heart chambers are more severely affected in atrial fibrillation than previously thought, study reveals", traducao: "Ambas as câmaras cardíacas são mais gravemente afetadas na fibrilação atrial do que se pensava anteriormente, revela estudo" },
       { url: "https://medicalxpress.com/news/2026-05-heart-chambers-severely-affected-atrial.html", texto: "", traducao: "" },
+      { url: "https://medicalxpress.com/news/2026-05-scientists-uncover-protein-hearts.html", texto: "Scientists uncover protein that could help failing hearts", traducao: "Cientistas descobrem proteína que pode ajudar corações com problemas" },
+      { url: "https://medicalxpress.com/news/2026-05-scientists-uncover-protein-hearts.html", texto: "", traducao: "" },
       { url: "https://medicalxpress.com/news/2026-05-pink-noise-anesthesia-surgery.html", texto: "'Pink noise' can help make anesthesia work better during surgery", traducao: "‘Ruído rosa’ pode ajudar a fazer a anestesia funcionar melhor durante a cirurgia" },
       { url: "https://medicalxpress.com/news/2026-05-child-death-states.html", texto: "Child death rates in the United States have increased, study finds", traducao: "As taxas de mortalidade infantil nos Estados Unidos aumentaram, segundo estudo" },
-      { url: "https://medicalxpress.com/news/2026-05-energy-age-membrane-lipid-destabilize.html", texto: "Why energy fades with age: Missing membrane lipid may destabilize mitochondria", traducao: "Por que a energia diminui com a idade: a falta de lipídios na membrana pode desestabilizar as mitocôndrias" },
       { url: "https://medicalxpress.com/news/2026-05-oneweek-radiotherapy-shown-safe-effective.html", texto: "One‑week radiotherapy course shown to be safe and effective in the long term for early‑stage breast cancer", traducao: "O curso de radioterapia de uma semana demonstrou ser seguro e eficaz a longo prazo para o cancro da mama em fase inicial" },
+      { url: "https://medicalxpress.com/news/2026-05-energy-age-membrane-lipid-destabilize.html", texto: "Why energy fades with age: Missing membrane lipid may destabilize mitochondria", traducao: "Por que a energia diminui com a idade: a falta de lipídios na membrana pode desestabilizar as mitocôndrias" },
       { url: "https://medicalxpress.com/news/2026-05-scientists-capture-housekeeping-immune-cells.html", texto: "Scientists capture 'housekeeping' immune cells attacking live melanoma", traducao: "Cientistas capturam células imunológicas 'domésticas' que atacam o melanoma vivo" },
       { url: "https://medicalxpress.com/news/2026-05-smartphone-cravings-lapses-potential-addiction.html", texto: "Smartphone data predict smoking cravings and lapses, with potential to treat addiction and other conditions", traducao: "Dados de smartphones prevêem desejos e lapsos de fumar, com potencial para tratar dependência e outras condições" },
-      { url: "https://medicalxpress.com/news/2026-05-early-diabetes-children-feasible-routine.html", texto: "Early detection of type 1 diabetes in children is feasible from routine pediatric care", traducao: "A detecção precoce do diabetes tipo 1 em crianças é viável a partir de cuidados pediátricos de rotina" },
       { url: "https://medicalxpress.com/news/2026-05-origami-method-diagnosis-neurodegenerative-disease.html", texto: "'Origami' method could speed up diagnosis of neurodegenerative disease", traducao: "O método 'Origami' pode acelerar o diagnóstico de doenças neurodegenerativas" },
+      { url: "https://medicalxpress.com/news/2026-05-early-diabetes-children-feasible-routine.html", texto: "Early detection of type 1 diabetes in children is feasible from routine pediatric care", traducao: "A detecção precoce do diabetes tipo 1 em crianças é viável a partir de cuidados pediátricos de rotina" },
       { url: "https://medicalxpress.com/news/2026-05-duration-depression-severely-disease-brain.html", texto: "Duration of depression may influence how severely the disease alters the brain", traducao: "A duração da depressão pode influenciar a severidade com que a doença altera o cérebro" },
-      { url: "https://medicalxpress.com/news/2026-05-gut-bacteria-linked-immunotherapy-success.html", texto: "Gut bacteria linked to immunotherapy success in melanoma patients", traducao: "Bactérias intestinais associadas ao sucesso da imunoterapia em pacientes com melanoma" },
       { url: "https://medicalxpress.com/news/2026-05-brain-night-shift-clearance-dementia.html", texto: "The brain's night shift: How sleep, waste clearance and dementia may be linked", traducao: "O turno noturno do cérebro: como o sono, a eliminação de resíduos e a demência podem estar ligados" },
+      { url: "https://medicalxpress.com/news/2026-05-gut-bacteria-linked-immunotherapy-success.html", texto: "Gut bacteria linked to immunotherapy success in melanoma patients", traducao: "Bactérias intestinais associadas ao sucesso da imunoterapia em pacientes com melanoma" },
       { url: "https://medicalxpress.com/news/2026-05-bigger-reward-faster.html", texto: "The bigger the reward, the faster we learn, researchers find", traducao: "Quanto maior a recompensa, mais rápido aprendemos, descobrem os pesquisadores" },
       { url: "https://medicalxpress.com/news/2026-05-decoding-inflammatory-bowel-disease-chip.html", texto: "Decoding inflammatory bowel disease—on a chip", traducao: "Decodificando a doença inflamatória intestinal – em um chip" },
       { url: "https://medicalxpress.com/news/2026-05-brain-tumor-hotspots-uncovered-fruit.html", texto: "Brain's 'tumor hotspots' uncovered in fruit fly study", traducao: "'Pontos de acesso tumoral' do cérebro descobertos no estudo da mosca da fruta" },
@@ -556,8 +536,8 @@ Neurologista</span>
       { url: "https://medicalxpress.com/news/2026-05-simple-blood-alzheimer-parkinson-early.html", texto: "Simple blood test could catch Alzheimer's and Parkinson's early by spotting misfolded proteins", traducao: "Simples exame de sangue pode detectar Alzheimer e Parkinson precocemente, detectando proteínas mal dobradas" },
       { url: "https://medicalxpress.com/news/2026-05-wearable-knee-robot-children-muscle.html", texto: "Wearable knee robot could help children with muscle weakness", traducao: "Robô de joelho vestível pode ajudar crianças com fraqueza muscular" },
       { url: "https://medicalxpress.com/news/2026-05-scientists-harness-cells-combat-entire.html", texto: "Scientists discover how to harness T cells to combat entire viral families", traducao: "Cientistas descobrem como aproveitar células T para combater famílias virais inteiras" },
-      { url: "https://medicalxpress.com/news/2026-05-scientists-uncover-protein-hearts.html", texto: "Scientists uncover protein that could help failing hearts", traducao: "Cientistas descobrem proteína que pode ajudar corações com problemas" },
       { url: "https://medicalxpress.com/news/2026-05-heart-chambers-severely-affected-atrial.html", texto: "Both heart chambers are more severely affected in atrial fibrillation than previously thought, study reveals", traducao: "Ambas as câmaras cardíacas são mais gravemente afetadas na fibrilação atrial do que se pensava anteriormente, revela estudo" },
+      { url: "https://medicalxpress.com/news/2026-05-scientists-uncover-protein-hearts.html", texto: "Scientists uncover protein that could help failing hearts", traducao: "Cientistas descobrem proteína que pode ajudar corações com problemas" },
     ],
     22: [
     ],
