@@ -76,24 +76,22 @@ for x in range(len(links)):
 
 # Criação da HTML com o nome do Arquivo
 with open(namefile, "w", encoding="utf-8") as file:
-    # Criação do Head, Metas e Título, além do link estável do Bootstrap 5 via jsDelivr
     file.write('<!DOCTYPE html>')
     file.write('<html lang="pt-br">')
     file.write('<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">')
     file.write('<link rel="stylesheet" href="https://jsdelivr.net">')
-    file.write('<style>.btn-space { margin-bottom: 5px; margin-right: 5px; }</style>')
+    file.write('<style>.btn-space { margin-bottom: 8px; margin-right: 4px; display: inline-block; }.card-body a { display: block; margin-bottom: 6px; text-decoration: none; color: #007bff; }.card-body a:hover { text-decoration: underline; }</style>')
     file.write('<title>PSI LINKS BOARD</title></head>')
 
-    # Criação do Body, Container e Botões atualizados para a estrutura do Bootstrap 5 (data-bs-toggle e data-bs-target)
     file.write('<body><div class="container py-4" id="myGroup"><h1> PSI MONITOR</h1><p class="d-flex flex-wrap">')
-    file.write('<a class="btn btn-space btn-outline-info btn-lg" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">VeryWell Mind</a>')
+    file.write('<a class="btn btn-space btn-outline-info btn-lg" data-bs-toggle="collapse" href="#collapseExample0" role="button" aria-expanded="false" aria-controls="collapseExample0">VeryWell Mind</a>')
     file.write('<a class="btn btn-space btn-outline-info btn-lg" data-bs-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample1">Psychology Today</a>')
     file.write('<a class="btn btn-space btn-outline-info btn-lg" data-bs-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample2">Scientific American</a>')
     file.write('<a class="btn btn-space btn-outline-info btn-lg" data-bs-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false" aria-controls="collapseExample3">The National Institute of Mental Health (NIMH)</a>')
     file.write('<a class="btn btn-space btn-outline-info btn-lg" data-bs-toggle="collapse" href="#collapseExample4" role="button" aria-expanded="false" aria-controls="collapseExample4">APA PsyPort</a>')
     file.write('<a class="btn btn-space btn-outline-info btn-lg" data-bs-toggle="collapse" href="#collapseExample5" role="button" aria-expanded="false" aria-controls="collapseExample5">APA Monitor</a>')
     file.write('<a class="btn btn-space btn-outline-info btn-lg" data-bs-toggle="collapse" href="#collapseExample6" role="button" aria-expanded="false" aria-controls="collapseExample6">Google Notícias</a>')
-    file.write('<a class="btn btn-space btn-outline-info btn-lg" data-toggle="collapse" data-bs-toggle="collapse" href="#collapseExample7" role="button" aria-expanded="false" aria-controls="collapseExample7">SBP</a>')
+    file.write('<a class="btn btn-space btn-outline-info btn-lg" data-bs-toggle="collapse" href="#collapseExample7" role="button" aria-expanded="false" aria-controls="collapseExample7">SBP</a>')
     file.write('<a class="btn btn-space btn-outline-info btn-lg" data-bs-toggle="collapse" href="#collapseExample8" role="button" aria-expanded="false" aria-controls="collapseExample8">Neuroscience</a>')
     file.write('<a class="btn btn-space btn-outline-info btn-lg" data-bs-toggle="collapse" href="#collapseExample9" role="button" aria-expanded="false" aria-controls="collapseExample9">Positive Psychology</a>')
     file.write('<a class="btn btn-space btn-outline-info btn-lg" data-bs-toggle="collapse" href="#collapseExample10" role="button" aria-expanded="false" aria-controls="collapseExample10">Positive Psychcentral</a>')
@@ -121,7 +119,7 @@ with open(namefile, "w", encoding="utf-8") as file:
 # Criação das Classes com o conteúdo dos Botões (Usando modo append 'a')
 with open(namefile, "a", encoding="utf-8") as file:
     # 0 - Very Well
-    file.write('<div class="collapse show" id="collapseExample" data-bs-parent="#myGroup">')
+    file.write('<div class="collapse show" id="collapseExample0" data-bs-parent="#myGroup">')
     file.write('<div class="card card-body">')
     if parser[0] is not None:
         for x in parser[0].find_all("section"):
@@ -388,7 +386,7 @@ with open(namefile, "a", encoding="utf-8") as file:
                 file.write("<a href=" + str(z.get("href")) + ">" + z.text + "</a></br>")
     file.write("</div></div>")
 
-    # Criação do script unificado e nativo do Bootstrap 5 (dispensa jQuery/Popper separados)
+    # Criação do script unificado e nativo do Bootstrap 5
     file.write('<div>')
     file.write('<script src="https://jsdelivr.net"></script>')
     file.write('</div></body></html>')
