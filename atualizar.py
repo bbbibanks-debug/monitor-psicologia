@@ -15,25 +15,40 @@ data_e_hora_sao_paulo_em_texto =
 data_e_hora_sao_paulo.strftime("%d%m%Yday%H%Mtime") 
 namefile = str(data_e_hora_sao_paulo_em_texto)+".html" 
 namefile = "index.html" 
-#Mapping 
-links =["https://www.verywellmind.com/", "https://www.psychologytoday.com/us/news", 
-"https://www.scientificamerican.com/mind-and
-brain/","https://www.nimh.nih.gov/news/research-highlights", 
-"https://www.apa.org/news/psycport","https://www.apa.org/monitor","https://news.google.
-com/search?q=psicologia&hl=pt-BR&gl=BR&ceid=BR%3Apt-419", 
-"https://www.sbponline.org.br/noticias","https://neurosciencenews.com/","https://positiveps
-ychology.com/","https://psychcentral.com/", 
-"http://www.iqscorner.com/","https://www.happierhuman.com/","https://www.psychnewsd
-aily.com/","https://www.psychiatrictimes.com/", 
-"https://www.psychologicalscience.org/news","https://site.cfp.org.br/","https://www.scielo.b
-r/j/pusp/","https://www.crpsp.org/impresso/index", 
-"https://brasil.elpais.com/noticias/psicologia/", "https://g1.globo.com/saude/saude
-mental/","https://medicalxpress.com/psychology-news/", 
-"https://www.psychreg.org/","https://www1.folha.uol.com.br/equilibrio/mente/", 
-"https://psychcrunch.libsyn.com/","https://amenteemaravilhosa.com.br/neurociencia/", 
-"https://amenteemaravilhosa.com.br/psicologia/","https://amenteemaravilhosa.com.br/relac
-oes/","https://amenteemaravilhosa.com.br/saude/", 
-"https://bigthink.com/neuropsych/"] 
+# Mapping
+links = [
+    "https://verywellmind.com", 
+    "https://psychologytoday.com", 
+    "https://scientificamerican.com",
+    "https://nih.gov",
+    "https://apa.org",
+    "https://apa.org",
+    "https://google.com",
+    "https://sbponline.org.br",
+    "https://neurosciencenews.com",
+    "https://positivepsychology.com",
+    "https://psychcentral.com",
+    "http://iqscorner.com",
+    "https://happierhuman.com",
+    "https://psychnewsdaily.com",
+    "https://psychiatrictimes.com",
+    "https://psychologicalscience.org",
+    "https://cfp.org.br",
+    "https://scielo.br",
+    "https://crpsp.org",
+    "https://elpais.com", 
+    "https://globo.com",
+    "https://medicalxpress.com",
+    "https://psychreg.org",
+    "https://uol.com.br", 
+    "https://libsyn.com",
+    "https://amenteemaravilhosa.com.br",
+    "https://amenteemaravilhosa.com.br",
+    "https://amenteemaravilhosa.com.br",
+    "https://amenteemaravilhosa.com.br",
+    "https://bigthink.com"
+]
+
 header = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like 
 Gecko) Chrome/50.0.2661.75 Safari/537.36", 
 "X-Requested-With": "XMLHttpRequest"} 
