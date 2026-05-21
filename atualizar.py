@@ -21,19 +21,19 @@ if os.path.exists("blacklist.txt"):
     with open("blacklist.txt", "r", encoding="utf-8") as f:
         urls_bloqueadas = [linha.strip().lower() for linha in f if linha.strip()]
 
-# Mapping - Links das 11 fontes (Google News convertido para a URL de RSS estável do mesmo tópico)
+# Mapping - Mantendo os 11 portais ativos e estáveis do seu projeto
 links = [
     "https://verywellmind.com",
     "https://psychologytoday.com",
     "https://scientificamerican.com",
     "https://nih.gov",
     "https://apa.org",
-    "https://sbponline.org.br",
+    "https://sbponline.org.br/noticias",
     "https://neurosciencenews.com",
     "https://positivepsychology.com",
     "https://medicalxpress.com",
     "https://amenteemaravilhosa.com.br",
-    "https://google.com"
+    "https://psychcentral.com"
 ]
 
 header = {
@@ -67,64 +67,77 @@ for x in range(len(links)):
         url_raiz = links[x]
         response = requests.get(url_raiz, headers=header, timeout=20)
         response.raise_for_status()
+        p_obj = BeautifulSoup(response.text, "html.parser")
         
         vistos = set()
         
-        # === NOVO PARSER ULTRAESTÁVEL PARA GOOGLE NEWS VIA RSS XML (ÍNDICE 10) ===
-        if x == 10:
-            p_obj = BeautifulSoup(response.text, "xml") # Processa como XML puro do RSS
-            for item in p_obj.find_all("item"):
-                title_tag = item.find("title")
-                link_tag = item.find("link")
-                
-                if title_tag and link_tag:
-                    url_completa = link_tag.text.strip()
-                    txt = title_tag.text.strip()
-                    
-                    # Limpa o sufixo comum do Google News (ex: "- Globo Esporte") se houver
-                    if " - " in txt:
-                        txt = txt.rsplit(" - ", 1)[0].strip()
-                        
-                    if url_permitida(url_completa) and url_completa not in vistos and len(txt) > 12:
-                        vistos.add(url_completa)
-                        # Como o RSS já está parametrizado em PT-BR, o texto vai direto sem gastar cota de tradução
-                        links_raspados_por_fonte[x].append((url_completa, txt, txt))
-
-        # === PARSER DAS DEMAIS FONTES HTML ===
-        else:
-            p_obj = BeautifulSoup(response.text, "html.parser")
-            
-            # Raspagem refinada da Scientific American (Índice 2)
-            if x == 2:
-                for h_tag in p_obj.find_all(["h2", "h3"]):
-                    z = h_tag.find("a", href=True) if h_tag.name != "a" else h_tag
-                    if not z and h_tag.parent.name == "a":
-                        z = h_tag.parent
-                    if z and z.get("href"):
-                        url_completa = urljoin(url_raiz, z.get("href"))
-                        if url_permitida(url_completa) and url_completa not in vistos:
-                            txt = h_tag.text.strip()
-                            if len(txt) > 15:
-                                vistos.add(url_completa)
-                                links_raspados_por_fonte[x].append((url_completa, txt, traduzir_texto(txt)))
-                                
-            # Raspagem ampliada geral para os outros portais HTML
-            else:
-                for z in p_obj.find_all("a", href=True):
+        # === RASPAGEM DA SCIENTIFIC AMERICAN REFINADA (ÍNDICE 2) ===
+        if x == 2:
+            for h_tag in p_obj.find_all(["h2", "h3"]):
+                z = h_tag.find("a", href=True) if h_tag.name != "a" else h_tag
+                if not z and h_tag.parent.name == "a":
+                    z = h_tag.parent
+                if z and z.get("href"):
                     url_completa = urljoin(url_raiz, z.get("href"))
-                    if not url_permitida(url_completa) or url_completa in vistos:
-                        continue
-                    txt = z.text.strip()
-                    if not txt and z.get("title"):
-                        txt = z.get("title").strip()
-                    if len(txt) < 15 or any(m in txt.lower() for m in ["home", "about us", "contact", "privacy policy", "terms of use", "subscribe", "login", "sign in", "facebook", "twitter", "instagram", "linkedin", "cookies"]):
-                        continue
-                    vistos.add(url_completa)
-                    
-                    if x == 5 or x == 9:
-                        links_raspados_por_fonte[x].append((url_completa, txt, txt))
-                    else:
-                        links_raspados_por_fonte[x].append((url_completa, txt, traduzir_texto(txt)))
+                    if url_permitida(url_completa) and url_completa not in vistos:
+                        txt = h_tag.text.strip()
+                        if len(txt) > 15:
+                            vistos.add(url_completa)
+                            links_raspados_por_fonte[x].append((url_completa, txt, traduzir_texto(txt)))
+
+        # === RASPAGEM DA SBP ATUALIZADA E REFINADA (ÍNDICE 5) ===
+        elif x == 5:
+            # Varre as tags h3 que guardam os títulos das notícias da SBP
+            for h3_tag in p_obj.find_all("h3"):
+                # Procura pelo link associado à manchete na própria tag ou em tags vizinhas
+                z = h3_tag.find("a", href=True) if h3_tag.name != "a" else h3_tag
+                if not z and h3_tag.parent.name == "a":
+                    z = h3_tag.parent
+                if not z:
+                    # Alternativa caso o link envolva o bloco superior do card
+                    z = h3_tag.find_previous("a", href=True) or h3_tag.find_next("a", href=True)
+                
+                if z and z.get("href"):
+                    url_completa = urljoin(url_raiz, z.get("href"))
+                    if url_permitida(url_completa) and url_completa not in vistos:
+                        txt = h3_tag.text.strip()
+                        # Ignora os títulos estáticos das colunas do rodapé
+                        if len(txt) > 15 and not any(menu in txt.lower() for menu in ["institucional", "links úteis", "contato"]):
+                            vistos.add(url_completa)
+                            # Site nativo em PT-BR, o texto vai direto sem passar pela tradução
+                            links_raspados_por_fonte[x].append((url_completa, txt, txt))
+
+        # === RASPAGEM DO PORTAL PSYCH CENTRAL REFINADA (ÍNDICE 10) ===
+        elif x == 10:
+            for h_tag in p_obj.find_all(["h2", "h3"]):
+                z = h_tag.find("a", href=True) if h_tag.name != "a" else h_tag
+                if not z and h_tag.parent.name == "a":
+                    z = h_tag.parent
+                if z and z.get("href"):
+                    url_completa = urljoin(url_raiz, z.get("href"))
+                    if url_permitida(url_completa) and url_completa not in vistos:
+                        txt = h_tag.text.strip()
+                        if len(txt) > 18 and not any(menu in txt.lower() for menu in ["privacy", "terms", "about", "contact", "advertise"]):
+                            vistos.add(url_completa)
+                            links_raspados_por_fonte[x].append((url_completa, txt, traduzir_texto(txt)))
+                            
+        # === RASPAGEM AMPLIADA GERAL (PARA OS DEMAIS PORTAIS) ===
+        else:
+            for z in p_obj.find_all("a", href=True):
+                url_completa = urljoin(url_raiz, z.get("href"))
+                if not url_permitida(url_completa) or url_completa in vistos:
+                    continue
+                txt = z.text.strip()
+                if not txt and z.get("title"):
+                    txt = z.get("title").strip()
+                if len(txt) < 15 or any(m in txt.lower() for m in ["home", "about us", "contact", "privacy policy", "terms of use", "subscribe", "login", "sign in", "facebook", "twitter", "instagram", "linkedin", "cookies"]):
+                    continue
+                vistos.add(url_completa)
+                
+                if x == 9: # A Mente é Maravilhosa nativa em PT
+                    links_raspados_por_fonte[x].append((url_completa, txt, txt))
+                else:
+                    links_raspados_por_fonte[x].append((url_completa, txt, traduzir_texto(txt)))
             
     except Exception as e:
         print(f"Aviso: Omissão temporária ou erro ao raspar {links[x]}: {e}")
@@ -155,6 +168,7 @@ with open(namefile, "w", encoding="utf-8") as file:
     file.write('<h1>PSI MONITOR</h1>\n')
     file.write(f'<div class="data-captura">Última atualização: {data_e_hora_em_texto}</div>\n')
     
+    # Nomes dos 11 botões com o "Psych Central" no final da listagem
     file.write('<div class="grid-botoes">\n')
     nomes_fontes = [
         "VeryWell Mind", 
@@ -167,7 +181,7 @@ with open(namefile, "w", encoding="utf-8") as file:
         "Positive Psychology", 
         "Medical Xpress", 
         "A Mente é Maravilhosa-Neurociência",
-        "Google News"
+        "Psych Central"
     ]
     
     for idx, nome in enumerate(nomes_fontes):
@@ -175,9 +189,10 @@ with open(namefile, "w", encoding="utf-8") as file:
         file.write(f'  <button class="btn-fonte{classe_ativa}" onclick="mostrarConteudo({idx}, this)">{nome}</button>\n')
     file.write('</div>\n\n')
 
+    # Caixa dinâmica inicial carregando o primeiro item
     file.write('<div class="caixa-dinamica" id="conteudoResultados">\n')
-    if 0 in links_raspados_por_fonte and len(links_raspados_por_fonte[0]) > 0:
-        for url_lnk, txt_lnk, trad_lnk in links_raspados_por_fonte[0]:
+    if 0 in links_raspados_por_fonte and len(links_raspados_por_fonte) > 0:
+        for url_lnk, txt_lnk, trad_lnk in links_raspados_por_fonte:
             file.write('  <div class="item-artigo">\n')
             file.write(f'    <a href="{url_lnk}" target="_blank">{txt_lnk if txt_lnk else url_lnk}</a>\n')
             if trad_lnk and trad_lnk != txt_lnk:
@@ -187,7 +202,7 @@ with open(namefile, "w", encoding="utf-8") as file:
         file.write('  <span class="vazio">Nenhum artigo encontrado para esta fonte no momento.</span>\n')
     file.write("</div>\n\n")
 
-    # Injeção estável do Banco de Dados JSON para os 11 itens
+    # Injeção estável do Banco de Dados JSON para alimentar o clique dos 11 itens
     file.write('<script>\n')
     file.write('  const bancoDeDados = {\n')
     for idx in range(len(links)):
