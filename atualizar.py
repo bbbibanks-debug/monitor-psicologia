@@ -4,7 +4,6 @@ import functools
 from bs4 import BeautifulSoup
 import requests
 from datetime import datetime, timezone, timedelta
-# Importação da biblioteca de tradução já presente no seu ambiente
 from deep_translator import GoogleTranslator
 
 # Time
@@ -57,26 +56,24 @@ header = {
     "X-Requested-With": "XMLHttpRequest"
 }
 
-# Inicialização do tradutor automático (De qualquer idioma para o Português)
+# Inicialização do tradutor automático
 tradutor = GoogleTranslator(source='auto', target='pt')
 
 def traduzir_texto(texto):
-    """Função auxiliar para traduzir textos em inglês/outros idiomas sem quebrar o script"""
     if not texto or len(texto.strip()) < 3:
         return ""
     try:
-        # Se já estiver em português (ex: G1, SBP), não gasta processamento
-        if any(palavra in texto.lower() for palavra in ["psicologia", "saúde", "mente", "notícias"]):
+        if any(palavra in texto.lower() for palabra in ["psicologia", "saúde", "mente", "notícias"]):
             return texto
         return tradutor.translate(texto)
     except Exception:
-        return "" # Retorna vazio caso falhe, evitando travar a automação
+        return ""
 
 # Inicialização das listas de conteúdo raspado
 responder = [None] * len(links)
 parser = [None] * len(links)
 
-# Dicionário modificado para guardar: (URL, Texto Original, Texto Traduzido)
+# Dicionário para guardar: (URL, Texto Original, Texto Traduzido)
 links_raspados_por_fonte = {i: [] for i in range(len(links))}
 
 for x in range(len(links)):
@@ -99,7 +96,7 @@ for x in range(len(links)):
             for div in p_obj.find_all("div", class_="layout-content-main"):
                 for z in div.find_all("a", href=True):
                     txt = z.text.strip()
-                    links_raspados_por_fonte[x].append((links + z.get("href"), txt, traduzir_texto(txt)))
+                    links_raspados_por_fonte[x].append((links[1] + z.get("href"), txt, traduzir_texto(txt)))
         elif x == 2:
             for div in p_obj.find_all("div", class_=re.compile("articleList")):
                 for z in div.find_all("a", href=True):
@@ -152,9 +149,9 @@ for x in range(len(links)):
                 for z in h3.find_all("a", href=True):
                     txt = z.text.strip()
                     links_raspados_por_fonte[x].append((str(z.get("href")), txt, traduzir_texto(txt)))
-        elif x in:
-            for h2 in p_obj.find_all("h2"):
-                for z in h2.find_all("a", href=True):
+        elif x in [12, 13, 15, 16, 18]: # Correção da sintaxe incompleta
+            for h2_ou_h3 in p_obj.find_all(["h2", "h3"]):
+                for z in h2_ou_h3.find_all("a", href=True):
                     txt = z.text.strip()
                     links_raspados_por_fonte[x].append((str(z.get("href")), txt, traduzir_texto(txt)))
         elif x == 14:
@@ -162,17 +159,11 @@ for x in range(len(links)):
                 for h2 in a_tag.find_all("h2"):
                     txt = h2.text.strip()
                     links_raspados_por_fonte[x].append(("https://psychiatrictimes.com" + str(a_tag.get("href")), txt, traduzir_texto(txt)))
-        elif x in:
-            for h3 in p_obj.find_all("h3"):
-                for z in h3.find_all("a", href=True):
-                    txt = z.text.strip()
-                    links_raspados_por_fonte[x].append((str(z.get("href")), txt, traduzir_texto(txt)))
-        elif x in:
+        elif x == 17:
             for a_tag in p_obj.find_all("a", href=True):
                 for h3 in a_tag.find_all("h3"):
-                    prefix = "https://scielo.br" if x == 17 else ""
                     txt = h3.text.strip()
-                    links_raspados_por_fonte[x].append((prefix + str(a_tag.get("href")), txt, txt))
+                    links_raspados_por_fonte[x].append(("https://scielo.br" + str(a_tag.get("href")), txt, txt))
         elif x == 19:
             for h2 in p_obj.find_all("h2"):
                 for z in h2.find_all("a", href=True):
@@ -203,7 +194,7 @@ for x in range(len(links)):
                 for z in div.find_all("a", href=True):
                     txt = z.text.strip()
                     links_raspados_por_fonte[x].append((str(z.get("href")), txt, traduzir_texto(txt)))
-        elif x in:
+        elif x in [25, 26, 27, 28]: # Correção da sintaxe incompleta
             for a_tag in p_obj.find_all("a", class_=re.compile("default-a-link"), href=True):
                 txt = a_tag.text.strip()
                 links_raspados_por_fonte[x].append(("https://amenteemaravilhosa.com.br" + str(a_tag.get("href")), txt, txt))
@@ -222,7 +213,7 @@ with open(namefile, "w", encoding="utf-8") as file:
     file.write('<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n')
     file.write('<title>PSI LINKS BOARD</title>\n')
     
-    # === DESIGN MANTIDO 100% INALTERADO ===
+    # DESIGN MANTIDO 100% INALTERADO
     file.write('<style>\n')
     file.write('  body { font-family: system-ui, -apple-system, sans-serif; margin: 0; padding: 24px; color: #333; background-color: #ffffff; }\n')
     file.write('  h1 { font-size: 28px; font-weight: bold; margin-bottom: 20px; color: #111; }\n')
@@ -231,8 +222,6 @@ with open(namefile, "w", encoding="utf-8") as file:
     file.write('  .btn-fonte:hover { background-color: #1192a4; color: #ffffff; }\n')
     file.write('  .btn-fonte.ativo { background-color: #e6f7f9; border-color: #0b6c7a; color: #0b6c7a; font-weight: 500; }\n')
     file.write('  .caixa-dinamica { border: 1px solid #cccccc; border-radius: 6px; padding: 20px; min-height: 120px; background-color: #ffffff; }\n')
-    
-    # Ajuste interno na caixa dinâmica apenas para comportar o bloco de tradução discretamente abaixo do link
     file.write('  .item-artigo { margin-bottom: 16px; }\n')
     file.write('  .caixa-dinamica a { display: inline-block; color: #0066cc; text-decoration: none; font-size: 15px; line-height: 1.4; }\n')
     file.write('  .caixa-dinamica a:hover { text-decoration: underline; color: #004499; }\n')
@@ -259,7 +248,7 @@ with open(namefile, "w", encoding="utf-8") as file:
 
     # Inicialização da caixa dinâmica com os dados da primeira fonte
     file.write('<div class="caixa-dinamica" id="conteudoResultados">\n')
-    if links_raspados_por_fonte and len(links_raspados_por_fonte[0]) > 0:
+    if 0 in links_raspados_por_fonte and len(links_raspados_por_fonte[0]) > 0:
         for url_lnk, txt_lnk, trad_lnk in links_raspados_por_fonte[0]:
             file.write('  <div class="item-artigo">\n')
             file.write(f'    <a href="{url_lnk}" target="_blank">{txt_lnk if txt_lnk else url_lnk}</a>\n')
@@ -268,9 +257,9 @@ with open(namefile, "w", encoding="utf-8") as file:
             file.write('  </div>\n')
     else:
         file.write('  <span class="vazio">Nenhum artigo encontrado para esta fonte no momento.</span>\n')
-    file.write('</div>\n\n')
+    file.write("</div>\n\n")
 
-    # Banco de dados e injeção do JavaScript nativo (Sem alterar funções lógicas)
+    # Banco de dados e script interativo
     file.write('<script>\n')
     file.write('  const bancoDeDados = {\n')
     for idx in range(len(links)):
@@ -304,7 +293,7 @@ with open(namefile, "w", encoding="utf-8") as file:
     file.write('          span.textContent = art.traducao;\n')
     file.write('          div.appendChild(span);\n')
     file.write('        }\n\n')
-    file.write('        container.appendChild(div);\n');
+    file.write('        container.appendChild(div);\n')
     file.write('      });\n')
     file.write('    } else {\n')
     file.write('      container.innerHTML = \'<span class="vazio">Nenhum artigo encontrado para esta fonte no momento.</span>\';\n')
