@@ -28,7 +28,7 @@ links = [
     "https://scientificamerican.com",
     "https://nih.gov",
     "https://apa.org",
-    "https://sbponline.org.br/noticias",
+    "https://sbponline.org.br",
     "https://neurosciencenews.com",
     "https://positivepsychology.com",
     "https://medicalxpress.com",
@@ -87,24 +87,19 @@ for x in range(len(links)):
 
         # === RASPAGEM DA SBP ATUALIZADA E REFINADA (ÍNDICE 5) ===
         elif x == 5:
-            # Varre as tags h3 que guardam os títulos das notícias da SBP
             for h3_tag in p_obj.find_all("h3"):
-                # Procura pelo link associado à manchete na própria tag ou em tags vizinhas
                 z = h3_tag.find("a", href=True) if h3_tag.name != "a" else h3_tag
                 if not z and h3_tag.parent.name == "a":
                     z = h3_tag.parent
                 if not z:
-                    # Alternativa caso o link envolva o bloco superior do card
                     z = h3_tag.find_previous("a", href=True) or h3_tag.find_next("a", href=True)
                 
                 if z and z.get("href"):
                     url_completa = urljoin(url_raiz, z.get("href"))
                     if url_permitida(url_completa) and url_completa not in vistos:
                         txt = h3_tag.text.strip()
-                        # Ignora os títulos estáticos das colunas do rodapé
                         if len(txt) > 15 and not any(menu in txt.lower() for menu in ["institucional", "links úteis", "contato"]):
                             vistos.add(url_completa)
-                            # Site nativo em PT-BR, o texto vai direto sem passar pela tradução
                             links_raspados_por_fonte[x].append((url_completa, txt, txt))
 
         # === RASPAGEM DO PORTAL PSYCH CENTRAL REFINADA (ÍNDICE 10) ===
@@ -189,10 +184,10 @@ with open(namefile, "w", encoding="utf-8") as file:
         file.write(f'  <button class="btn-fonte{classe_ativa}" onclick="mostrarConteudo({idx}, this)">{nome}</button>\n')
     file.write('</div>\n\n')
 
-    # Caixa dinâmica inicial carregando o primeiro item
+    # === CORREÇÃO CRUCIAL DA LINHA 195: Lendo explicitamente o índice [0] ===
     file.write('<div class="caixa-dinamica" id="conteudoResultados">\n')
-    if 0 in links_raspados_por_fonte and len(links_raspados_por_fonte) > 0:
-        for url_lnk, txt_lnk, trad_lnk in links_raspados_por_fonte:
+    if 0 in links_raspados_por_fonte and len(links_raspados_por_fonte[0]) > 0:
+        for url_lnk, txt_lnk, trad_lnk in links_raspados_por_fonte[0]:
             file.write('  <div class="item-artigo">\n')
             file.write(f'    <a href="{url_lnk}" target="_blank">{txt_lnk if txt_lnk else url_lnk}</a>\n')
             if trad_lnk and trad_lnk != txt_lnk:
