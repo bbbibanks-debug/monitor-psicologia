@@ -28,7 +28,6 @@ def traduzir(texto):
     except: return ""
 
 # --- MAPEAMENTO DA ARQUITETURA DE RASPAGEM (SELETORES CIRÚRGICOS) ---
-# Centraliza as regras de cada site em um dicionário para eliminar repetição de código
 fontes_config = [
     {"nome": "VeryWell Mind", "url": "https://verywellmind.com", "base": "https://verywellmind.com", "find": ["a", {"class": lambda c: c and ('card' in c or 'link' in c)}], "sub_find": None},
     {"nome": "Psychology Today", "url": "https://psychologytoday.com", "base": "https://psychologytoday.com", "find": ["div", {"class": "layout-content-main"}], "sub_find": "a"},
@@ -75,8 +74,7 @@ for idx, config in enumerate(fontes_config):
         if res.status_code == 200:
             soup = BeautifulSoup(res.text, "html.parser")
             
-            # Executa a busca baseada na configuração cirúrgica do site
-            elementos_pai = soup.find_all(config["find"][0], config["find"][1] if len(config["find"]) > 1 else None)
+            elementos_pai = soup.find_all(config["find"], config["find"] if len(config["find"]) > 1 else None)
             
             for elem in elementos_pai:
                 tags_a = elem.find_all(config["sub_find"]) if config["sub_find"] else [elem] if elem.name == "a" else []
@@ -94,7 +92,6 @@ for idx, config in enumerate(fontes_config):
                         item = {"url": href, "texto": texto, "traducao": traducao}
                         links_site.append(item)
                         
-                        # Alimenta as palavras-chave globais
                         if any(p in texto.lower() or p in traducao.lower() for p in keywords):
                             noticias_filtradas_urgentes.append({**item, "fonte": config["nome"]})
                             
@@ -125,33 +122,30 @@ with open(namefile, "w", encoding="utf-8") as file:
 <body>
     <div class="container">
         <div class="dashboard-header text-center">
-            <h1 class="display-5 font-weight-bold">🧠 PSI MONITOR</h1>
+            <h1 class="display-5 font-weight-bold">PSI MONITOR</h1>
             <p class="mb-0 opacity-75">Atualizado em: {data_e_hora_sao_paulo.strftime("%d/%m/%Y às %H:%M")}</p>
         </div>
 
-        <!-- Tag de Palavras-Chave -->
         <div class="text-center mb-4">
-            <a class="btn btn-tag btn-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseKeywords" role="button">🎯 Palavras-Chave Ativas</a>
+            <a class="btn btn-tag btn-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseKeywords" role="button">Palavras-Chave Ativas</a>
             {" ".join([f'<a class="btn btn-tag btn-outline-primary shadow-sm" data-toggle="collapse" href="#collapseIndex{i}" role="button">{site["nome"]}</a>' for i, site in enumerate(dados_painel)])}
         </div>
 
         <div id="myGroup">
-            <!-- Box de Palavras-Chave -->
             <div class="collapse" id="collapseKeywords" data-parent="#myGroup">
                 <div class="card-container" style="border-top: 4px solid #dc3545;">
-                    <h4 class="text-danger font-weight-bold mb-3">🎯 Destaques do seu interesse</h4>
+                    <h4 class="text-danger font-weight-bold mb-3">Destaques do seu interesse</h4>
                     {"<p class='text-muted'>Nenhum artigo correspondente encontrado.</p>" if not noticias_filtradas_urgentes else ""}
-                    {"".join([f'<a class="news-link" href="{n["url"]}" target="_blank">📌 [{n["fonte"]}] {n["texto"]}</a><span class="sub-tra">↳ {n["traducao"]}</span>' for n in noticias_filtradas_urgentes])}
+                    {"".join([f'<a class="news-link" href="{n["url"]}" target="_blank">[{n["fonte"]}] {n["texto"]}</a><span class="sub-tra">↳ {n["traducao"]}</span>' for n in noticias_filtradas_urgentes])}
                 </div>
             </div>
 
-            <!-- Boxes Individuais dos Sites -->
             {"".join([f'''
             <div class="collapse {'show' if i==0 else ''}" id="collapseIndex{i}" data-parent="#myGroup">
                 <div class="card-container" style="border-top: 4px solid #007bff;">
-                    <h4 class="text-primary font-weight-bold mb-3">🌐 {site["nome"]}</h4>
+                    <h4 class="text-primary font-weight-bold mb-3">{site["nome"]}</h4>
                     {"<p class='text-muted'>Nenhum artigo capturado nesta rodada.</p>" if not site["noticias"] else ""}
-                    {"".join([f'<a class="news-link" href="{n["url"]}" target="_blank">🔗 {n["texto"]}</a><span class="sub-tra">↳ {n["traducao"]}</span>' for n in site["noticias"]])}
+                    {"".join([f'<a class="news-link" href="{n["url"]}" target="_blank">{n["texto"]}</a><span class="sub-tra">↳ {n["traducao"]}</span>' for n in site["noticias"]])}
                 </div>
             </div>
             ''' for i, site in enumerate(dados_painel)])}
