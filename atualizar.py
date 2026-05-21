@@ -107,11 +107,11 @@ for idx, config in enumerate(fontes_config):
     except Exception as e:
         print(f"Erro em {config['nome']}: {e}")
         
-    dados_panel.append({"nome": config["nome"], "noticias": links_site[:12]})
+    # Correção do erro de digitação (dados_panel -> dados_painel)
+    dados_painel.append({"nome": config["nome"], "noticias": links_site[:12]})
 
 # --- RENDERIZAÇÃO NO DESIGN TRADICIONAL CORRIGIDO E HARMÔNICO ---
 with open(namefile, "w", encoding="utf-8") as file:
-    # Topo idêntico ao original, mas adicionando o estilo escuro elegante e botão topo
     file.write('''<!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -124,34 +124,26 @@ with open(namefile, "w", encoding="utf-8") as file:
         .header-premium { background-color: #1a2530; color: #ffffff; padding: 20px; border-radius: 4px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
         .btn-space { margin: 4px; }
         .sub-tra { font-size: 0.82rem; color: #6c757d; display: block; margin-bottom: 10px; margin-left: 15px; }
-        
-        /* Botão Dinâmico Voltar ao Topo */
         #btnVoltarTopo { position: fixed; bottom: 20px; right: 20px; display: none; z-index: 99; border: none; outline: none; background-color: #1a2530; color: white; cursor: pointer; padding: 12px 18px; border-radius: 30px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: all 0.2s; }
         #btnVoltarTopo:hover { background-color: #3182ce; transform: translateY(-2px); }
     </style>
 </head>
 <body>
-    <!-- Botão Voltar ao Topo Dinâmico -->
     <button onclick="irParaOTopo()" id="btnVoltarTopo" title="Voltar ao topo">▲ Voltar ao Topo</button>
 
     <div class="container" id="myGroup">
         <div class="header-premium mt-3">
             <h1 style="margin:0; font-size:2rem; font-weight:700; letter-spacing:-0.5px;">PSI MONITOR</h1>''')
             
-    # Horário e dia da raspagem inseridos diretamente na barra harmônica escura
     file.write(f'<p style="margin:5px 0 0 0; color:#a0aec0; font-size:0.9rem;">Última raspagem realizada em: {data_e_hora_sao_paulo.strftime("%d/%m/%Y às %H:%M")}</p></div>')
 
-    # 1. LINHA DE BOTÕES DO DESIGN ORIGINAL (Lado a lado, formato clássico)
     file.write('<p>\n')
     file.write('<a class="btn btn-space btn-primary btn-lg" data-toggle="collapse" href="#collapseKeywords" role="button" aria-expanded="false" aria-controls="collapseKeywords">🎯 PALAVRAS-CHAVE ATIVAS</a>\n')
-    for i, site in enumerate(dados_panel):
+    for i, site in enumerate(dados_painel):
         classe_status = "btn-outline-danger" if not site["noticias"] else "btn-outline-info"
         file.write(f'<a class="btn btn-space {classe_status} btn-lg" data-toggle="collapse" href="#collapseIndex{i}" role="button" aria-expanded="false" aria-controls="collapseIndex{i}">{site["nome"]}</a>\n')
     file.write('</p>\n')
 
-    # 2. CONTEÚDOS EXPANSÍVEIS (CARD CARD-BODY ORIGINAL DO SEU PROJETO)
-    
-    # Bloco Collapse de Palavras-Chave
     file.write('<div class="collapse" id="collapseKeywords" data-parent="#myGroup"><div class="card card-body bg-light">')
     file.write(f'<p class="text-muted small">Termos ativos monitorados: {", ".join(keywords)}</p>')
     if not noticias_filtradas_urgentes:
@@ -163,8 +155,7 @@ with open(namefile, "w", encoding="utf-8") as file:
                 file.write(f'<span class="sub-tra">↳ Tradução: {n["traducao"]}</span>\n')
     file.write('</div></div>\n')
 
-    # Blocos Collapse de cada Portal Individual (Mantém a lógica do primeiro iniciar aberto se preferir)
-    for i, site in enumerate(dados_panel):
+    for i, site in enumerate(dados_painel):
         classe_show = "collapse show" if i == 0 else "collapse"
         file.write(f'<div class="{classe_show}" id="collapseIndex{i}" data-parent="#myGroup" Style>\n')
         file.write('<div class="card card-body">\n')
@@ -179,7 +170,6 @@ with open(namefile, "w", encoding="utf-8") as file:
                     
         file.write('</div></div>\n')
 
-    # 3. SCRIPTS ORIGINAIS DO BOOTSTRAP + LÓGICA DINÂMICA DO BOTÃO TOPO
     file.write('''</div>
     <div>
     <script src="https://jquery.com"></script>
@@ -187,7 +177,6 @@ with open(namefile, "w", encoding="utf-8") as file:
     <script src="https://bootstrapcdn.com"></script>
     
     <script>
-        // Monitora a rolagem para exibir o botão dinamicamente
         window.onscroll = function() { verificarRolagem() };
 
         function verificarRolagem() {
@@ -199,7 +188,6 @@ with open(namefile, "w", encoding="utf-8") as file:
             }
         }
 
-        // Função dinâmica acionada pelo clique para subir a tela suavemente
         function irParaOTopo() {
             window.scrollTo({top: 0, behavior: 'smooth'});
         }
