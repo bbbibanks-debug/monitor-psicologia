@@ -22,7 +22,7 @@
 </head>
 <body>
 <h1>PSI MONITOR</h1>
-<div class="data-captura">Última atualização: 21/05/2026 às 19:53</div>
+<div class="data-captura">Última atualização: 21/05/2026 às 20:01</div>
 <div class="grid-botoes">
   <button class="btn-fonte ativo" onclick="mostrarConteudo(0, this)">VeryWell Mind</button>
   <button class="btn-fonte" onclick="mostrarConteudo(1, this)">Psychology Today</button>
@@ -37,10 +37,6 @@
 </div>
 
 <div class="caixa-dinamica" id="conteudoResultados">
-  <div class="item-artigo">
-    <a href="https://www.verywellmind.com/review-board-4796494" target="_blank">Meet Our Review Board</a>
-    <span class="traducao">Conheça nosso conselho de revisão</span>
-  </div>
   <div class="item-artigo">
     <a href="https://www.verywellmind.com/mental-health-and-exercise-11935851" target="_blank">Move Your Body, Lift Your Mind: The Mental Health Benefits of Exercise</a>
     <span class="traducao">Mova seu corpo, levante sua mente: os benefícios do exercício para a saúde mental</span>
@@ -93,40 +89,11 @@
     <a href="https://www.verywellmind.com/certain-personality-types-make-better-partners-11902989" target="_blank">Certain Personality Traits Are Linked to Stronger Romantic Partnerships</a>
     <span class="traducao">Certos traços de personalidade estão ligados a parcerias românticas mais fortes</span>
   </div>
-  <div class="item-artigo">
-    <a href="https://www.verywellmind.com/steven-gans-md-4779222" target="_blank">Steven Gans, MD
-Psychiatrist</a>
-    <span class="traducao">Steven Gans, médico
-Psiquiatra</span>
-  </div>
-  <div class="item-artigo">
-    <a href="https://www.verywellmind.com/claudia-de-llano-8695055" target="_blank">Claudia de Llano, MFT
-Marriage and Family Therapist</a>
-    <span class="traducao">Claudia de Llano, MFT
-Terapeuta de Casamento e Família</span>
-  </div>
-  <div class="item-artigo">
-    <a href="https://www.verywellmind.com/rachel-goldman-phd-ftos-4779228" target="_blank">Rachel Goldman, PhD
-Psychologist</a>
-    <span class="traducao">Rachel Goldman, PhD
-Psicólogo</span>
-  </div>
-  <div class="item-artigo">
-    <a href="https://www.verywellmind.com/shaheen-lakhan-md-phd-faan-4781676" target="_blank">Shaheen Lakhan, MD
-Neurologist</a>
-    <span class="traducao">Shaheen Lakhan, MD
-Neurologista</span>
-  </div>
-  <div class="item-artigo">
-    <a href="https://www.people.inc/brands-termsofservice" target="_blank">Terms of Service</a>
-    <span class="traducao">Termos de Serviço</span>
-  </div>
 </div>
 
 <script>
   const bancoDeDados = {
     0: [
-      { url: "https://www.verywellmind.com/review-board-4796494", texto: "Meet Our Review Board", traducao: "Conheça nosso conselho de revisão" },
       { url: "https://www.verywellmind.com/mental-health-and-exercise-11935851", texto: "Move Your Body, Lift Your Mind: The Mental Health Benefits of Exercise", traducao: "Mova seu corpo, levante sua mente: os benefícios do exercício para a saúde mental" },
       { url: "https://www.verywellmind.com/a-therapist-explains-the-6-signs-that-you-should-dump-your-psychiatrist-8601888", texto: "6 Signs That You Should Dump Your Psychiatrist, According to a Mental Health Professional", traducao: "6 sinais de que você deve dispensar seu psiquiatra, de acordo com um profissional de saúde mental" },
       { url: "https://www.verywellmind.com/can-the-five-love-languages-help-your-relationship-4783538", texto: "What Are the Five Love Languages?", traducao: "Quais são as cinco linguagens do amor?" },
@@ -140,11 +107,6 @@ Neurologista</span>
       { url: "https://www.verywellmind.com/would-you-rather-questions-for-group-chats-11923779", texto: "50 'Would You Rather' Questions That Spark Fun Group Chats", traducao: "50 perguntas do tipo 'Você prefere' que geram bate-papos em grupo divertidos" },
       { url: "https://www.verywellmind.com/why-should-you-have-sex-more-often-2300937", texto: "How Important Is Sex in a Relationship?", traducao: "Quão importante é o sexo em um relacionamento?" },
       { url: "https://www.verywellmind.com/certain-personality-types-make-better-partners-11902989", texto: "Certain Personality Traits Are Linked to Stronger Romantic Partnerships", traducao: "Certos traços de personalidade estão ligados a parcerias românticas mais fortes" },
-      { url: "https://www.verywellmind.com/steven-gans-md-4779222", texto: "Steven Gans, MD Psychiatrist", traducao: "Steven Gans, médico Psiquiatra" },
-      { url: "https://www.verywellmind.com/claudia-de-llano-8695055", texto: "Claudia de Llano, MFT Marriage and Family Therapist", traducao: "Claudia de Llano, MFT Terapeuta de Casamento e Família" },
-      { url: "https://www.verywellmind.com/rachel-goldman-phd-ftos-4779228", texto: "Rachel Goldman, PhD Psychologist", traducao: "Rachel Goldman, PhD Psicólogo" },
-      { url: "https://www.verywellmind.com/shaheen-lakhan-md-phd-faan-4781676", texto: "Shaheen Lakhan, MD Neurologist", traducao: "Shaheen Lakhan, MD Neurologista" },
-      { url: "https://www.people.inc/brands-termsofservice", texto: "Terms of Service", traducao: "Termos de Serviço" },
     ],
     1: [
       { url: "https://bsky.app/profile/psychologytoday.com", texto: "Psychology Today on Bluesky", traducao: "Psicologia hoje em Bluesky" },
@@ -211,104 +173,21 @@ Neurologista</span>
       { url: "https://discoverwhr.nih.gov/", texto: "Women’s Health Research      Image         DiscoverWHR is a central resource for NIH-supported grants and research on health topics that directly affect women or present differently in women.", traducao: "Pesquisa sobre saúde feminina      Imagem         DiscoverWHR é um recurso central para bolsas e pesquisas apoiadas pelo NIH sobre tópicos de saúde que afetam diretamente as mulheres ou que se apresentam de forma diferente nas mulheres." },
       { url: "https://www.nimh.nih.gov/health/topics/caring-for-your-mental-health", texto: "Mental Health Awareness     Image         Get tips and resources to take care of your mental health.", traducao: "Conscientização sobre Saúde Mental     Imagem         Obtenha dicas e recursos para cuidar da sua saúde mental." },
       { url: "https://www.nih.gov/news-events/news-releases/adding-weekly-glp-1-cognitive-behavioral-therapy-further-reduces-heavy-drinking", texto: "Adding weekly GLP-1 to cognitive behavioral therapy further reduces heavy drinking     Image         Clinical trial suggests semaglutide may help patients with alcohol use disorder and obesity.", traducao: "A adição semanal de GLP-1 à terapia cognitivo-comportamental reduz ainda mais o consumo excessivo de álcool     Imagem         Ensaio clínico sugere que a semaglutida pode ajudar pacientes com transtorno por uso de álcool e obesidade." },
-      { url: "https://nih.gov/virtual-tour", texto: "Take the Virtual Tour", traducao: "Faça o tour virtual" },
-      { url: "https://nih.gov/about-nih/who-we-are/nih-director", texto: "The NIH Director", traducao: "O Diretor do NIH" },
-      { url: "https://grants.nih.gov/", texto: "Funding for Research", traducao: "Financiamento para Pesquisa" },
-      { url: "https://nih.gov/about-nih/what-we-do/impact-nih-research", texto: "Impact of NIH Research", traducao: "Impacto da pesquisa do NIH" },
-      { url: "https://www.nih.gov/heal", texto: "NIH HEAL Initiative", traducao: "Iniciativa NIH HEAL" },
-      { url: "https://nih.gov/nih-website-archives", texto: "NIH Website Archives", traducao: "Arquivos do site do NIH" },
-      { url: "http://www.hhs.gov/", texto: "Department of Health and Human Services", traducao: "Departamento de Saúde e Serviços Humanos" },
-      { url: "https://www.hhs.gov/vulnerability-disclosure-policy/index.html", texto: "HHS Vulnerability Disclosure", traducao: "Divulgação de vulnerabilidade HHS" },
-      { url: "https://oig.hhs.gov/", texto: "Office of Inspector General", traducao: "Gabinete do Inspetor Geral" },
-      { url: "https://nih.gov/nondiscrimination-notice", texto: "Nondiscrimination Notice", traducao: "Aviso de não discriminação" },
     ],
     4: [
-      { url: "https://apa.org/monitor/2026/01-02/nine-trends-to-watch", texto: "Monitor on Psychology                                  What’s ahead for psychology? 9 trends to watch                              Explore how psychology is responding to AI, policy shifts, severe weather, and more", traducao: "Monitora de Psicologia                                  O que vem pela frente para a psicologia? 9 tendências para observar                              Explore como a psicologia está respondendo à IA, às mudanças políticas, às condições climáticas adversas e muito mais" },
-      { url: "https://apa.org", texto: "Publications & Databases", traducao: "Publicações e bancos de dados" },
-      { url: "https://apa.org/pubs/magination", texto: "Children’s Books", traducao: "Livros infantis" },
-      { url: "https://apa.org/pubs/digital-learning", texto: "Digital Learning", traducao: "Aprendizagem digital" },
-      { url: "https://apa.org/pubs/authors", texto: "Authors, Editors, and Reviewers", traducao: "Autores, editores e revisores" },
-      { url: "https://apa.org/pubs/educators-students", texto: "Educators and Students", traducao: "Educadores e estudantes" },
-      { url: "https://apps.apa.org/course-adoption", texto: "Exam Copiesopens in new window", traducao: "Cópias do exameabre em uma nova janela" },
-      { url: "https://psycnet.apa.org/search/advanced", texto: "Search APA PsycNet                     opens in new window", traducao: "Pesquise APA PsycNet                     abre em uma nova janela" },
-      { url: "https://apa.org/pubs", texto: "All publications and databases", traducao: "Todas as publicações e bases de dados" },
-      { url: "https://apa.org/research-practice/conduct-research", texto: "Conducting research", traducao: "Conduzindo pesquisas" },
-      { url: "https://apa.org/research-practice/funding", texto: "Grants and funding", traducao: "Subsídios e financiamento" },
-      { url: "https://apa.org/research-practice/practice-management", texto: "Practice management", traducao: "Gestão prática" },
-      { url: "https://apa.org/research-practice/publish-present", texto: "Publishing and presenting research", traducao: "Publicação e apresentação de pesquisas" },
-      { url: "https://apa.org/research-practice/teaching-psychology", texto: "Teaching psychology", traducao: "Ensino de psicologia" },
-      { url: "https://apa.org/research-practice/standards-guidelines", texto: "Standards and guidelines", traducao: "Padrões e diretrizes" },
-      { url: "https://apa.org/members/content/youth-use-technology", texto: "Profile                                  Mike Parent is working with youth to understand how they use technology", traducao: "Perfil                                  Mike Parent está trabalhando com jovens para entender como eles usam a tecnologia" },
-      { url: "https://apa.org/research-practice", texto: "All research and practice", traducao: "Todas as pesquisas e práticas" },
-      { url: "https://apa.org/education-career/undergrad", texto: "Undergraduate psychology", traducao: "Psicologia de graduação" },
-      { url: "https://apa.org/education-career/grad/applying", texto: "Apply to grad school", traducao: "Inscreva-se na pós-graduação" },
-      { url: "https://apa.org/education-career/grad/succeeding-graduate-school", texto: "Succeed in grad school", traducao: "Sucesso na pós-graduação" },
-      { url: "https://accreditation.apa.org/", texto: "Accreditationopens in new window", traducao: "Credenciamentoabre em uma nova janela" },
-      { url: "https://apa.org/education-career/guide", texto: "Become a psychologist", traducao: "Torne-se um psicólogo" },
-      { url: "https://apa.org/education-career/development", texto: "Manage your career", traducao: "Gerencie sua carreira" },
-      { url: "https://apa.org/education-career/job-search/transitions", texto: "Career transitions", traducao: "Transições de carreira" },
-      { url: "https://apa.org/education-career/ce", texto: "Continuing education", traducao: "Educação continuada" },
-      { url: "https://apa.org/education-career/training", texto: "Training  and webinars", traducao: "Treinamento e webinars" },
-      { url: "https://www.psyccareers.com/jobs/", texto: "View All Psychology Jobs", traducao: "Ver todos os empregos em psicologia" },
-      { url: "https://apa.org/education-career/training/professional-resilience-series", texto: "Webinar Series                                  Professional Resilience in Changing Times", traducao: "Série de webinars                                  Resiliência Profissional em Tempos de Mudança" },
-      { url: "https://apa.org/education-career/training/promotions", texto: "Topical Webinars                                  Paid Promotional Presentations Designed to Deepen Your Clinical Knowledge", traducao: "Webinários temáticos                                  Apresentações promocionais pagas projetadas para aprofundar seu conhecimento clínico" },
-      { url: "https://apa.org/education-career", texto: "All education and career", traducao: "Toda educação e carreira" },
-      { url: "https://apa.org/monitor", texto: "Monitor on Psychology magazine", traducao: "Monitor na revista Psicologia" },
-      { url: "https://apa.org/news/podcasts/speaking-of-psychology", texto: "Speaking of Psychology podcast", traducao: "Falando em podcast de psicologia" },
-      { url: "https://apa.org/news/psycport", texto: "Psychology in the media", traducao: "Psicologia na mídia" },
-      { url: "https://apa.org/news/press/releases/2026/05/anthropomorphism-encourages-gratitude", texto: "Anthropomorphism encourages gratitude for nonhuman entities", traducao: "O antropomorfismo incentiva a gratidão por entidades não humanas" },
-      { url: "https://apa.org/news/press/releases/2026/05/regret-feelings-mellow-age", texto: "Feeling regret? Your feelings may mellow as you age", traducao: "Sentindo arrependimento? Seus sentimentos podem suavizar com a idade" },
       { url: "https://www.apaservices.org/advocacy", texto: "You can make a difference                              Learn about key issues impacting psychologists today", traducao: "Você pode fazer a diferença                              Aprenda sobre as principais questões que afetam os psicólogos hoje" },
-      { url: "https://apa.org/news", texto: "All News and advocacy", traducao: "Todas as notícias e defesa" },
-      { url: "https://apa.org/members/your-membership/benefits", texto: "Member benefits", traducao: "Benefícios para membros" },
-      { url: "https://apa.org/topics/journalism-facts/misinformation-mental-health", texto: "Addressing mental health misinformation with patients                              Inaccurate content on social media can delay support and disrupt therapy. Psychologists offer strategies to counter it.", traducao: "Lidando com a desinformação sobre saúde mental com os pacientes                              Conteúdo impreciso nas redes sociais pode atrasar o suporte e interromper a terapia. Os psicólogos oferecem estratégias para combatê-lo." },
-      { url: "https://apa.org/topics/stress/mental-health-uncertain-times", texto: "Further reading: 5 takeaways on chronic stress", traducao: "Leitura adicional: 5 lições sobre estresse crônico" },
-      { url: "https://apa.org/topics/mental-health", texto: "Protecting your mental health and well-being                              Science-backed resources to help you strengthen and maintain your emotional health and mental resilience", traducao: "Protegendo sua saúde mental e bem-estar                              Recursos apoiados pela ciência para ajudá-lo a fortalecer e manter sua saúde emocional e resiliência mental" },
-      { url: "https://apa.org/about/apa/equity-diversity-inclusion/antisemitism-religious-hate", texto: "Hate, bias, and intolerance: Antisemitism                              APA unequivocally condemns antisemitism in all its forms, recognizing its painful impacts on mental health and well-being", traducao: "Ódio, preconceito e intolerância: anti-semitismo                              A APA condena inequivocamente o antissemitismo em todas as suas formas, reconhecendo os seus dolorosos impactos na saúde mental e no bem-estar" },
-      { url: "https://apa.org/topics/military-veterans", texto: "Military and veteran mental health resources                              How psychologists can rally in support of high-quality care for military service members and veterans", traducao: "Recursos de saúde mental militares e veteranos                              Como os psicólogos podem se unir em apoio a cuidados de alta qualidade para militares e veteranos" },
-      { url: "https://apa.org/monitor/2026/01-02/trends-digital-ai-relationships-emotional-connection", texto: "AI chatbots and digital companions are reshaping emotional connection                              As digital relationships proliferate, psychologists explore the mental health risks and benefits", traducao: "Chatbots de IA e companheiros digitais estão remodelando a conexão emocional                              À medida que as relações digitais proliferam, os psicólogos exploram os riscos e benefícios para a saúde mental" },
-      { url: "https://apa.org/monitor/2026/04-05/ai-psychologists-experience-concerns", texto: "As AI use surges, so do concerns about risks                              As psychologists adopt AI, concerns about accuracy, transparency, and harm grow", traducao: "À medida que aumenta o uso da IA, aumentam também as preocupações com os riscos                              À medida que os psicólogos adotam a IA, crescem as preocupações com a precisão, a transparência e os danos" },
-      { url: "https://apa.org/monitor/2026/03/psychology-impacts-artificial-intelligence", texto: "APA CEO column: Impacting AI for the better                              APA is holding AI technology companies accountable and helping to shape their work", traducao: "Coluna do CEO da APA: Impactando a IA para melhor                              A APA está responsabilizando as empresas de tecnologia de IA e ajudando a moldar seu trabalho" },
       { url: "https://renew.apa.org/findmystatement", texto: "Renew nowopens in new window", traducao: "Renovar agoraabre em uma nova janela" },
-      { url: "https://apa.org/monitor/2026/04-05/psychology-slang-identity-belonging.html", texto: "Science news The psychology of why we use slang                                       Slang use sheds light on identity and belonging in a fast-paced digital world", traducao: "Notícias científicas A psicologia de por que usamos gírias                                       O uso de gírias esclarece a identidade e o pertencimento em um mundo digital em ritmo acelerado" },
-      { url: "https://apa.org/pubs/highlights/spotlight/psychology-solving-global-challenges.html", texto: "Journal article spotlight How psychology is helping solve global challenges                                      Canadian Psychology article highlights what psychology offers to the understanding and addressing of global challenges", traducao: "Destaque do artigo do jornal Como a psicologia está ajudando a resolver desafios globais                                      Artigo da Psicologia Canadense destaca o que a psicologia oferece para a compreensão e abordagem dos desafios globais" },
-      { url: "https://apa.org/pubs/journals/special/pag-age-related-processes-daily-life-pdf", texto: "Journal special issue Age-Related Processes in Daily Life                                      Psychology and Aging special issue on process-level aging research shows feasibility and new insights into adult development", traducao: "Edição especial do jornal Processos Relacionados à Idade na Vida Diária                                      A edição especial de Psicologia e Envelhecimento sobre pesquisas sobre envelhecimento em nível de processo mostra viabilidade e novos insights sobre o desenvolvimento adulto" },
-      { url: "https://apa.org/news/podcasts/speaking-of-psychology/social-interactions.html", texto: "Podcast Why being ‘a little more social’ makes us happier than we expect                                      Nicholas Epley, PhD, discusses why people consistently underestimate how much they’ll enjoy all kinds of social interactions", traducao: "Podcast Por que ser ‘um pouco mais sociável’ nos deixa mais felizes do que esperamos                                      Nicholas Epley, PhD, discute por que as pessoas subestimam consistentemente o quanto irão desfrutar de todos os tipos de interações sociais" },
       { url: "https://updates.apaservices.org/?utm_source=apa.org&utm_medium=referral&utm_content=/", texto: "Learn moreopens in new window", traducao: "Saiba maisabre em uma nova janela" },
-      { url: "https://apa.org/events/ethical-emotionally-intelligent-ai-training", texto: "Build Ethical Emotionally Intelligent Chatbots                              Design ethical, human-centered systems with evidence-based psychological science", traducao: "Crie chatbots éticos e emocionalmente inteligentes                              Projete sistemas éticos e centrados no ser humano com ciência psicológica baseada em evidências" },
       { url: "https://community.apa.org/", texto: "APA Community                              Network with peers, enhance your professional development, expand your personal growth, and more", traducao: "Comunidade APA                              Faça networking com colegas, aprimore seu desenvolvimento profissional, expanda seu crescimento pessoal e muito mais" },
-      { url: "https://apa.org/education-career/development/networking", texto: "More networking resources", traducao: "Mais recursos de rede" },
-      { url: "https://apa.org/ed/precollege/topss", texto: "High school teachers", traducao: "Professores do ensino médio" },
-      { url: "https://apa.org/ed/precollege/undergrad", texto: "Undergraduate educators", traducao: "Educadores de graduação" },
-      { url: "https://apa.org/apags", texto: "Graduate students", traducao: "Alunos de pós-graduação" },
-      { url: "https://apa.org/education-career/development/early", texto: "Early career psychologists", traducao: "Psicólogos em início de carreira" },
-      { url: "https://apa.org/education-career/psychologist-profiles", texto: "Psychologist profiles                              Meet fellow psychologists and the wide variety of careers that make up the profession", traducao: "Perfis de psicólogos                              Conheça colegas psicólogos e a grande variedade de carreiras que compõem a profissão" },
-      { url: "https://apa.org/education-career/training/how-did-you-get-that-job-series", texto: "How did you get that job?                              Learn how other professionals got their current job and how you can apply your training to a similar career", traducao: "Como você conseguiu esse emprego?                              Saiba como outros profissionais conseguiram o emprego atual e como você pode aplicar sua formação em uma carreira semelhante" },
-      { url: "https://apa.org/events", texto: "Events and training                              Find training and career development opportunities offered by APA", traducao: "Eventos e treinamento                              Encontre oportunidades de treinamento e desenvolvimento de carreira oferecidas pela APA" },
       { url: "https://apastyle.apa.org/", texto: "APA Style                              Explore free resources and official APA Style publications", traducao: "Estilo APA                              Explore recursos gratuitos e publicações oficiais do estilo APA" },
-      { url: "https://apa.org/pubs/databases", texto: "Databases                              APA PsycInfo, APA PsycArticles, Academic Writer, and more", traducao: "Bancos de dados                              APA PsycInfo, APA PsycArticles, escritor acadêmico e muito mais" },
-      { url: "https://apa.org/pubs/videos", texto: "Videos                              Training videos  for qualified mental health professionals", traducao: "Vídeos                              Vídeos de treinamento para profissionais de saúde mental qualificados" },
       { url: "https://www.apaservices.org/", texto: "Supporting psychology                              APA Services, Inc. is a companion professional organization to APA, serving all members and advocating for psychology. Its work includes advocating for psychology-informed federal policy, legislation that supports psychological research, and reimbursement for practitioners.", traducao: "Psicologia de apoio                              APA Services, Inc. é uma organização profissional companheira da APA, atendendo a todos os membros e defendendo a psicologia. Seu trabalho inclui a defesa de políticas federais informadas pela psicologia, legislação que apoie a pesquisa psicológica e reembolso para profissionais." },
-      { url: "https://apa.org/education-career/guide/science", texto: "Science of Psychology", traducao: "Ciência da Psicologia" },
-      { url: "https://apa.org/topics", texto: "Psychology Topics", traducao: "Tópicos de psicologia" },
-      { url: "https://accreditation.apa.org/accredited-programs", texto: "Accredited Psychology Programs", traducao: "Programas de psicologia credenciados" },
-      { url: "https://apa.org/education-career/guide/careers", texto: "Careers in Psychology", traducao: "Carreiras em Psicologia" },
-      { url: "https://apa.org/about/students", texto: "More for Students", traducao: "Mais para estudantes" },
-      { url: "https://apa.org/pubs/journals/subscriptions", texto: "Journal Subscriptions", traducao: "Assinaturas de periódicos" },
       { url: "https://psycnet.apa.org/", texto: "APA PsycNet® Journal Articles", traducao: "Artigos de periódicos APA PsycNet®" },
       { url: "https://www.psyccareers.com", texto: "Find a Job with PsycCareers", traducao: "Encontre um emprego na PsycCareers" },
       { url: "https://convention.apa.org", texto: "APA Annual Convention", traducao: "Convenção Anual da APA" },
-      { url: "https://apa.org/about/offices", texto: "Teams and Offices", traducao: "Equipes e Escritórios" },
-      { url: "https://apa.org/about/apa/corporate-supporters", texto: "Corporate Supporters", traducao: "Apoiadores Corporativos" },
-      { url: "https://apa.org/about/partnership", texto: "Become a Partner", traducao: "Torne-se um parceiro" },
       { url: "https://advertising.apa.org", texto: "Advertise with Us", traducao: "Anuncie conosco" },
       { url: "https://apamerchstore.com/", texto: "APA Merch Store", traducao: "Loja de produtos da APA" },
-      { url: "https://apa.org/members", texto: "More for Members", traducao: "Mais para membros" },
       { url: "https://renew.apa.org", texto: "Renew Membership", traducao: "Renovar assinatura" },
-      { url: "https://apa.org/about/privacy", texto: "Privacy Statement", traducao: "Declaração de privacidade" },
-      { url: "https://apa.org/website-feedback", texto: "Website Feedback", traducao: "Feedback do site" },
       { url: "https://www.youtube.com/theapavideo", texto: "Videos from APA on YouTube", traducao: "Vídeos da APA no YouTube" },
-      { url: "https://apa.org/about/contact/copyright", texto: "© 2026 American Psychological Association", traducao: "© 2026 Associação Americana de Psicologia" },
     ],
     5: [
     ],
@@ -385,25 +264,25 @@ Neurologista</span>
     ],
     8: [
       { url: "https://medicalxpress.com/news/2026-05-mental-disorders-affecting-billion-people.html", texto: "Mental disorders have nearly doubled since 1990, now affecting 1.2 billion people worldwide", traducao: "As perturbações mentais quase duplicaram desde 1990, afectando agora 1,2 mil milhões de pessoas em todo o mundo." },
+      { url: "https://medicalxpress.com/news/2026-05-spinal-reveal-high-frequency-pulses.html", texto: "Spinal stimulation data reveal why high-frequency pulses may miss key nerve pathways", traducao: "Dados de estimulação espinhal revelam por que pulsos de alta frequência podem perder vias nervosas importantes" },
       { url: "https://medicalxpress.com/news/2026-05-machine-personalizes-depression-treatment-wearable.html", texto: "Machine learning personalizes depression treatment with the help of wearable technology", traducao: "O aprendizado de máquina personaliza o tratamento da depressão com a ajuda de tecnologia vestível" },
-      { url: "https://medicalxpress.com/news/2026-05-driven-biomaterials-pancreatic-cancer-organoids.html", texto: "Data-driven biomaterials steer pancreatic cancer organoids into new cell states", traducao: "Biomateriais baseados em dados orientam organoides de câncer pancreático para novos estados celulares" },
       { url: "https://medicalxpress.com/news/2026-05-child-death-states.html", texto: "Child death rates in the United States have increased, study finds", traducao: "As taxas de mortalidade infantil nos Estados Unidos aumentaram, segundo estudo" },
       { url: "https://medicalxpress.com/news/2026-05-pink-noise-anesthesia-surgery.html", texto: "'Pink noise' can help make anesthesia work better during surgery", traducao: "‘Ruído rosa’ pode ajudar a fazer a anestesia funcionar melhor durante a cirurgia" },
       { url: "https://medicalxpress.com/news/2026-05-energy-age-membrane-lipid-destabilize.html", texto: "Why energy fades with age: Missing membrane lipid may destabilize mitochondria", traducao: "Por que a energia diminui com a idade: a falta de lipídios na membrana pode desestabilizar as mitocôndrias" },
       { url: "https://medicalxpress.com/news/2026-05-scientists-capture-housekeeping-immune-cells.html", texto: "Scientists capture 'housekeeping' immune cells attacking live melanoma", traducao: "Cientistas capturam células imunológicas 'domésticas' que atacam o melanoma vivo" },
+      { url: "https://medicalxpress.com/news/2026-05-driven-biomaterials-pancreatic-cancer-organoids.html", texto: "Data-driven biomaterials steer pancreatic cancer organoids into new cell states", traducao: "Biomateriais baseados em dados orientam organoides de câncer pancreático para novos estados celulares" },
       { url: "https://medicalxpress.com/news/2026-05-smartphone-cravings-lapses-potential-addiction.html", texto: "Smartphone data predict smoking cravings and lapses, with potential to treat addiction and other conditions", traducao: "Dados de smartphones prevêem desejos e lapsos de fumar, com potencial para tratar dependência e outras condições" },
-      { url: "https://medicalxpress.com/news/2026-05-combination-therapy-leukemia-relapse-window.html", texto: "Novel combination therapy could reduce leukemia relapse rate, extending window for bone marrow transplants", traducao: "Nova terapia combinada pode reduzir a taxa de recidiva da leucemia, ampliando a janela para transplantes de medula óssea" },
       { url: "https://medicalxpress.com/news/2026-05-origami-method-diagnosis-neurodegenerative-disease.html", texto: "'Origami' method could speed up diagnosis of neurodegenerative disease", traducao: "O método 'Origami' pode acelerar o diagnóstico de doenças neurodegenerativas" },
       { url: "https://medicalxpress.com/news/2026-05-duration-depression-severely-disease-brain.html", texto: "Duration of depression may influence how severely the disease alters the brain", traducao: "A duração da depressão pode influenciar a severidade com que a doença altera o cérebro" },
       { url: "https://medicalxpress.com/news/2026-05-brain-night-shift-clearance-dementia.html", texto: "The brain's night shift: How sleep, waste clearance and dementia may be linked", traducao: "O turno noturno do cérebro: como o sono, a eliminação de resíduos e a demência podem estar ligados" },
-      { url: "https://medicalxpress.com/news/2026-05-oneweek-radiotherapy-shown-safe-effective.html", texto: "One‑week radiotherapy course shown to be safe and effective in the long term for early‑stage breast cancer", traducao: "O curso de radioterapia de uma semana demonstrou ser seguro e eficaz a longo prazo para o cancro da mama em fase inicial" },
-      { url: "https://medicalxpress.com/news/2026-05-early-diabetes-children-feasible-routine.html", texto: "Early detection of type 1 diabetes in children is feasible from routine pediatric care", traducao: "A detecção precoce do diabetes tipo 1 em crianças é viável a partir de cuidados pediátricos de rotina" },
+      { url: "https://medicalxpress.com/news/2026-05-combination-therapy-leukemia-relapse-window.html", texto: "Novel combination therapy could reduce leukemia relapse rate, extending window for bone marrow transplants", traducao: "Nova terapia combinada pode reduzir a taxa de recidiva da leucemia, ampliando a janela para transplantes de medula óssea" },
       { url: "https://medicalxpress.com/news/2026-05-bigger-reward-faster.html", texto: "The bigger the reward, the faster we learn, researchers find", traducao: "Quanto maior a recompensa, mais rápido aprendemos, descobrem os pesquisadores" },
       { url: "https://medicalxpress.com/news/2026-05-glp-drugs-surge-popularity-bariatric.html", texto: "As GLP-1 drugs surge in popularity, bariatric surgery rates plunge across the US", traducao: "À medida que os medicamentos GLP-1 aumentam em popularidade, as taxas de cirurgia bariátrica despencam nos EUA" },
+      { url: "https://medicalxpress.com/news/2026-05-early-diabetes-children-feasible-routine.html", texto: "Early detection of type 1 diabetes in children is feasible from routine pediatric care", traducao: "A detecção precoce do diabetes tipo 1 em crianças é viável a partir de cuidados pediátricos de rotina" },
+      { url: "https://medicalxpress.com/news/2026-05-oneweek-radiotherapy-shown-safe-effective.html", texto: "One‑week radiotherapy course shown to be safe and effective in the long term for early‑stage breast cancer", traducao: "O curso de radioterapia de uma semana demonstrou ser seguro e eficaz a longo prazo para o cancro da mama em fase inicial" },
       { url: "https://medicalxpress.com/news/2026-05-decoding-inflammatory-bowel-disease-chip.html", texto: "Decoding inflammatory bowel disease—on a chip", traducao: "Decodificando a doença inflamatória intestinal – em um chip" },
-      { url: "https://medicalxpress.com/news/2026-05-gut-bacteria-linked-immunotherapy-success.html", texto: "Gut bacteria linked to immunotherapy success in melanoma patients", traducao: "Bactérias intestinais associadas ao sucesso da imunoterapia em pacientes com melanoma" },
       { url: "https://medicalxpress.com/news/2026-05-brain-tumor-hotspots-uncovered-fruit.html", texto: "Brain's 'tumor hotspots' uncovered in fruit fly study", traducao: "'Pontos de acesso tumoral' do cérebro descobertos no estudo da mosca da fruta" },
-      { url: "https://medicalxpress.com/news/2026-05-simple-blood-alzheimer-parkinson-early.html", texto: "Simple blood test could catch Alzheimer's and Parkinson's early by spotting misfolded proteins", traducao: "Simples exame de sangue pode detectar Alzheimer e Parkinson precocemente, detectando proteínas mal dobradas" },
+      { url: "https://medicalxpress.com/news/2026-05-gut-bacteria-linked-immunotherapy-success.html", texto: "Gut bacteria linked to immunotherapy success in melanoma patients", traducao: "Bactérias intestinais associadas ao sucesso da imunoterapia em pacientes com melanoma" },
     ],
     9: [
       { url: "https://amenteemaravilhosa.com.br/luis-horta-e-costa-classicos-como-o-benfica-vs-porto-revelam-a-pressao-mental-no-futebol-de-elite/", texto: "Luís Horta e Costa: “Clássicos como o Benfica vs Porto revelam a pressão mental no futebol de elite”", traducao: "Luís Horta e Costa: “Clássicos como o Benfica vs Porto revelam a pressão mental no futebol de elite”" },
