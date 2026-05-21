@@ -33,7 +33,7 @@ links = [
     "https://positivepsychology.com",
     "https://medicalxpress.com",
     "https://amenteemaravilhosa.com.br",
-    "https://news.google.com/topics/CAAqJQgKIh9DQkFTRVFvSUwyMHZNRFZ4Wm1nU0JYQjBMVUpTS0FBUAE?hl=pt-BR&gl=BR&ceid=BR%3Apt-419"
+    "https://google.com"
 ]
 
 header = {
@@ -90,7 +90,7 @@ for x in range(len(links)):
             for art in p_obj.find_all("article"):
                 z = art.find("a", href=True)
                 if z and z.get("href"):
-                    url_completa = urljoin("https://news.google.com", z.get("href"))
+                    url_completa = urljoin("https://google.com", z.get("href"))
                     if url_permitida(url_completa) and url_completa not in vistos:
                         txt = ""
                         for elem in art.find_all(["h3", "h4", "a"]):
@@ -99,7 +99,6 @@ for x in range(len(links)):
                                 break
                         if len(txt) > 12:
                             vistos.add(url_completa)
-                            # O feed já entrega resultados nativos em português
                             links_raspados_por_fonte[x].append((url_completa, txt, txt))
                             
         # === RASPAGEM AMPLIADA GERAL (PARA OS DEMAIS PORTAIS) ===
@@ -115,7 +114,6 @@ for x in range(len(links)):
                     continue
                 vistos.add(url_completa)
                 
-                # Se for nativo em PT (SBP ou A Mente é Maravilhosa), evita processar tradução
                 if x == 5 or x == 9:
                     links_raspados_por_fonte[x].append((url_completa, txt, txt))
                 else:
@@ -173,8 +171,8 @@ with open(namefile, "w", encoding="utf-8") as file:
 
     # Caixa dinâmica inicial carregando o primeiro item
     file.write('<div class="caixa-dinamica" id="conteudoResultados">\n')
-    if 0 in links_raspados_por_fonte and len(links_raspados_por_fonte[0]) > 0:
-        for url_lnk, txt_lnk, trad_lnk in links_raspados_por_fonte[0]:
+    if 0 in links_raspados_por_fonte and len(links_raspados_por_fonte) > 0:
+        for url_lnk, txt_lnk, trad_lnk in links_raspados_por_fonte:
             file.write('  <div class="item-artigo">\n')
             file.write(f'    <a href="{url_lnk}" target="_blank">{txt_lnk if txt_lnk else url_lnk}</a>\n')
             if trad_lnk and trad_lnk != txt_lnk:
@@ -201,7 +199,7 @@ with open(namefile, "w", encoding="utf-8") as file:
     file.write('    document.querySelectorAll(".btn-fonte").forEach(btn => btn.classList.remove("ativo"));\n')
     file.write('    elementoAlvo.classList.add("ativo");\n\n')
     file.write('    const container = document.getElementById("conteudoResultados");\n')
-    container.innerHTML = "";\n\n')
+    file.write('    container.innerHTML = "";\n\n')  # Correção da linha 204 corrigida perfeitamente
     file.write('    const artigos = bancoDeDados[id];\n')
     file.write('    if (artigos && artigos.length > 0) {\n')
     file.write('      artigos.forEach(art => {\n')
