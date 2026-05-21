@@ -73,17 +73,15 @@ for idx, config in enumerate(fontes_config):
         if res.status_code == 200:
             soup = BeautifulSoup(res.text, "html.parser")
             
-            # Se for lista, desempacota o dicionário de busca se houver
             find_args = config["find"]
-            if len(find_args) == 2 and isinstance(find_args[1], dict):
-                elementos_pai = soup.find_all(find_args[0], find_args[1])
+            if len(find_args) == 2 and isinstance(find_args, dict):
+                elementos_pai = soup.find_all(find_args, find_args)
             else:
-                elementos_pai = soup.find_all(find_args[0])
+                elementos_pai = soup.find_all(find_args)
             
-            # Contingência: se o seletor específico falhar, busca links gerais h2/h3 para garantir a raspagem
             if not elementos_pai:
                 elementos_pai = soup.find_all(['h2', 'h3', 'article'])
-                config["sub_find"] = "a" if elementos_pai[0].name != "a" else None
+                config["sub_find"] = "a" if elementos_pai and elementos_pai[0].name != "a" else None
             
             for elem in elementos_pai:
                 tags_a = elem.find_all(config["sub_find"]) if config["sub_find"] else [elem] if elem.name == "a" else []
@@ -105,78 +103,137 @@ for idx, config in enumerate(fontes_config):
                         if any(p in texto.lower() or p in traducao.lower() for p in keywords):
                             noticias_filtradas_urgentes.append({**item, "fonte": config["nome"]})
                             
-        time.sleep(0.3) # Evita bloqueios de firewall IP
+        time.sleep(0.3)
     except Exception as e:
         print(f"Erro em {config['nome']}: {e}")
         
     dados_painel.append({"nome": config["nome"], "noticias": links_site[:10]})
 
-# --- RENDERIZAÇÃO SEGURA DO HTML (SEM F-STRING CONFLITANTE) ---
+# --- RENDERIZAÇÃO DO TEMPLATE COM DESIGN DE PAINEL SISTÊMICO ---
 with open(namefile, "w", encoding="utf-8") as file:
-    # 1. Topo da página
+    # Cabeçalho estrutural e CSS Customizado de Alta Performance visual
     file.write('''<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://bootstrapcdn.com">
-    <title>PSI Links Board</title>
+    <title>Painel Integrado de Psicologia</title>
     <style>
-        body { background-color: #f4f6f9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        .dashboard-header { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 30px 20px; border-radius: 0 0 20px 20px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .btn-tag { margin: 4px; border-radius: 30px; font-weight: 500; font-size: 0.9rem; padding: 6px 16px; transition: all 0.2s; }
-        .card-container { border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); background: white; padding: 20px; margin-bottom: 20px; }
-        .news-link { font-size: 1.05rem; font-weight: 500; color: #2c3e50; text-decoration: none; display: inline-block; margin-top: 8px; }
-        .news-link:hover { color: #0056b3; text-decoration: none; }
-        .sub-tra { font-size: 0.85rem; color: #6c757d; display: block; margin-bottom: 12px; padding-left: 15px; border-left: 2px solid #dee2e6; }
+        body { background-color: #f0f2f5; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #333; }
+        .main-card { background: #ffffff; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); border: none; margin-top: 30px; margin-bottom: 40px; overflow: hidden; }
+        .app-header { background: #1a2a40; color: white; padding: 25px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #243b55; flex-wrap: wrap; }
+        .app-title { font-size: 1.6rem; font-weight: 700; margin: 0; letter-spacing: -0.5px; }
+        .time-badge { background: #2a3e59; color: #a5c2f4; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); }
+        
+        /* Sistema de Abas Avançado */
+        .sidebar-menu { background: #f8fafc; border-right: 1px solid #e2e8f0; max-height: 700px; overflow-y: auto; padding: 15px 10px; }
+        .list-group-item-action { border: none !important; border-radius: 8px !important; margin-bottom: 4px; font-weight: 500; font-size: 0.95rem; color: #4a5568; padding: 12px 16px; transition: all 0.15s ease-in-out; }
+        .list-group-item-action:hover { background-color: #edf2f7; color: #1a2a40; text-decoration: none; }
+        .list-group-item-action.active { background: #3182ce !important; color: white !important; box-shadow: 0 4px 10px rgba(49,130,206,0.25); }
+        .list-group-item-action.kw-active { background: #e53e3e !important; color: white !important; box-shadow: 0 4px 10px rgba(229,62,62,0.25); font-weight: bold; }
+        
+        /* Espaço de Conteúdo */
+        .content-body { padding: 30px; max-height: 700px; overflow-y: auto; background: #ffffff; }
+        .content-title { font-size: 1.4rem; font-weight: 700; color: #1a2a40; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #edf2f7; }
+        .article-block { padding: 14px 0; border-bottom: 1px solid #f1f5f9; transition: transform 0.2s; }
+        .article-block:last-child { border-bottom: none; }
+        .article-link { font-size: 1.05rem; font-weight: 600; color: #1e3a8a; text-decoration: none; line-height: 1.4; display: inline-block; }
+        .article-link:hover { color: #3b82f6; text-decoration: none; }
+        .sub-tra { font-size: 0.88rem; color: #475569; display: block; margin-top: 5px; padding-left: 12px; border-left: 3px solid #cbd5e1; font-style: italic; }
+        
+        @media (max-width: 767.98px) {
+            .sidebar-menu { max-height: 250px; border-right: none; border-bottom: 1px solid #e2e8f0; }
+            .app-header { text-align: center; justify-content: center; gap: 10px; }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="dashboard-header text-center">
-            <h1 class="display-5 font-weight-bold">🧠 PSI MONITOR</h1>''')
+    <div class="container-fluid px-md-5">
+        <div class="card main-card">
+            <!-- Cabeçalho Fixo -->
+            <div class="app-header">
+                <h1 class="app-title">🧠 MONITOR INTEGRADO DE PSICOLOGIA</h1>''')
+                
+    # Inserção explícita e elegante do dia e horário conforme solicitado
+    file.write(f'''
+                <div class="time-badge">
+                    ⏱️ Última raspagem: {data_e_hora_sao_paulo.strftime("%d/%m/%Y às %H:%M")}
+                </div>
+            </div>
             
-    file.write(f'<p class="mb-0 opacity-75">Atualizado em: {data_e_hora_sao_paulo.strftime("%d/%m/%Y às %H:%M")}</p></div>')
-
-    # 2. Renderização das Tags/Botões
-    file.write('<div class="text-center mb-4"><a class="btn btn-tag btn-danger btn-lg shadow-sm" data-toggle="collapse" href="#collapseKeywords" role="button">🎯 Palavras-Chave Ativas</a>')
+            <div class="row no-gutters">
+                <!-- Coluna de Navegação Esquerda -->
+                <div class="col-md-4 col-lg-3 sidebar-menu">
+                    <div class="list-group" id="list-tab" role="tablist">
+                        <a class="list-group-item list-group-item-action kw-active" id="list-kw-list" data-toggle="list" href="#list-kw" role="tab">🎯 PALAVRAS-CHAVE</a>
+    ''')
+    
     for i, site in enumerate(dados_painel):
-        file.write(f'<a class="btn btn-tag btn-outline-primary shadow-sm" data-toggle="collapse" href="#collapseIndex{i}" role="button">{site["nome"]}</a> ')
-    file.write('</div><div id="myGroup">')
-
-    # 3. Box de Palavras-Chave
-    file.write('<div class="collapse" id="collapseKeywords" data-parent="#myGroup"><div class="card-container" style="border-top: 4px solid #dc3545;"><h4 class="text-danger font-weight-bold mb-3">🎯 Destaques do seu interesse</h4>')
+        # A primeira aba de site normal inicia marcada como ativa por convenção do Bootstrap
+        file.write(f'<a class="list-group-item list-group-item-action" id="list-index{i}-list" data-toggle="list" href="#list-index{i}" role="tab">📁 {site["nome"]}</a>\n')
+        
+    file.write('''
+                    </div>
+                </div>
+                
+                <!-- Coluna de Leitura Direita -->
+                <div class="col-md-8 col-lg-9">
+                    <div class="tab-content content-body" id="nav-tabContent">
+                        
+                        <!-- Painel de Palavras-Chave -->
+                        <div class="tab-pane fade show active" id="list-kw" role="tabpanel">
+                            <div class="content-title text-danger">🎯 Artigos Filtrados por Interesse</div>
+    ''')
+    
+    file.write(f'<p class="text-muted small">Termos monitorados ativos no arquivo: <code>{", ".join(keywords)}</code></p>')
     if not noticias_filtradas_urgentes:
-        file.write('<p class="text-muted">Nenhum artigo correspondente encontrado.</p>')
+        file.write('<div class="alert alert-light text-muted">Nenhum artigo contendo as palavras-chave foi detectado na execução atual.</div>')
     else:
         for n in noticias_filtradas_urgentes:
-            file.write(f'<a class="news-link" href="{n["url"]}" target="_blank">📌 [{n["fonte"]}] {n["texto"]}</a>')
+            file.write(f'''
+                            <div class="article-block">
+                                <a class="article-link" href="{n["url"]}" target="_blank">📌 [{n["fonte"]}] {n["texto"]}</a>
+            ''')
             if n["traducao"] and n["traducao"] != n["texto"]:
-                file.write(f'<span class="sub-tra">↳ {n["traducao"]}</span>')
-    file.write('</div></div>')
+                file.write(f'<span class="sub-tra">↳ Tradução: {n["traducao"]}</span>')
+            file.write('</div>')
+            
+    file.write('</div>')
 
-    # 4. Boxes Individuais de cada Portal
+    # Painéis Individuais de cada Site
     for i, site in enumerate(dados_painel):
-        classe_show = "collapse show" if i == 0 else "collapse"
-        file.write(f'<div class="{classe_show}" id="collapseIndex{i}" data-parent="#myGroup">')
-        file.write('<div class="card-container" style="border-top: 4px solid #007bff;">')
-        file.write(f'<h4 class="text-primary font-weight-bold mb-3">🌐 {site["nome"]}</h4>')
+        file.write(f'''
+                        <div class="tab-pane fade" id="list-index{i}" role="tabpanel">
+                            <div class="content-title text-primary">🌐 {site["nome"]}</div>
+        ''')
         
         if not site["noticias"]:
-            file.write('<p class="text-muted">Nenhum artigo capturado nesta rodada.</p>')
+            file.write('<div class="alert alert-light text-muted">Nenhum artigo pôde ser extraído deste portal nesta rodada.</div>')
         else:
             for n in site["noticias"]:
-                file.write(f'<a class="news-link" href="{n["url"]}" target="_blank">🔗 {n["texto"]}</a>')
+                file.write(f'''
+                            <div class="article-block">
+                                <a class="article-link" href="{n["url"]}" target="_blank">🔗 {n["texto"]}</a>
+                ''')
                 if n["traducao"] and n["traducao"] != n["texto"]:
                     file.write(f'<span class="sub-tra">↳ {n["traducao"]}</span>')
-        file.write('</div></div>')
+                file.write('</div>')
+                
+        file.write('</div>')
 
-    # 5. Rodapé
-    file.write('''</div></div>
+    # Encerramento do documento e carregamento assíncrono dos scripts necessários
+    file.write('''
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <script src="https://jquery.com"></script>
     <script src="https://cloudflare.com"></script>
     <script src="https://bootstrapcdn.com"></script>
 </body>
 </html>''')
 
-print("Painel atualizado com sucesso com design premium!")
+print("Sucesso! Painel gerado com layout sistêmico de alta fidelidade.")
