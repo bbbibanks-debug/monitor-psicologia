@@ -10,7 +10,6 @@ from deep_translator import GoogleTranslator
 data_e_hora_sao_paulo = datetime.now(timezone(timedelta(hours=-3)))
 namefile = "index.html"
 
-# Carrega palavras-chave do arquivo de texto de forma segura
 def carregar_keywords():
     if not os.path.exists("keywords.txt"):
         with open("keywords.txt", "w", encoding="utf-8") as f:
@@ -28,7 +27,7 @@ def traduzir(texto):
     try: return GoogleTranslator(source='auto', target='pt').translate(texto)
     except: return ""
 
-# --- SELETORES CIRÚRGICOS DO SEU SCRIPT ORIGINAL ANEXADO ---
+# --- MAPEAMENTO DA ARQUITETURA DE RASPAGEM ORIGINAL ---
 fontes_config = [
     {"nome": "VeryWell Mind", "base": "https://verywellmind.com", "find": ["a", {"class": lambda c: c and ('card' in c or 'link' in c)}], "sub_find": None},
     {"nome": "Psychology Today", "base": "https://psychologytoday.com", "find": ["div", {"class": "layout-content-main"}], "sub_find": "a"},
@@ -62,7 +61,6 @@ fontes_config = [
     {"nome": "Big Think", "base": "", "find": ["h1", {"class": "card-headline"}], "sub_find": "a"}
 ]
 
-# URLs exatas mapeadas do seu PDF original
 links_originais = [
     "https://verywellmind.com/", "https://psychologytoday.com", 
     "https://scientificamerican.com/mind-and-brain/", "https://nih.gov/news/research-highlights",
@@ -80,10 +78,9 @@ links_originais = [
 
 header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
 
-# Executa raspagem em array na memória (Garante eficiência total)
 for idx, config in enumerate(fontes_config):
     url_alvo = links_originais[idx]
-    print(f"[{idx+1}/30] Extraindo do formato original: {config['nome']}")
+    print(f"[{idx+1}/30] Coletando: {config['nome']}")
     links_site = []
     vistos = set()
     
@@ -91,125 +88,133 @@ for idx, config in enumerate(fontes_config):
         res = requests.get(url_alvo, headers=header, timeout=12)
         if res.status_code == 200:
             soup = BeautifulSoup(res.text, "html.parser")
-            
-            # Executa a regra exata mapeada da sua folha original
             find_args = config["find"]
-            if len(find_args) == 2 and isinstance(find_args[1], dict):
-                elementos = soup.find_all(find_args[0], find_args[1])
-            else:
-                elementos = soup.find_all(find_args[0])
+            elementos = soup.find_all(find_args, find_args) if len(find_args) == 2 and isinstance(find_args, dict) else soup.find_all(find_args)
                 
             for elem in elementos:
-                # Trata as inversões ou sub-achados de tags h2/h3/a nativos
                 if config.get("invert"):
                     tags_a = [elem] if elem.name == "a" else []
                     texto_nodo = elem.find(config["sub_find"])
                     texto = texto_nodo.get_text().strip() if texto_nodo else elem.get_text().strip()
                 else:
-                    if config["sub_find"]:
-                        if "sub_class" in config:
-                            tags_a = elem.find_all(config["sub_find"], class_=config["sub_class"])
-                        else:
-                            tags_a = elem.find_all(config["sub_find"])
-                    else:
-                        tags_a = [elem] if elem.name == "a" else []
+                    tags_a = elem.find_all(config["sub_find"], class_=config["sub_class"]) if "sub_class" in config else elem.find_all(config["sub_find"]) if config["sub_find"] else [elem] if elem.name == "a" else []
                     texto = None
                 
                 for a in tags_a:
                     href = a.get("href", "")
                     if not texto: texto = a.get_text().strip()
-                    
                     if not href or len(texto) < 14: continue
                     
-                    # Concatena os caminhos relativos exatamente como no seu script
                     if href.startswith("/"):
                         href = config["base"].rstrip('/') + href if config["base"] else url_alvo.rstrip('/') + href
-                    elif not href.startswith("http"):
-                        if idx == 1: href = url_alvo + href # Caso específico Psychology Today
+                    elif not href.startswith("http") and idx == 1:
+                        href = url_alvo + href
                     
                     if href not in vistos:
                         vistos.add(href)
                         traducao = traduzir(texto)
                         item = {"url": href, "texto": texto, "traducao": traducao}
                         links_site.append(item)
-                        
                         if any(p in texto.lower() or p in traducao.lower() for p in keywords):
                             noticias_filtradas_urgentes.append({**item, "fonte": config["nome"]})
-        time.sleep(0.2)
-    except Exception as e:
-        print(f"Ignorado/Timeout em {config['nome']}")
-        
+        time.sleep(0.1)
+    except Exception:
+        pass
     dados_painel.append({"nome": config["nome"], "noticias": links_site[:12]})
 
-# --- RENDERIZAÇÃO ESTREITA E COMPACTA NO SEU DESIGN NATIVO ORIGINAL ---
+# --- RENDERIZAÇÃO NO DESIGN TRADICIONAL ULTRA-ELEGANTE E EM CAIXA ---
 with open(namefile, "w", encoding="utf-8") as file:
-    # 1. Escrita estrutural do Head e CSS integrado para controle fino do seu design
-    file.write('<!DOCTYPE html><html lang="pt-br"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">')
-    file.write('<link rel="stylesheet" href="https://bootstrapcdn.com">')
-    file.write('<title>PSI LINKS BOARD</title>')
-    file.write('''<style>
-        .btn-space { margin: 4px; }
-        .sub-tra { font-size: 0.82rem; color: #6c757d; display: block; margin-bottom: 8px; margin-left: 10px; }
-        #btnVoltarTopo { position: fixed; bottom: 20px; right: 20px; display: none; z-index: 99; border: none; background-color: #17a2b8; color: white; padding: 10px 16px; border-radius: 4px; font-weight: 600; box-shadow: 0 2px 5px rgba(0,0,0,0.2); cursor: pointer; }
+    file.write('''<!DOCTYPE html><html lang="pt-br"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://bootstrapcdn.com">
+    <title>PSI LINKS BOARD</title>
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding-bottom: 60px; }
+        
+        /* Box do Topo Elegante Dark */
+        .box-header { background-color: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 24px; margin-top: 25px; margin-bottom: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+        .box-header h1 { font-size: 1.8rem; font-weight: 800; color: #38bdf8; margin: 0; letter-spacing: -0.5px; }
+        .box-header p { margin: 6px 0 0 0; color: #94a3b8; font-size: 0.9rem; }
+        
+        /* Estilização da Grade de Botões Tradicionais */
+        .btn-space { margin: 4px; font-size: 0.88rem; font-weight: 600; border-radius: 6px; padding: 8px 16px; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.2px; }
+        .btn-outline-info { color: #38bdf8; border-color: #38bdf8; }
+        .btn-outline-info:hover, .btn-outline-info:not(:disabled):not(.disabled):active { background-color: #38bdf8; color: #0f172a; border-color: #38bdf8; }
+        .btn-outline-danger { color: #f87171; border-color: #f87171; }
+        .btn-outline-danger:hover { background-color: #f87171; color: #0f172a; border-color: #f87171; }
+        
+        /* Apresentação das Notícias em Caixas/Boxes Premium */
+        .box-conteudo { background-color: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 24px; margin-top: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); }
+        .box-conteudo-titulo { font-size: 1.2rem; font-weight: 700; color: #38bdf8; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* Links e Traduções organizados */
+        .item-noticia { padding: 10px 0; border-bottom: 1px solid #334155; display: block; }
+        .item-noticia:last-child { border-bottom: none; }
+        .link-noticia { font-size: 1.02rem; font-weight: 500; color: #f1f5f9; text-decoration: none; transition: color 0.15s; }
+        .link-noticia:hover { color: #38bdf8; text-decoration: none; }
+        .sub-tra { font-size: 0.85rem; color: #94a3b8; display: block; margin-top: 4px; padding-left: 12px; border-left: 2px solid #475569; font-style: italic; }
+        
+        /* Link Voltar ao Topo Interno e Dinâmico */
+        .link-topo { font-size: 0.82rem; color: #94a3b8; cursor: pointer; font-weight: 600; text-transform: uppercase; }
+        .link-topo:hover { color: #38bdf8; }
+        #btnVoltarTopo { position: fixed; bottom: 25px; right: 25px; display: none; z-index: 99; border: none; background-color: #38bdf8; color: #0f172a; padding: 10px 18px; border-radius: 30px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer; transition: all 0.2s; }
+        #btnVoltarTopo:hover { transform: translateY(-2px); background-color: #bae6fd; }
     </style></head>''')
     
-    # Body, botão de topo e Título original com a estampa de data sutil integrada
-    file.write('<body><button onclick="irParaOTopo()" id="btnVoltarTopo">▲ Topo</button>')
+    file.write('<body><button onclick="irParaOTopo()" id="btnVoltarTopo">▲ Voltar ao Topo</button>')
     file.write('<div class="container" id="myGroup">')
     
-    # Cabeçalho original enriquecido discretamente com a data da raspagem requerida
-    file.write(f'<h1> PSI MONITOR <span class="text-muted" style="font-size: 1rem; font-weight: normal; margin-left: 15px;">| Varredura realizada em: {data_e_hora_sao_paulo.strftime("%d/%m/%Y às %H:%M")}</span></h1><p>')
+    # 1. Caixa de Cabeçalho com o Horário e Dia Destacados
+    file.write('<div class="box-header"><h1>PSI MONITOR</h1>')
+    file.write(f'<p>📅 Varredura sistêmica executada em: <strong>{data_e_hora_sao_paulo.strftime("%d/%m/%Y às %H:%M")}</strong></p></div><p>')
     
-    # Botão de Destaques das Palavras-Chave no seu padrão exato de botões inline
-    file.write('<a class="btn btn-space btn-danger btn-lg" data-toggle="collapse" href="#collapseKeywords" role="button" aria-expanded="false" aria-controls="collapseKeywords">🎯 Palavras-Chave Ativas</a>')
-    
-    # Loop que injeta os 30 botões exatamente em linha horizontal no layout que você ama
+    # Grade Horizontal Original de Botões (Preservando 100% da sua disposição preferida)
+    file.write('<a class="btn btn-space btn-danger btn-lg" data-toggle="collapse" href="#collapseKeywords" role="button" aria-expanded="false" aria-controls="collapseKeywords">🎯 PALAVRAS-CHAVE ATIVAS</a>')
     for i, site in enumerate(dados_painel):
         classe_btn = "btn-outline-danger" if not site["noticias"] else "btn-outline-info"
-        file.write(f'<a class="btn btn-space {classe_btn} btn-lg" data-toggle="collapse" href="#collapseIndex{i}" role="button" aria-expanded="false" aria-controls="collapseExample">{site["nome"]}</a>')
+        file.write(f'<a class="btn btn-space {classe_btn} btn-lg" data-toggle="collapse" href="#collapseIndex{i}" role="button" aria-expanded="false">{site["nome"]}</a>')
     file.write('</p>')
 
-    # 2. CONTÊINERES COLLAPSE NATIVOS DO SEU PROJETO ORIGINAL
+    # 2. Apresentação das Listas dentro dos "Boxes Elegantes" (Collapse Card-Body Original Estilizado)
     
-    # Caixa expansível de Palavras-Chave
-    file.write('<div class="collapse" id="collapseKeywords" data-parent="#myGroup"><div class="card card-body bg-light">')
-    file.write(f'<p class="text-muted small">Termos monitorados: {", ".join(keywords)}</p>')
+    # Box Elegante de Palavras-Chave
+    file.write('<div class="collapse" id="collapseKeywords" data-parent="#myGroup"><div class="box-conteudo">')
+    file.write(f'<div class="box-conteudo-titulo"><span>🎯 Artigos Filtrados (Keywords: {", ".join(keywords)})</span><span class="link-topo" onclick="irParaOTopo()">▲ Voltar</span></div>')
     if not noticias_filtradas_urgentes:
-        file.write('<p class="text-muted">Nenhum artigo correspondente encontrado.</p>')
+        file.write('<p class="text-muted">Nenhum artigo de interesse detectado na varredura recente.</p>')
     else:
         for n in noticias_filtradas_urgentes:
-            file.write(f'<a href="{n["url"]}" target="_blank">📌 [{n["fonte"]}] {n["texto"]}</a></br>\n')
+            file.write(f'<div class="item-noticia"><a class="link-noticia" href="{n["url"]}" target="_blank">📌 [{n["fonte"]}] {n["texto"]}</a>')
             if n["traducao"] and n["traducao"] != n["texto"]:
-                file.write(f'<span class="sub-tra">↳ Tradução: {n["traducao"]}</span>\n')
+                file.write(f'<span class="sub-tra">↳ Tradução: {n["traducao"]}</span>')
+            file.write('</div>')
     file.write('</div></div>')
 
-    # Loop único e curto que escreve as 30 divisões de cards mantendo a primeira aberta ("collapse show")
+    # Boxes Elegantes de cada Portal Individual
     for i, site in enumerate(dados_painel):
         classe_show = "collapse show" if i == 0 else "collapse"
-        file.write(f'<div class="{classe_show}" id="collapseIndex{i}" data-parent="#myGroup" Style><div class="card card-body">')
+        file.write(f'<div class="{classe_show}" id="collapseIndex{i}" data-parent="#myGroup"><div class="box-conteudo">')
+        file.write(f'<div class="box-conteudo-titulo"><span>🌐 {site["nome"]}</span><span class="link-topo" onclick="irParaOTopo()">▲ Voltar ao Topo</span></div>')
         
         if not site["noticias"]:
             file.write('<p class="text-muted">Nenhum link pôde ser extraído na execução atual.</p>')
         else:
             for n in site["noticias"]:
-                file.write(f'<a href="{n["url"]}" target="_blank">{n["texto"]}</a></br>\n')
+                file.write(f'<div class="item-noticia"><a class="link-noticia" href="{n["url"]}" target="_blank">🔗 {n["texto"]}</a>')
                 if n["traducao"] and n["traducao"] != n["texto"]:
-                    file.write(f'<span class="sub-tra">↳ {n["traducao"]}</span>\n')
+                    file.write(f'<span class="sub-tra">↳ {n["traducao"]}</span>')
+                file.write('</div>')
                     
         file.write('</div></div>')
 
-    # 3. FECHAMENTO DO ARQUIVO COM OS SCRIPTS ORIGINAIS + RECURSO DINÂMICO DO TOPO
+    # Fechamento com os scripts e a lógica dinâmica de rolagem
     file.write('''</div><div>
-    <script src="https://jsdelivr.net"></script>
-    <script src="https://jsdelivr.net"></script>
-    <script src="https://jsdelivr.net"></script>
     <script src="https://jquery.com"></script>
     <script src="https://cloudflare.com"></script>
     <script src="https://bootstrapcdn.com"></script>
     <script>
         window.onscroll = function() {
             var btn = document.getElementById("btnVoltarTopo");
-            if (document.body.scrollTop > 250 || document.documentElement.scrollTop > 250) {
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
                 btn.style.display = "block";
             } else {
                 btn.style.display = "none";
@@ -221,4 +226,4 @@ with open(namefile, "w", encoding="utf-8") as file:
     </script>
     </div></body></html>''')
 
-print("Sucesso! Script enxuto compilado mantendo 100% da integridade do seu design original.")
+print("Sucesso! Painel gerado com layout em caixas escuras harmônicas de alta fidelidade.")
